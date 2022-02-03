@@ -21,6 +21,7 @@ world :: world(QGLFormat format, QWidget* parent) : QGLWidget(parent) {
     setFormat(format);
     tick = 0;
     zoom = 0;
+    fps = 0;
     setCursor(Qt::BlankCursor);
     this->setFocusPolicy(Qt::StrongFocus);
 
@@ -40,6 +41,8 @@ world :: world(QGLFormat format, QWidget* parent) : QGLWidget(parent) {
     up = false;
     down = false;
     menu = false;
+
+    int start = time(NULL);
 
     cx = 0;
     cy = 0;
@@ -90,6 +93,11 @@ world :: world(QGLFormat format, QWidget* parent) : QGLWidget(parent) {
 void world :: cameraUpdate(double x, double y, double z) {
     zoom += 1;
     //this -> repaint();
+}
+
+void world :: resetFPS() {
+    std :: cout << fps << "\n";
+    fps = 0;
 }
 
 
@@ -251,6 +259,8 @@ void world :: resizeGL(int w, int h) {
 
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
+    glEnable(GL_CULL_FACE);
+    glCullFace(GL_BACK);
 
     glEnable(GL_FOG);
 
@@ -287,6 +297,8 @@ void world :: paintGL() {
     glEnable(GL_DEPTH_TEST);
 
     glLoadIdentity();
+
+    fps++;
 
 
 

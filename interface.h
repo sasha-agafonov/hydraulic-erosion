@@ -45,8 +45,9 @@ public:
 
     // quit action
     QAction* actionQuit;
+    QVBoxLayout *box;
 
-    QBoxLayout *box, *scene_box, *button_box;
+    QBoxLayout *scene_box, *button_box;
 
     grid_layout* grid;
 
@@ -56,7 +57,7 @@ public:
 
     QPushButton *paramgenerate_button, *randgenerate_button;
 
-    QTimer* timer;
+    QTimer *timer, *timer2;
 
     world* scene;
 

@@ -22,7 +22,8 @@ class world : public QGLWidget {
 
 public slots:
     void update_scene();
-        void cameraUpdate(double x, double y, double z);
+    void resetFPS();
+    void cameraUpdate(double x, double y, double z);
 
 public:
     world(QGLFormat format, QWidget *parent);
@@ -40,12 +41,15 @@ public:
     void keyReleaseEvent(QKeyEvent* event);
     void mouseMoveEvent(QMouseEvent* event);
     void mousePressEvent(QMouseEvent* event);
+
+    int fps;
     //void paintEvent(QPaintEvent* event);
 
 private:
 
     void load_terrain();
     void draw_terrain();
+
     void convert_to_spherical(double x, double y);
     void reload();
 

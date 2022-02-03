@@ -22,13 +22,20 @@ interface :: interface(QWidget *parent) : QWidget(parent) {
 
     //grid = new grid_layout(this);
 
-    box = new QBoxLayout(QBoxLayout :: LeftToRight, this);
+    box = new QVBoxLayout(this);
+
+   // box->setSpacing(0);
+
+
+    box->setContentsMargins(0, 0, 0, 0);
     button_box = new QBoxLayout(QBoxLayout :: LeftToRight, this);
     //grid = new QGridLayout();
 
-    // ~ 100 fps cap
+    // ~ 200 fps cap
     timer = new QTimer;
-    timer -> start(10);
+    timer -> start(5);
+    timer2 = new QTimer;
+    timer2 -> start(1000);
 
 
 //    persistence_slider = new QSlider(Qt :: Horizontal);
@@ -55,6 +62,7 @@ interface :: interface(QWidget *parent) : QWidget(parent) {
     connect(randgenerate_button, SIGNAL(clicked()), this, SLOT(switch_window()));
 
     connect(timer, SIGNAL(timeout()), this->scene, SLOT(update_scene()));
+    connect(timer2, SIGNAL(timeout()), this->scene, SLOT(resetFPS()));
     //connect(this, SIGNAL(cu()), this->scene, SLOT(cameraUpdate(2,0,0)));
 
 //    button_box -> addWidget(paramgenerate_button);
@@ -64,9 +72,13 @@ interface :: interface(QWidget *parent) : QWidget(parent) {
 //    grid -> addWidget(persistence_slider, 1, 1, 1, 1);
 
    // box -> addLayout(button_box);
+    //scene-> setStyleSheet("border: 0");
     box -> addWidget(randgenerate_button);
     box -> addWidget(paramgenerate_button);
     box -> addWidget(scene);
+
+
+    //box->setContentMargin(0, 0, 0, 0);
     scene->hide();
 //    box -> addLayout(grid -> grid);
 

@@ -1,4 +1,5 @@
 #include "terrain.h"
+#include <ctime>
 
 #include <cmath>
 #include <cstdlib>
@@ -208,6 +209,7 @@ void terrain :: load_triangles() {
     }
 }
 
+// compute normals
 void terrain :: load_normals() {
 
     triangle happy_triangle;
@@ -286,6 +288,9 @@ void terrain :: draw_terrain() {
 
         glTranslatef(-12., -12., -22);
         glScalef(8, 8, 1);
+
+
+
 
 
     for (int row = 0; row < terrain_triangle_mx.size(); row++) {
