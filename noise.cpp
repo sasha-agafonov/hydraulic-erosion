@@ -3,7 +3,7 @@
 #include <iostream>
 #include <cstdlib>
 
-#define MAP_SIZE 200
+#define MAP_SIZE 500
 
 noise :: noise() {
 //    std :: ofstream happy_file;

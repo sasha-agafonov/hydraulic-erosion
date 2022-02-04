@@ -81,9 +81,8 @@ world :: world(QGLFormat format, QWidget* parent) : QGLWidget(parent) {
 //    terrain_mx(10, std :: vector <int>, (10));
     //terrain_mx.resize(10, std :: vector <int> (10));
 
-    reload();
-    load_terrain();
-    terra -> load_terrain();
+
+
 
 //    view_x = 0.;
 //    view_y = 0.;
@@ -247,15 +246,6 @@ void world :: initializeGL() {
 
     glClearColor(0.4, 0.5, 0.8, 0.0);
     glEnable(GL_MULTISAMPLE);
-}
-
-void world :: resizeGL(int w, int h) {
-
-    glViewport(0, 0, w, h);
-
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    glFrustum(-20 * ((double)w/h) * (1. / sqrt(3)), 20 * ((double)w/h)* (1. / sqrt(3)), -20* (1. / sqrt(3)), 20* (1. / sqrt(3)), 20, 1000.0);
 
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
@@ -282,6 +272,47 @@ void world :: resizeGL(int w, int h) {
     GLfloat light_pos[] = {0., 0., 1., 0.};
 
     glLightfv(GL_LIGHT0, GL_POSITION, light_pos);
+    reload();
+
+//    float positions[36] = { 0, 0, 1.63f, 1, 1, 1.09f, 0, 1, 2.36f,
+//                            0, 0, 1.63f, 1, 0, 1.51f, 1, 1, 1.09f,
+//                            1, 0, 1.51f, 2, 1, 1.78f, 1, 1, 1.09f,
+//                            1, 0, 1.51f, 2, 0, 1.62f, 2, 1, 1.78f };
+
+
+
+
+
+    //float positions[9] = { -100, -100, 0.5, 100, -100, 0.5, 100, 100, 0.5 };
+    float colors[9] = { 1,0,0,  0,1,0,  1,0,0 };
+
+    glEnableClientState(GL_VERTEX_ARRAY);
+    glEnableClientState(GL_NORMAL_ARRAY);
+
+
+
+
+    //glColorPointer( 3, GL_FLOAT, 0, colors );
+
+  // Enable use of arrays.
+   // glEnableClientState( GL_COLOR_ARRAY );
+
+
+   // glEnableClientState(GL_VERTEX_ARRAY);
+
+
+    //load_terrain();
+    terra -> load_terrain();
+   // terra -> set_vertex_arrays();
+
+}
+
+void world :: resizeGL(int w, int h) {
+
+    glViewport(0, 0, w, h);
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    glFrustum(-20 * ((double)w/h) * (1. / sqrt(3)), 20 * ((double)w/h)* (1. / sqrt(3)), -20* (1. / sqrt(3)), 20* (1. / sqrt(3)), 20, 1000.0);
 
 }
 
@@ -345,11 +376,11 @@ void world :: paintGL() {
    // glScalef(5 + direction_x, 5 + direction_ydddddddddddddddd, 5 + direction_z);
           //glRotatef(180, 0., 0., 1);
 
-    glPushMatrix();
+//    glPushMatrix();
     //gluDisk(gluNewQuadric(), 0, 12, 12, 12);
 
     //gluSphere(gluNewQuadric(), 1, 12 ,12);
-    glPopMatrix();
+//    glPopMatrix();
 
     // pole
 //    glPushMatrix();
@@ -361,8 +392,14 @@ void world :: paintGL() {
     // test terrain
 
 
+    //glDrawArrays(GL_TRIANGLES, 0, 10000);
 
-   terra -> draw_terrain();
+//    glScalef(12, 12, 12);
+
+
+
+    terra -> draw_terrain_arrays();
+  // terra -> draw_terrain();
 
 
 //   if (menu) {
