@@ -52,14 +52,16 @@ public:
     void load_arrays();
     void load_terrain();
 
+    void set_vbo();
+
+     GLuint vbo;
+
     void draw_terrain();
     void draw_terrain_arrays();
     void normalize_terrain(int factor);
     void stretch_terrain(int stretch_x, int stretch_y);
 
     int num_triangles();
-
-private:
 
     int terrain_size;
     int triangles_count;

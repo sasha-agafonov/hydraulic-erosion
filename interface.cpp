@@ -79,6 +79,12 @@ interface :: interface(QWidget *parent) : QWidget(parent) {
 
 
     //box->setContentMargin(0, 0, 0, 0);
+
+    QGridLayout qGrid;
+      QPushButton qBtn1(QString::fromUtf8("Black BG"));
+
+    scene->setLayout(&qGrid);
+       qGrid.addWidget(paramgenerate_button, 1, 1);
     scene->hide();
 //    box -> addLayout(grid -> grid);
 
@@ -113,8 +119,10 @@ void interface :: main_menu() {
 void interface :: world_view() {
     randgenerate_button -> hide();
     paramgenerate_button -> hide();
+
+
     scene -> show();
-        scene -> setFocus();
+    scene -> setFocus();
 }
 
 //void interface :: keyPressEvent(QKeyEvent* event) {

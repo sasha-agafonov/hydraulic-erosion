@@ -1,3 +1,7 @@
+
+#define GL_GLEXT_PROTOTYPES
+
+//#include <GL/GL.h>
 #include <GL/glu.h>
 
 #include <QTimer>
@@ -6,6 +10,7 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include <string>
 
 
 #include "world.h"
@@ -22,6 +27,11 @@ world :: world(QGLFormat format, QWidget* parent) : QGLWidget(parent) {
     tick = 0;
     zoom = 0;
     fps = 0;
+    fps_counter = 0;
+    show_fps = true;
+
+    sc_width = 0;
+    sc_height = 0;
     setCursor(Qt::BlankCursor);
     this->setFocusPolicy(Qt::StrongFocus);
 
@@ -41,6 +51,8 @@ world :: world(QGLFormat format, QWidget* parent) : QGLWidget(parent) {
     up = false;
     down = false;
     menu = false;
+
+          //painter = new QPainter(this);
 
     int start = time(NULL);
 
@@ -96,7 +108,8 @@ void world :: cameraUpdate(double x, double y, double z) {
 
 void world :: resetFPS() {
     std :: cout << fps << "\n";
-    fps = 0;
+    fps = fps_counter;
+    fps_counter = 0;
 }
 
 
@@ -144,12 +157,17 @@ void world :: keyPressEvent(QKeyEvent* event) {
         case Qt :: Key_Shift:
             down = true;
             break;
+
+    case Qt :: Key_F:
+        if (show_fps) show_fps = false;
+        else show_fps = true;
+        break;
 //        case Qt :: Key_Escape:
 //            if (menu) menu = false;
 //            else menu = true;
 //            break;
     }
-    repaint();
+//    repaint();
 }
 
 void world :: keyReleaseEvent(QKeyEvent* event) {
@@ -175,7 +193,7 @@ void world :: keyReleaseEvent(QKeyEvent* event) {
             down = false;
             break;
     }
-    repaint();
+//    repaint();
 }
 
 void world :: update_scene() {
@@ -263,7 +281,7 @@ void world :: initializeGL() {
     glEnable(GL_DEPTH_TEST);
     glDepthMask(GL_TRUE);
     glFogfv(GL_FOG_COLOR, fcolour);
-    glHint(GL_FOG_HINT, GL_NICEST);
+    glHint(GL_FOG_HINT, GL_FASTEST);
     glFogf(GL_FOG_DENSITY,1.f);
 
     glEnable(GL_LIGHTING);
@@ -286,10 +304,17 @@ void world :: initializeGL() {
     //float positions[9] = { -100, -100, 0.5, 100, -100, 0.5, 100, 100, 0.5 };
     float colors[9] = { 1,0,0,  0,1,0,  1,0,0 };
 
+    //terra -> set_vbo();
+
+//    GLuint vbo;
+//        terra -> load_terrain();
+
     glEnableClientState(GL_VERTEX_ARRAY);
     glEnableClientState(GL_NORMAL_ARRAY);
 
-
+//    glGenBuffers(1, &vbo);
+//        glBindBuffer(GL_ARRAY_BUFFER, vbo);
+//        glBufferData(GL_ARRAY_BUFFER, terra->triangles_count * 9 * sizeof(float), terra -> terrain_positions, GL_STATIC_DRAW);
 
 
     //glColorPointer( 3, GL_FLOAT, 0, colors );
@@ -309,13 +334,20 @@ void world :: initializeGL() {
 
 void world :: resizeGL(int w, int h) {
 
+    sc_width = w;
+    sc_height = h;
     glViewport(0, 0, w, h);
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    glFrustum(-20 * ((double)w/h) * (1. / sqrt(3)), 20 * ((double)w/h)* (1. / sqrt(3)), -20* (1. / sqrt(3)), 20* (1. / sqrt(3)), 20, 1000.0);
+    glFrustum(-20 * ((double)w/h) * (1. / sqrt(3)), 20 * ((double)w/h)* (1. / sqrt(3)), -20* (1. / sqrt(3)), 20* (1. / sqrt(3)), 20, 700.0);
 
 }
 
+
+
+//void world :: paintEvent() {
+//QGLWidget::paintEvent(event);
+//}
 
 void world :: paintGL() {
 
@@ -329,7 +361,7 @@ void world :: paintGL() {
 
     glLoadIdentity();
 
-    fps++;
+    fps_counter++;
 
 
 
@@ -370,9 +402,9 @@ void world :: paintGL() {
               // camera rotation
               0., 0., 1.);
 
-    glEnable(GL_FOG);
-    glPushMatrix();
-    glScalef(15, 15, 15);
+//    glEnable(GL_FOG);
+    //glPushMatrix();
+    //glScalef(15, 15, 15);
    // glScalef(5 + direction_x, 5 + direction_ydddddddddddddddd, 5 + direction_z);
           //glRotatef(180, 0., 0., 1);
 
@@ -407,11 +439,15 @@ void world :: paintGL() {
 //         p.setPen(Qt::red);
 //         p.drawLine(rect().topLeft(), rect().bottomRight());
 //   }
-
-
+if (show_fps) {
+      QPainter painter(this);
+      painter.setPen(Qt :: white);
+      painter.drawText(sc_width - 60, 20, "FPS: " + QString :: fromStdString(std :: to_string(fps)));
+      painter.end(); }
 
 
     glLoadIdentity();
 
     glFlush();
+
 }

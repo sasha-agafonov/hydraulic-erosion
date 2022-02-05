@@ -1,3 +1,10 @@
+
+
+#define GL_GLEXT_PROTOTYPES
+
+//#include <GL/GL.h>
+#include <GL/glu.h>
+
 #include "terrain.h"
 
 #include <ctime>
@@ -229,7 +236,8 @@ void terrain :: load_terrain() {
 
     load_heightmap();
     load_triangles();
-    normalize_terrain(50);
+    normalize_terrain(200);
+    stretch_terrain(5, 5);
     load_normals();
     load_arrays();
 }
@@ -268,7 +276,7 @@ void terrain :: draw_terrain() {
 void terrain :: draw_terrain_arrays() {
 
     glPushMatrix();
-
+    //glBindBuffer(GL_ARRAY_BUFFER, vbo);
     glMaterialfv(GL_FRONT, GL_DIFFUSE,   m200.diffuse);
     glMaterialfv(GL_FRONT, GL_SPECULAR,  m200.specular);
     glMaterialf( GL_FRONT, GL_SHININESS, m200.shininess);
@@ -316,4 +324,17 @@ int terrain :: num_triangles() {
     for (int i = 0; i < terrain_triangle_mx.size(); i++) num += terrain_triangle_mx[i].size();
     return num;
 }
+
+
+//void terrain :: set_vbo() {
+
+//    load_terrain();
+
+////    glEnableClientState(GL_VERTEX_ARRAY);
+////    glEnableClientState(GL_NORMAL_ARRAY);
+
+//    glGenBuffers(1, &vbo);
+//    glBindBuffer(GL_ARRAY_BUFFER, vbo);
+//    glBufferData(GL_ARRAY_BUFFER, triangles_count * 9 * sizeof(float), terrain_positions, GL_STATIC_DRAW);
+//}
 

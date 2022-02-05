@@ -3,7 +3,7 @@
 #include "fpp_camera.h"
 
 #define PI_EXTERN 3.141592653589793238462643383279502884197169399375105820974944592307816406286
-#define SPEED 0.4
+#define SPEED 0.7
 
 fpp_camera :: fpp_camera(double horizontal_ang, double vertical_ang) {
 

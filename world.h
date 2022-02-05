@@ -42,8 +42,10 @@ public:
     void mouseMoveEvent(QMouseEvent* event);
     void mousePressEvent(QMouseEvent* event);
 
-    int fps;
-    //void paintEvent(QPaintEvent* event);
+    int fps, fps_counter;
+
+    int sc_width, sc_height;
+    void paintEvent();
 
 private:
 
@@ -81,6 +83,7 @@ private:
     bool shake_right, jump;
 
     QPoint mouse_position;
+    //QPainter* painter;
     double cursor_x;
     double cursor_y;
     double spherical_x;
@@ -93,6 +96,8 @@ private:
     bool up;
     bool down;
     bool menu;
+
+    bool show_fps;
 
     terrain* terra;
 
