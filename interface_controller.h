@@ -1,5 +1,5 @@
-#ifndef INTERFACE_H
-#define INTERFACE_H
+#ifndef INTERFACE_CONTROLLER_H
+#define INTERFACE_CONTROLLER_H
 
 #include <QGLWidget>
 #include <QMenuBar>
@@ -13,28 +13,41 @@
 #include <QPushButton>
 #include <QComboBox>
 #include <QKeyEvent>
+#include <QStackedLayout>
+
 #include "world.h"
 #include "grid_layout.h"
+#include "scene_menu.h"
+#include "loading_menu.h"
+#include "generation_menu.h"
 
-class interface : public QWidget {
+class interface_controller : public QWidget {
 
     Q_OBJECT
 
 public slots:
-    void switch_window();
+
+    void toggle_scene_menu();
+    void load_scene();
+    void reload_scene();
+    void exit_scene();
+    void scene_ready();
+
 
 //signals:
 //    void cu();
 
 public:
 
-    interface(QWidget *parent);
+    interface_controller(QWidget *parent);
 
-    ~interface();
+    ~interface_controller();
 
     void main_menu();
 
     void world_view();
+
+       void test();
 
 //    /void keyPressEvent(QKeyEvent* event);
 
@@ -47,15 +60,23 @@ public:
     QAction* actionQuit;
     QVBoxLayout *box;
 
+    QStackedLayout* stack;
+
     QBoxLayout *scene_box, *button_box;
 
     grid_layout* grid;
+
+    scene_menu* sc_menu;
+    generation_menu* gen_menu;
+    loading_menu* ldg_menu;
 
     QSlider* persistence_slider;
 
     QLabel* persistence_label;
 
     QPushButton *paramgenerate_button, *randgenerate_button;
+
+    QComboBox* antialiasing_combo;
 
     QTimer *timer, *timer2;
 
@@ -65,9 +86,7 @@ private:
 
     bool in_menu;
 
-
-
 };
 
 
-#endif // INTERFACE_H
+#endif // INTERFACE_CONTROLLER_H

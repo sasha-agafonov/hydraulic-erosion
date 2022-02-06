@@ -19,6 +19,7 @@
 class grid_layout : public QWidget {
 
 public:
+
     grid_layout(QWidget *parent);
 
     QGridLayout* grid;

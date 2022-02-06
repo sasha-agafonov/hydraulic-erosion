@@ -35,6 +35,8 @@ public:
     noise* noisy;
     fpp_camera* camera;
 
+
+
     //QPainter* painter;
 
     void keyPressEvent(QKeyEvent* event);
@@ -45,10 +47,15 @@ public:
     int fps, fps_counter;
 
     int sc_width, sc_height;
-    void paintEvent();
+
+signals:
+    void toggle_menu_signal();
+    void scene_ready_signal();
+    //void paintEvent();
 
 private:
-
+    void emit_toggle_menu_signal();
+    void emit_scene_ready_signal();
     void load_terrain();
     void draw_terrain();
 
@@ -56,7 +63,7 @@ private:
     void reload();
 
 
-
+    bool loaded;
 
     double cs_vector_y(double x1, double x2, double y1, double z1, double z2, double dist);
 

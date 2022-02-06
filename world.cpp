@@ -29,7 +29,7 @@ world :: world(QGLFormat format, QWidget* parent) : QGLWidget(parent) {
     fps = 0;
     fps_counter = 0;
     show_fps = true;
-
+    loaded =false;
     sc_width = 0;
     sc_height = 0;
     setCursor(Qt::BlankCursor);
@@ -51,6 +51,9 @@ world :: world(QGLFormat format, QWidget* parent) : QGLWidget(parent) {
     up = false;
     down = false;
     menu = false;
+
+    connect(this, SIGNAL(toggle_menu_signal()), parentWidget(), SLOT(toggle_scene_menu()));
+    connect(this, SIGNAL(scene_ready_signal()), parentWidget(), SLOT(scene_ready()));
 
           //painter = new QPainter(this);
 
@@ -105,6 +108,10 @@ void world :: cameraUpdate(double x, double y, double z) {
     zoom += 1;
     //this -> repaint();
 }
+
+void world :: emit_toggle_menu_signal() { emit toggle_menu_signal(); }
+
+void world :: emit_scene_ready_signal() { emit scene_ready_signal(); }
 
 void world :: resetFPS() {
     std :: cout << fps << "\n";
@@ -162,10 +169,9 @@ void world :: keyPressEvent(QKeyEvent* event) {
         if (show_fps) show_fps = false;
         else show_fps = true;
         break;
-//        case Qt :: Key_Escape:
-//            if (menu) menu = false;
-//            else menu = true;
-//            break;
+        case Qt :: Key_Escape:
+            emit_toggle_menu_signal();
+            break;
     }
 //    repaint();
 }
@@ -328,6 +334,8 @@ void world :: initializeGL() {
 
     //load_terrain();
     terra -> load_terrain();
+
+
    // terra -> set_vertex_arrays();
 
 }
@@ -363,34 +371,6 @@ void world :: paintGL() {
 
     fps_counter++;
 
-
-
-//    if (shake < 0.2 ) {
-//        shake += 0.05;
-//        if (shake )
-//    }
-
-//    else if (shake > 1.8 && shake_right == true) {
-//        shake_right = false;
-//        shake -= 0.05;
-//        }
-    // camera
-
-//    if (jump && camera_position_z < 8) {
-//        camera_position_z += 0.3;
-//    }
-//    else if (jump && camera_position_z > 8) {
-//        jump = false;
-//    }
-//    if (!jump && camera_position_z > 0) {
-//        camera_position_z -= 0.2;
-//    }
-
-//    double view_vector_x = look_x - direction_x;
-//    double view_vector_y = ;
-//    double view_vector_z = ;
-
-    //double view_vector_y = 100 - (140 - camera_position_x + look_x) - (12 + camera_position_z + look_y) - (140 - camera_position_y);
     camera -> move_camera(forward, back, left, right, up, down);
     camera -> look();
 
@@ -439,15 +419,17 @@ void world :: paintGL() {
 //         p.setPen(Qt::red);
 //         p.drawLine(rect().topLeft(), rect().bottomRight());
 //   }
-if (show_fps) {
-      QPainter painter(this);
-      painter.setPen(Qt :: white);
-      painter.drawText(sc_width - 60, 20, "FPS: " + QString :: fromStdString(std :: to_string(fps)));
-      painter.end(); }
+
 
 
     glLoadIdentity();
 
     glFlush();
+
+    if (show_fps) {
+          QPainter painter(this);
+          painter.setPen(Qt :: white);
+          painter.drawText(sc_width - 60, 20, "FPS: " + QString :: fromStdString(std :: to_string(fps)));
+          painter.end(); }
 
 }
