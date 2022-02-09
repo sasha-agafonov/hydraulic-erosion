@@ -2,10 +2,13 @@
 #include "world.h"
 #include <iostream>
 #include <QShortcut>
+#include <QCoreApplication>
 #include <QGLFormat>
 #include <QLineEdit>
 #include <QListView>
 #include <QThread>
+#include <QPixmap>
+#include <QSplashScreen>
 
 interface_controller :: interface_controller(QWidget* parent) : QWidget(parent) {
 
@@ -19,11 +22,16 @@ interface_controller :: interface_controller(QWidget* parent) : QWidget(parent) 
 
 //    fileMenu->addAction(actionQuit);
 
+        QPixmap pixmap("../terrain/perli.pgm");
+    splash = new splash_screen(&pixmap);
     QGLFormat format;
     format.setSampleBuffers(true);
     format.setSamples(4);
 
-    scene = new world(format, this);
+    scene = new world(format, this, splash);
+
+    //QSplashScreen* splash = new QSplashScreen(pixmap);
+
 
     sc_menu = new scene_menu(this);
     gen_menu = new generation_menu(this);
@@ -46,11 +54,13 @@ interface_controller :: interface_controller(QWidget* parent) : QWidget(parent) 
     box -> addWidget(sc_menu);
     box -> addWidget(gen_menu);
     box -> addWidget(ldg_menu);
+    box -> addWidget(splash);
 
     scene -> hide();
     sc_menu -> hide();
     ldg_menu -> hide();
     gen_menu -> show();
+    splash -> hide();
 
     setLayout(box);
 
@@ -59,12 +69,26 @@ interface_controller :: interface_controller(QWidget* parent) : QWidget(parent) 
 
 void interface_controller :: load_scene() {
     gen_menu -> hide();
+
+    splash -> show();
+
+
+
+//    splash->showMessage("Generation...");
+    QCoreApplication :: processEvents();
+
+
+    //scene -> initializeGL();
+    splash -> finish(scene);
     scene -> show();
+
+//    ldg_menu -> hide();
 }
 
 
 void interface_controller :: scene_ready() {
-    scene -> show();
+//    scene -> show();
+    ldg_menu -> show();
 }
 
 
@@ -72,8 +96,14 @@ void interface_controller:: reload_scene() {
 
     sc_menu -> hide();
     gen_menu -> hide();
-    ldg_menu -> hide();
+
+//       ldg_menu -> show();
+//        for (int i = 0 ; i < 1000000000; i++) {}
+//          ldg_menu -> hide();
+//             gen_menu -> show();
+
     scene -> show();
+
 }
 
 

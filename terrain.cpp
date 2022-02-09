@@ -29,7 +29,7 @@ void terrain :: load_heightmap() {
     using namespace std;
 
     // open .pgm image
-    ifstream terrain_data("../terrain/heightmap.pgm");
+    ifstream terrain_data("../terrain/heightmap2.pgm");
 
     // or don't
     if (terrain_data.fail()) return;
@@ -236,7 +236,7 @@ void terrain :: load_terrain() {
 
     load_heightmap();
     load_triangles();
-    normalize_terrain(200);
+    normalize_terrain(5);
     stretch_terrain(2, 2);
     load_normals();
     load_arrays();
@@ -256,15 +256,15 @@ void terrain :: draw_terrain() {
         for (int col = 0; col < terrain_triangle_mx[0].size(); col++) {
             glBegin(GL_TRIANGLES);
 
-            glNormal3f( terrain_triangle_mx[row][col].vertex_1.normal_x,   terrain_triangle_mx[row][col].vertex_1.normal_y,   terrain_triangle_mx[row][col].vertex_1.normal_z );
-            glVertex3f( terrain_triangle_mx[row][col].vertex_1.position_x, terrain_triangle_mx[row][col].vertex_1.position_y, terrain_triangle_mx[row][col].vertex_1.position_z / 50);
+            glNormal3f( terrain_triangle_mx[row][col].vertex_1.normal_x,   terrain_triangle_mx[row][col].vertex_1.normal_y,   terrain_triangle_mx[row][col].vertex_1.normal_z);
+            glVertex3f( terrain_triangle_mx[row][col].vertex_1.position_x, terrain_triangle_mx[row][col].vertex_1.position_y, terrain_triangle_mx[row][col].vertex_1.position_z);
 
 
-            glNormal3f( terrain_triangle_mx[row][col].vertex_2.normal_x,   terrain_triangle_mx[row][col].vertex_2.normal_y,   terrain_triangle_mx[row][col].vertex_2.normal_z );
-            glVertex3f( terrain_triangle_mx[row][col].vertex_2.position_x, terrain_triangle_mx[row][col].vertex_2.position_y, terrain_triangle_mx[row][col].vertex_2.position_z / 50);
+            glNormal3f( terrain_triangle_mx[row][col].vertex_2.normal_x,   terrain_triangle_mx[row][col].vertex_2.normal_y,   terrain_triangle_mx[row][col].vertex_2.normal_z);
+            glVertex3f( terrain_triangle_mx[row][col].vertex_2.position_x, terrain_triangle_mx[row][col].vertex_2.position_y, terrain_triangle_mx[row][col].vertex_2.position_z);
 
-            glNormal3f( terrain_triangle_mx[row][col].vertex_3.normal_x,   terrain_triangle_mx[row][col].vertex_3.normal_y,   terrain_triangle_mx[row][col].vertex_3.normal_z );
-            glVertex3f( terrain_triangle_mx[row][col].vertex_3.position_x, terrain_triangle_mx[row][col].vertex_3.position_y, terrain_triangle_mx[row][col].vertex_3.position_z / 50);
+            glNormal3f( terrain_triangle_mx[row][col].vertex_3.normal_x,   terrain_triangle_mx[row][col].vertex_3.normal_y,   terrain_triangle_mx[row][col].vertex_3.normal_z);
+            glVertex3f( terrain_triangle_mx[row][col].vertex_3.position_x, terrain_triangle_mx[row][col].vertex_3.position_y, terrain_triangle_mx[row][col].vertex_3.position_z);
 
             glEnd();
         }

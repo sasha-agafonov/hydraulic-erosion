@@ -13,6 +13,7 @@
 #include "noise.h"
 #include "terrain.h"
 #include "fpp_camera.h"
+#include "splash_screen.h"
 
 #define BASE_DIM 10
 
@@ -26,7 +27,7 @@ public slots:
     void cameraUpdate(double x, double y, double z);
 
 public:
-    world(QGLFormat format, QWidget *parent);
+    world(QGLFormat format, QWidget *parent, splash_screen* splash);
 
     void initializeGL();
     void resizeGL(int w, int h);
@@ -34,8 +35,10 @@ public:
 
     noise* noisy;
     fpp_camera* camera;
+    QWidget* interface;
+    splash_screen* splash;
 
-
+    void load_arrays();
 
     //QPainter* painter;
 
@@ -51,11 +54,16 @@ public:
 signals:
     void toggle_menu_signal();
     void scene_ready_signal();
+    void current_stage_signal();
     //void paintEvent();
 
 private:
     void emit_toggle_menu_signal();
     void emit_scene_ready_signal();
+//    void emit_current_stage_signal();
+
+
+
     void load_terrain();
     void draw_terrain();
 
@@ -119,6 +127,5 @@ private:
 
 
 };
-
 
 #endif // WORLD_H

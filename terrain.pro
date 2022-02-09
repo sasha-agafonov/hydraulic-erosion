@@ -22,6 +22,7 @@ SOURCES += \
     main.cpp \
     noise.cpp \
     scene_menu.cpp \
+    splash_screen.cpp \
     super.cpp \
     terrain.cpp \
     world.cpp \
@@ -38,10 +39,11 @@ HEADERS += \
     main.h \
     noise.h \
     scene_menu.h \
+    splash_screen.h \
     super.h \
     terrain.h \
     world.h \
-    connections.h \
+#    connections.h \
     world_menu.h
 
 FORMS += \

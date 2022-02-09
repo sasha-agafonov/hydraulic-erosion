@@ -22,13 +22,13 @@ static materialStruct m200 {
 
 typedef struct vertex {
 
-    double position_x;
-    double position_y;
-    double position_z;
+    float position_x;
+    float position_y;
+    float position_z;
 
-    double normal_x;
-    double normal_y;
-    double normal_z;
+    float normal_x;
+    float normal_y;
+    float normal_z;
 
 } vertex;
 

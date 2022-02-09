@@ -17,13 +17,15 @@
 #include "noise.h"
 
 
+
 #define PGM_8_BIT 255
 #define PGM_16_BIT 65535
 #define PI_EXTERN 3.141592653589793238462643383279502884197169399375105820974944592307816406286
 
 
-world :: world(QGLFormat format, QWidget* parent) : QGLWidget(parent) {
+world :: world(QGLFormat format, QWidget* parent, splash_screen* splash) : QGLWidget(parent) {
     setFormat(format);
+    this -> splash = splash;
     tick = 0;
     zoom = 0;
     fps = 0;
@@ -33,11 +35,12 @@ world :: world(QGLFormat format, QWidget* parent) : QGLWidget(parent) {
     sc_width = 0;
     sc_height = 0;
     setCursor(Qt::BlankCursor);
+       setMouseTracking(true);
     this->setFocusPolicy(Qt::StrongFocus);
 
 
     //painter = new QPainter(this);
-    setMouseTracking(true);
+
 //    grabMouse();
 
     direction_x = 0;
@@ -54,6 +57,8 @@ world :: world(QGLFormat format, QWidget* parent) : QGLWidget(parent) {
 
     connect(this, SIGNAL(toggle_menu_signal()), parentWidget(), SLOT(toggle_scene_menu()));
     connect(this, SIGNAL(scene_ready_signal()), parentWidget(), SLOT(scene_ready()));
+    connect(this, SIGNAL(current_stage_signal()), this -> splash, SLOT(update_stage()));
+
 
           //painter = new QPainter(this);
 
@@ -112,6 +117,9 @@ void world :: cameraUpdate(double x, double y, double z) {
 void world :: emit_toggle_menu_signal() { emit toggle_menu_signal(); }
 
 void world :: emit_scene_ready_signal() { emit scene_ready_signal(); }
+
+
+
 
 void world :: resetFPS() {
     std :: cout << fps << "\n";
@@ -216,57 +224,59 @@ void world :: reload() {
 }
 
 
-void world :: load_terrain() {
+//void world :: load_terrain() {
 
-    using namespace std;
+//    using namespace std;
 
-    // open .pgm image
-    ifstream terrain_data("heightmap.pgm");
+//    // open .pgm image
+//    ifstream terrain_data("heightmap.pgm");
 
-    // or don't
-    if (terrain_data.fail()) return;
+//    // or don't
+//    if (terrain_data.fail()) return;
 
-    int terrain_size = 0;
-    string happy_string, unhappy_string, str;
-    istringstream happy_string_stream;
+//    int terrain_size = 0;
+//    string happy_string, unhappy_string, str;
+//    istringstream happy_string_stream;
 
-    // image file checks
-    for (int i = 0; i < 3; i++) {
-        getline(terrain_data, happy_string);
+//    // image file checks
+//    for (int i = 0; i < 3; i++) {
+//        getline(terrain_data, happy_string);
 
-        // check P2 header
-        if (i == 0 && happy_string.compare("P2") != 0) return;
+//        // check P2 header
+//        if (i == 0 && happy_string.compare("P2") != 0) return;
 
-        // get terrain dimensions
-        else if (i == 1) terrain_size = stoi(happy_string.substr(0, happy_string.find(' ')));
+//        // get terrain dimensions
+//        else if (i == 1) terrain_size = stoi(happy_string.substr(0, happy_string.find(' ')));
 
-        // accept 8-bit or 16-bit pgm only.
-        else if (i == 2 && stoi(happy_string) != PGM_8_BIT && stoi(happy_string) != PGM_16_BIT) return;
-    }
+//        // accept 8-bit or 16-bit pgm only.
+//        else if (i == 2 && stoi(happy_string) != PGM_8_BIT && stoi(happy_string) != PGM_16_BIT) return;
+//    }
 
-    for (int i = 0; i < terrain_mx.size(); i++) terrain_mx[i].clear();
+//    for (int i = 0; i < terrain_mx.size(); i++) terrain_mx[i].clear();
 
-    terrain_mx.clear();
-    //terrain_mx.resize(terrain_size, vector <int> (terrain_size));
+//    terrain_mx.clear();
+//    //terrain_mx.resize(terrain_size, vector <int> (terrain_size));
 
-    for (int i = 0; i < terrain_size; i++) {
+//    for (int i = 0; i < terrain_size; i++) {
 
-        getline(terrain_data, happy_string);
+//        getline(terrain_data, happy_string);
 
-        istringstream unhappy_string_stream(happy_string);
-        vector <int> pixel_row;
+//        istringstream unhappy_string_stream(happy_string);
+//        vector <int> pixel_row;
 
-        while (getline(unhappy_string_stream, unhappy_string, ' ')) pixel_row.push_back(stoi(unhappy_string));
+//        while (getline(unhappy_string_stream, unhappy_string, ' ')) pixel_row.push_back(stoi(unhappy_string));
 
-        terrain_mx.push_back(pixel_row);
+//        terrain_mx.push_back(pixel_row);
 
-    }
-}
+//    }
+//}
 
 
 static const float PI = 3.1415926535;
 
 void world :: initializeGL() {
+
+   // interface -> ldg_menu -> show();
 
     glClearColor(0.4, 0.5, 0.8, 0.0);
     glEnable(GL_MULTISAMPLE);
@@ -280,7 +290,7 @@ void world :: initializeGL() {
 
     glFogi(GL_FOG_MODE, GL_LINEAR);
     glFogf(GL_FOG_START, 100.f);
-    glFogf(GL_FOG_END, 700.f);
+    glFogf(GL_FOG_END, 400.f);
 
     float fcolour[3]={0.4, 0.5, 0.8};
 
@@ -333,12 +343,44 @@ void world :: initializeGL() {
 
 
     //load_terrain();
-    terra -> load_terrain();
+ //emit_scene_ready_signal();
 
+       noisy -> create_vector_grid(50, 50);
+       noisy -> normalize_gradients();
+
+
+       noisy -> map_samples(541, 541);
+       noisy -> perlin_noise();
+
+       noisy -> black_noise();
+
+
+
+       noisy -> create_heightmap();
+        noisy -> create_preview_heightmap();
+
+//       noisy -> map_samples2(500, 500);
+//       noisy -> create_map();
+//       noisy -> create_heightmap2();
+
+
+       terra -> load_terrain();
+//       emit current_stage_signal();
+//        for (int i = 0 ; i< 1000000000; i++) {}
+
+         // interface -> ldg_menu -> hide();
 
    // terra -> set_vertex_arrays();
 
 }
+
+
+void world :: load_arrays() {
+
+
+
+}
+
 
 void world :: resizeGL(int w, int h) {
 
@@ -347,7 +389,7 @@ void world :: resizeGL(int w, int h) {
     glViewport(0, 0, w, h);
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    glFrustum(-20 * ((double)w/h) * (1. / sqrt(3)), 20 * ((double)w/h)* (1. / sqrt(3)), -20* (1. / sqrt(3)), 20* (1. / sqrt(3)), 20, 700.0);
+    glFrustum(-20 * ((double)w/h) * (1. / sqrt(3)), 20 * ((double)w/h)* (1. / sqrt(3)), -20* (1. / sqrt(3)), 20* (1. / sqrt(3)), 20, 400.0);
 
 }
 
@@ -411,6 +453,10 @@ void world :: paintGL() {
 
 
     terra -> draw_terrain_arrays();
+
+    //emit current_stage_signal();
+
+   // for (int i = 0 ; i< 1000000000; i++) {}
   // terra -> draw_terrain();
 
 

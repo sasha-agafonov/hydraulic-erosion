@@ -20,6 +20,7 @@
 #include "scene_menu.h"
 #include "loading_menu.h"
 #include "generation_menu.h"
+#include "splash_screen.h"
 
 class interface_controller : public QWidget {
 
@@ -69,6 +70,8 @@ public:
     scene_menu* sc_menu;
     generation_menu* gen_menu;
     loading_menu* ldg_menu;
+
+    splash_screen* splash;
 
     QSlider* persistence_slider;
 
