@@ -22,8 +22,7 @@ interface_controller :: interface_controller(QWidget* parent) : QWidget(parent) 
 
 //    fileMenu->addAction(actionQuit);
 
-        QPixmap pixmap("../terrain/perli.pgm");
-    splash = new splash_screen(&pixmap);
+    splash = new splash_screen(this);
     QGLFormat format;
     format.setSampleBuffers(true);
     format.setSamples(4);
@@ -31,7 +30,6 @@ interface_controller :: interface_controller(QWidget* parent) : QWidget(parent) 
     scene = new world(format, this, splash);
 
     //QSplashScreen* splash = new QSplashScreen(pixmap);
-
 
     sc_menu = new scene_menu(this);
     gen_menu = new generation_menu(this);

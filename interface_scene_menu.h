@@ -1,5 +1,5 @@
-#ifndef SCENE_MENU_H
-#define SCENE_MENU_H
+#ifndef INTERFACE_SCENE_MENU_H
+#define INTERFACE_SCENE_MENU_H
 
 #include <QWidget>
 #include <QGridLayout>
@@ -43,4 +43,4 @@ public:
 
 };
 
-#endif // SCENE_MENU_H
+#endif // INTERFACE_SCENE_MENU_H

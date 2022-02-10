@@ -49,10 +49,12 @@ public:
 
     float linear_interpolation(float point_1, float point_2, float weight);
     float cubic_interpolation();
+    float smoothstep_interpolation(float point_1, float point_2, float weight);
 
     std :: vector < std :: vector <gradient_vector> > vector_grid;
 
     std :: vector < std :: vector <sample_point> > sample_grid;
+
 
     std :: vector < std :: vector <float> > sample_grid2;
 

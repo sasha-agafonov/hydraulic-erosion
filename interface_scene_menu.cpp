@@ -1,4 +1,4 @@
-#include "scene_menu.h"
+#include "interface_scene_menu.h"
 
 #include <QLineEdit>
 #include <QListView>

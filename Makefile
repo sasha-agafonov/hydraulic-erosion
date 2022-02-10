@@ -54,45 +54,53 @@ OBJECTS_DIR   = ./
 
 SOURCES       = fpp_camera.cpp \
 		fpp_movement.cpp \
-		generation_menu.cpp \
 		grid_layout.cpp \
 		hydro.cpp \
 		interface_controller.cpp \
+		interface_generation_menu.cpp \
+		interface_heightmap_preview.cpp \
+		interface_hydro_parameters_menu.cpp \
+		interface_noise_parameters_menu.cpp \
+		interface_scene_menu.cpp \
+		interface_splash_screen.cpp \
 		loading_menu.cpp \
 		main.cpp \
 		noise.cpp \
-		scene_menu.cpp \
-		splash_screen.cpp \
 		super.cpp \
 		terrain.cpp \
 		world.cpp \
-		world_menu.cpp moc_generation_menu.cpp \
-		moc_interface_controller.cpp \
+		world_menu.cpp moc_interface_controller.cpp \
+		moc_interface_generation_menu.cpp \
+		moc_interface_heightmap_preview.cpp \
+		moc_interface_scene_menu.cpp \
+		moc_interface_splash_screen.cpp \
 		moc_loading_menu.cpp \
-		moc_scene_menu.cpp \
-		moc_splash_screen.cpp \
 		moc_super.cpp \
 		moc_world.cpp
 OBJECTS       = fpp_camera.o \
 		fpp_movement.o \
-		generation_menu.o \
 		grid_layout.o \
 		hydro.o \
 		interface_controller.o \
+		interface_generation_menu.o \
+		interface_heightmap_preview.o \
+		interface_hydro_parameters_menu.o \
+		interface_noise_parameters_menu.o \
+		interface_scene_menu.o \
+		interface_splash_screen.o \
 		loading_menu.o \
 		main.o \
 		noise.o \
-		scene_menu.o \
-		splash_screen.o \
 		super.o \
 		terrain.o \
 		world.o \
 		world_menu.o \
-		moc_generation_menu.o \
 		moc_interface_controller.o \
+		moc_interface_generation_menu.o \
+		moc_interface_heightmap_preview.o \
+		moc_interface_scene_menu.o \
+		moc_interface_splash_screen.o \
 		moc_loading_menu.o \
-		moc_scene_menu.o \
-		moc_splash_screen.o \
 		moc_super.o \
 		moc_world.o
 DIST          = /usr/lib/qt/mkspecs/features/spec_pre.prf \
@@ -324,29 +332,36 @@ DIST          = /usr/lib/qt/mkspecs/features/spec_pre.prf \
 		/usr/lib/qt/mkspecs/features/lex.prf \
 		terrain.pro fpp_camera.h \
 		fpp_movement.h \
-		generation_menu.h \
 		grid_layout.h \
 		hydro.h \
 		interface_controller.h \
+		interface_generation_menu.h \
+		interface_heightmap_preview.h \
+		interface_hydro_parameters_menu.h \
+		interface_noise_parameters_menu.h \
+		interface_scene_menu.h \
+		interface_splash_screen.h \
 		loading_menu.h \
 		main.h \
 		noise.h \
-		scene_menu.h \
-		splash_screen.h \
 		super.h \
 		terrain.h \
 		world.h \
+		connections.h \
 		world_menu.h fpp_camera.cpp \
 		fpp_movement.cpp \
-		generation_menu.cpp \
 		grid_layout.cpp \
 		hydro.cpp \
 		interface_controller.cpp \
+		interface_generation_menu.cpp \
+		interface_heightmap_preview.cpp \
+		interface_hydro_parameters_menu.cpp \
+		interface_noise_parameters_menu.cpp \
+		interface_scene_menu.cpp \
+		interface_splash_screen.cpp \
 		loading_menu.cpp \
 		main.cpp \
 		noise.cpp \
-		scene_menu.cpp \
-		splash_screen.cpp \
 		super.cpp \
 		terrain.cpp \
 		world.cpp \
@@ -834,8 +849,8 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents /usr/lib/qt/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents fpp_camera.h fpp_movement.h generation_menu.h grid_layout.h hydro.h interface_controller.h loading_menu.h main.h noise.h scene_menu.h splash_screen.h super.h terrain.h world.h world_menu.h $(DISTDIR)/
-	$(COPY_FILE) --parents fpp_camera.cpp fpp_movement.cpp generation_menu.cpp grid_layout.cpp hydro.cpp interface_controller.cpp loading_menu.cpp main.cpp noise.cpp scene_menu.cpp splash_screen.cpp super.cpp terrain.cpp world.cpp world_menu.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents fpp_camera.h fpp_movement.h grid_layout.h hydro.h interface_controller.h interface_generation_menu.h interface_heightmap_preview.h interface_hydro_parameters_menu.h interface_noise_parameters_menu.h interface_scene_menu.h interface_splash_screen.h loading_menu.h main.h noise.h super.h terrain.h world.h connections.h world_menu.h $(DISTDIR)/
+	$(COPY_FILE) --parents fpp_camera.cpp fpp_movement.cpp grid_layout.cpp hydro.cpp interface_controller.cpp interface_generation_menu.cpp interface_heightmap_preview.cpp interface_hydro_parameters_menu.cpp interface_noise_parameters_menu.cpp interface_scene_menu.cpp interface_splash_screen.cpp loading_menu.cpp main.cpp noise.cpp super.cpp terrain.cpp world.cpp world_menu.cpp $(DISTDIR)/
 	$(COPY_FILE) --parents main.ui $(DISTDIR)/
 
 
@@ -868,42 +883,55 @@ compiler_moc_predefs_clean:
 moc_predefs.h: /usr/lib/qt/mkspecs/features/data/dummy.cpp
 	g++ -pipe -O2 -std=gnu++11 -Wall -Wextra -dM -E -o moc_predefs.h /usr/lib/qt/mkspecs/features/data/dummy.cpp
 
-compiler_moc_header_make_all: moc_generation_menu.cpp moc_interface_controller.cpp moc_loading_menu.cpp moc_scene_menu.cpp moc_splash_screen.cpp moc_super.cpp moc_world.cpp
+compiler_moc_header_make_all: moc_interface_controller.cpp moc_interface_generation_menu.cpp moc_interface_heightmap_preview.cpp moc_interface_scene_menu.cpp moc_interface_splash_screen.cpp moc_loading_menu.cpp moc_super.cpp moc_world.cpp
 compiler_moc_header_clean:
-	-$(DEL_FILE) moc_generation_menu.cpp moc_interface_controller.cpp moc_loading_menu.cpp moc_scene_menu.cpp moc_splash_screen.cpp moc_super.cpp moc_world.cpp
-moc_generation_menu.cpp: generation_menu.h \
-		moc_predefs.h \
-		/usr/bin/moc
-	/usr/bin/moc $(DEFINES) --include /home/sasha/terrain/moc_predefs.h -I/usr/lib/qt/mkspecs/linux-g++ -I/home/sasha/terrain -I/usr/include/qt -I/usr/include/qt/QtOpenGL -I/usr/include/qt/QtWidgets -I/usr/include/qt/QtGui -I/usr/include/qt/QtCore -I/usr/include/c++/11.1.0 -I/usr/include/c++/11.1.0/x86_64-pc-linux-gnu -I/usr/include/c++/11.1.0/backward -I/usr/lib/gcc/x86_64-pc-linux-gnu/11.1.0/include -I/usr/local/include -I/usr/lib/gcc/x86_64-pc-linux-gnu/11.1.0/include-fixed -I/usr/include generation_menu.h -o moc_generation_menu.cpp
-
+	-$(DEL_FILE) moc_interface_controller.cpp moc_interface_generation_menu.cpp moc_interface_heightmap_preview.cpp moc_interface_scene_menu.cpp moc_interface_splash_screen.cpp moc_loading_menu.cpp moc_super.cpp moc_world.cpp
 moc_interface_controller.cpp: interface_controller.h \
 		world.h \
 		noise.h \
 		terrain.h \
 		fpp_camera.h \
-		splash_screen.h \
+		interface_splash_screen.h \
 		grid_layout.h \
-		scene_menu.h \
+		interface_scene_menu.h \
 		loading_menu.h \
-		generation_menu.h \
+		interface_generation_menu.h \
+		interface_noise_parameters_menu.h \
+		interface_heightmap_preview.h \
+		interface_hydro_parameters_menu.h \
 		moc_predefs.h \
 		/usr/bin/moc
 	/usr/bin/moc $(DEFINES) --include /home/sasha/terrain/moc_predefs.h -I/usr/lib/qt/mkspecs/linux-g++ -I/home/sasha/terrain -I/usr/include/qt -I/usr/include/qt/QtOpenGL -I/usr/include/qt/QtWidgets -I/usr/include/qt/QtGui -I/usr/include/qt/QtCore -I/usr/include/c++/11.1.0 -I/usr/include/c++/11.1.0/x86_64-pc-linux-gnu -I/usr/include/c++/11.1.0/backward -I/usr/lib/gcc/x86_64-pc-linux-gnu/11.1.0/include -I/usr/local/include -I/usr/lib/gcc/x86_64-pc-linux-gnu/11.1.0/include-fixed -I/usr/include interface_controller.h -o moc_interface_controller.cpp
+
+moc_interface_generation_menu.cpp: interface_generation_menu.h \
+		interface_noise_parameters_menu.h \
+		interface_heightmap_preview.h \
+		noise.h \
+		interface_hydro_parameters_menu.h \
+		moc_predefs.h \
+		/usr/bin/moc
+	/usr/bin/moc $(DEFINES) --include /home/sasha/terrain/moc_predefs.h -I/usr/lib/qt/mkspecs/linux-g++ -I/home/sasha/terrain -I/usr/include/qt -I/usr/include/qt/QtOpenGL -I/usr/include/qt/QtWidgets -I/usr/include/qt/QtGui -I/usr/include/qt/QtCore -I/usr/include/c++/11.1.0 -I/usr/include/c++/11.1.0/x86_64-pc-linux-gnu -I/usr/include/c++/11.1.0/backward -I/usr/lib/gcc/x86_64-pc-linux-gnu/11.1.0/include -I/usr/local/include -I/usr/lib/gcc/x86_64-pc-linux-gnu/11.1.0/include-fixed -I/usr/include interface_generation_menu.h -o moc_interface_generation_menu.cpp
+
+moc_interface_heightmap_preview.cpp: interface_heightmap_preview.h \
+		noise.h \
+		moc_predefs.h \
+		/usr/bin/moc
+	/usr/bin/moc $(DEFINES) --include /home/sasha/terrain/moc_predefs.h -I/usr/lib/qt/mkspecs/linux-g++ -I/home/sasha/terrain -I/usr/include/qt -I/usr/include/qt/QtOpenGL -I/usr/include/qt/QtWidgets -I/usr/include/qt/QtGui -I/usr/include/qt/QtCore -I/usr/include/c++/11.1.0 -I/usr/include/c++/11.1.0/x86_64-pc-linux-gnu -I/usr/include/c++/11.1.0/backward -I/usr/lib/gcc/x86_64-pc-linux-gnu/11.1.0/include -I/usr/local/include -I/usr/lib/gcc/x86_64-pc-linux-gnu/11.1.0/include-fixed -I/usr/include interface_heightmap_preview.h -o moc_interface_heightmap_preview.cpp
+
+moc_interface_scene_menu.cpp: interface_scene_menu.h \
+		moc_predefs.h \
+		/usr/bin/moc
+	/usr/bin/moc $(DEFINES) --include /home/sasha/terrain/moc_predefs.h -I/usr/lib/qt/mkspecs/linux-g++ -I/home/sasha/terrain -I/usr/include/qt -I/usr/include/qt/QtOpenGL -I/usr/include/qt/QtWidgets -I/usr/include/qt/QtGui -I/usr/include/qt/QtCore -I/usr/include/c++/11.1.0 -I/usr/include/c++/11.1.0/x86_64-pc-linux-gnu -I/usr/include/c++/11.1.0/backward -I/usr/lib/gcc/x86_64-pc-linux-gnu/11.1.0/include -I/usr/local/include -I/usr/lib/gcc/x86_64-pc-linux-gnu/11.1.0/include-fixed -I/usr/include interface_scene_menu.h -o moc_interface_scene_menu.cpp
+
+moc_interface_splash_screen.cpp: interface_splash_screen.h \
+		moc_predefs.h \
+		/usr/bin/moc
+	/usr/bin/moc $(DEFINES) --include /home/sasha/terrain/moc_predefs.h -I/usr/lib/qt/mkspecs/linux-g++ -I/home/sasha/terrain -I/usr/include/qt -I/usr/include/qt/QtOpenGL -I/usr/include/qt/QtWidgets -I/usr/include/qt/QtGui -I/usr/include/qt/QtCore -I/usr/include/c++/11.1.0 -I/usr/include/c++/11.1.0/x86_64-pc-linux-gnu -I/usr/include/c++/11.1.0/backward -I/usr/lib/gcc/x86_64-pc-linux-gnu/11.1.0/include -I/usr/local/include -I/usr/lib/gcc/x86_64-pc-linux-gnu/11.1.0/include-fixed -I/usr/include interface_splash_screen.h -o moc_interface_splash_screen.cpp
 
 moc_loading_menu.cpp: loading_menu.h \
 		moc_predefs.h \
 		/usr/bin/moc
 	/usr/bin/moc $(DEFINES) --include /home/sasha/terrain/moc_predefs.h -I/usr/lib/qt/mkspecs/linux-g++ -I/home/sasha/terrain -I/usr/include/qt -I/usr/include/qt/QtOpenGL -I/usr/include/qt/QtWidgets -I/usr/include/qt/QtGui -I/usr/include/qt/QtCore -I/usr/include/c++/11.1.0 -I/usr/include/c++/11.1.0/x86_64-pc-linux-gnu -I/usr/include/c++/11.1.0/backward -I/usr/lib/gcc/x86_64-pc-linux-gnu/11.1.0/include -I/usr/local/include -I/usr/lib/gcc/x86_64-pc-linux-gnu/11.1.0/include-fixed -I/usr/include loading_menu.h -o moc_loading_menu.cpp
-
-moc_scene_menu.cpp: scene_menu.h \
-		moc_predefs.h \
-		/usr/bin/moc
-	/usr/bin/moc $(DEFINES) --include /home/sasha/terrain/moc_predefs.h -I/usr/lib/qt/mkspecs/linux-g++ -I/home/sasha/terrain -I/usr/include/qt -I/usr/include/qt/QtOpenGL -I/usr/include/qt/QtWidgets -I/usr/include/qt/QtGui -I/usr/include/qt/QtCore -I/usr/include/c++/11.1.0 -I/usr/include/c++/11.1.0/x86_64-pc-linux-gnu -I/usr/include/c++/11.1.0/backward -I/usr/lib/gcc/x86_64-pc-linux-gnu/11.1.0/include -I/usr/local/include -I/usr/lib/gcc/x86_64-pc-linux-gnu/11.1.0/include-fixed -I/usr/include scene_menu.h -o moc_scene_menu.cpp
-
-moc_splash_screen.cpp: splash_screen.h \
-		moc_predefs.h \
-		/usr/bin/moc
-	/usr/bin/moc $(DEFINES) --include /home/sasha/terrain/moc_predefs.h -I/usr/lib/qt/mkspecs/linux-g++ -I/home/sasha/terrain -I/usr/include/qt -I/usr/include/qt/QtOpenGL -I/usr/include/qt/QtWidgets -I/usr/include/qt/QtGui -I/usr/include/qt/QtCore -I/usr/include/c++/11.1.0 -I/usr/include/c++/11.1.0/x86_64-pc-linux-gnu -I/usr/include/c++/11.1.0/backward -I/usr/lib/gcc/x86_64-pc-linux-gnu/11.1.0/include -I/usr/local/include -I/usr/lib/gcc/x86_64-pc-linux-gnu/11.1.0/include-fixed -I/usr/include splash_screen.h -o moc_splash_screen.cpp
 
 moc_super.cpp: super.h \
 		moc_predefs.h \
@@ -914,7 +942,7 @@ moc_world.cpp: world.h \
 		noise.h \
 		terrain.h \
 		fpp_camera.h \
-		splash_screen.h \
+		interface_splash_screen.h \
 		moc_predefs.h \
 		/usr/bin/moc
 	/usr/bin/moc $(DEFINES) --include /home/sasha/terrain/moc_predefs.h -I/usr/lib/qt/mkspecs/linux-g++ -I/home/sasha/terrain -I/usr/include/qt -I/usr/include/qt/QtOpenGL -I/usr/include/qt/QtWidgets -I/usr/include/qt/QtGui -I/usr/include/qt/QtCore -I/usr/include/c++/11.1.0 -I/usr/include/c++/11.1.0/x86_64-pc-linux-gnu -I/usr/include/c++/11.1.0/backward -I/usr/lib/gcc/x86_64-pc-linux-gnu/11.1.0/include -I/usr/local/include -I/usr/lib/gcc/x86_64-pc-linux-gnu/11.1.0/include-fixed -I/usr/include world.h -o moc_world.cpp
@@ -946,9 +974,6 @@ fpp_camera.o: fpp_camera.cpp fpp_camera.h
 fpp_movement.o: fpp_movement.cpp fpp_movement.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o fpp_movement.o fpp_movement.cpp
 
-generation_menu.o: generation_menu.cpp generation_menu.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o generation_menu.o generation_menu.cpp
-
 grid_layout.o: grid_layout.cpp grid_layout.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o grid_layout.o grid_layout.cpp
 
@@ -960,12 +985,40 @@ interface_controller.o: interface_controller.cpp interface_controller.h \
 		noise.h \
 		terrain.h \
 		fpp_camera.h \
-		splash_screen.h \
+		interface_splash_screen.h \
 		grid_layout.h \
-		scene_menu.h \
+		interface_scene_menu.h \
 		loading_menu.h \
-		generation_menu.h
+		interface_generation_menu.h \
+		interface_noise_parameters_menu.h \
+		interface_heightmap_preview.h \
+		interface_hydro_parameters_menu.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o interface_controller.o interface_controller.cpp
+
+interface_generation_menu.o: interface_generation_menu.cpp interface_generation_menu.h \
+		interface_noise_parameters_menu.h \
+		interface_heightmap_preview.h \
+		noise.h \
+		interface_hydro_parameters_menu.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o interface_generation_menu.o interface_generation_menu.cpp
+
+interface_heightmap_preview.o: interface_heightmap_preview.cpp interface_heightmap_preview.h \
+		noise.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o interface_heightmap_preview.o interface_heightmap_preview.cpp
+
+interface_hydro_parameters_menu.o: interface_hydro_parameters_menu.cpp interface_hydro_parameters_menu.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o interface_hydro_parameters_menu.o interface_hydro_parameters_menu.cpp
+
+interface_noise_parameters_menu.o: interface_noise_parameters_menu.cpp interface_noise_parameters_menu.h \
+		interface_heightmap_preview.h \
+		noise.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o interface_noise_parameters_menu.o interface_noise_parameters_menu.cpp
+
+interface_scene_menu.o: interface_scene_menu.cpp interface_scene_menu.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o interface_scene_menu.o interface_scene_menu.cpp
+
+interface_splash_screen.o: interface_splash_screen.cpp interface_splash_screen.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o interface_splash_screen.o interface_splash_screen.cpp
 
 loading_menu.o: loading_menu.cpp loading_menu.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o loading_menu.o loading_menu.cpp
@@ -975,21 +1028,18 @@ main.o: main.cpp interface_controller.h \
 		noise.h \
 		terrain.h \
 		fpp_camera.h \
-		splash_screen.h \
+		interface_splash_screen.h \
 		grid_layout.h \
-		scene_menu.h \
+		interface_scene_menu.h \
 		loading_menu.h \
-		generation_menu.h
+		interface_generation_menu.h \
+		interface_noise_parameters_menu.h \
+		interface_heightmap_preview.h \
+		interface_hydro_parameters_menu.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o main.cpp
 
 noise.o: noise.cpp noise.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o noise.o noise.cpp
-
-scene_menu.o: scene_menu.cpp scene_menu.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o scene_menu.o scene_menu.cpp
-
-splash_screen.o: splash_screen.cpp splash_screen.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o splash_screen.o splash_screen.cpp
 
 super.o: super.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o super.o super.cpp
@@ -1001,26 +1051,29 @@ world.o: world.cpp world.h \
 		noise.h \
 		terrain.h \
 		fpp_camera.h \
-		splash_screen.h
+		interface_splash_screen.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o world.o world.cpp
 
 world_menu.o: world_menu.cpp world_menu.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o world_menu.o world_menu.cpp
 
-moc_generation_menu.o: moc_generation_menu.cpp 
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_generation_menu.o moc_generation_menu.cpp
-
 moc_interface_controller.o: moc_interface_controller.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_interface_controller.o moc_interface_controller.cpp
 
+moc_interface_generation_menu.o: moc_interface_generation_menu.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_interface_generation_menu.o moc_interface_generation_menu.cpp
+
+moc_interface_heightmap_preview.o: moc_interface_heightmap_preview.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_interface_heightmap_preview.o moc_interface_heightmap_preview.cpp
+
+moc_interface_scene_menu.o: moc_interface_scene_menu.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_interface_scene_menu.o moc_interface_scene_menu.cpp
+
+moc_interface_splash_screen.o: moc_interface_splash_screen.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_interface_splash_screen.o moc_interface_splash_screen.cpp
+
 moc_loading_menu.o: moc_loading_menu.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_loading_menu.o moc_loading_menu.cpp
-
-moc_scene_menu.o: moc_scene_menu.cpp 
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_scene_menu.o moc_scene_menu.cpp
-
-moc_splash_screen.o: moc_splash_screen.cpp 
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_splash_screen.o moc_splash_screen.cpp
 
 moc_super.o: moc_super.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_super.o moc_super.cpp

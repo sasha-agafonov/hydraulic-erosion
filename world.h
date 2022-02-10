@@ -13,7 +13,7 @@
 #include "noise.h"
 #include "terrain.h"
 #include "fpp_camera.h"
-#include "splash_screen.h"
+#include "interface_splash_screen.h"
 
 #define BASE_DIM 10
 

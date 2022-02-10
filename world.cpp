@@ -345,11 +345,11 @@ void world :: initializeGL() {
     //load_terrain();
  //emit_scene_ready_signal();
 
-       noisy -> create_vector_grid(50, 50);
+       noisy -> create_vector_grid(10, 10);
        noisy -> normalize_gradients();
 
 
-       noisy -> map_samples(541, 541);
+       noisy -> map_samples(300, 300);
        noisy -> perlin_noise();
 
        noisy -> black_noise();
@@ -357,7 +357,7 @@ void world :: initializeGL() {
 
 
        noisy -> create_heightmap();
-        noisy -> create_preview_heightmap();
+       noisy -> create_preview_heightmap();
 
 //       noisy -> map_samples2(500, 500);
 //       noisy -> create_map();

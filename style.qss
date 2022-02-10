@@ -1,0 +1,126 @@
+
+QWidget {
+  background-color: rgba(40, 44, 52, 1);
+}
+
+/* label */
+
+QLabel {
+  color: rgba(190, 190, 222, 1);
+  margin-right: 6px;
+}
+
+
+/* checkbox */
+
+QCheckBox::indicator {
+  height: 10px; width: 10px;
+}
+
+QCheckBox::indicator:unchecked {
+  border: 1px solid rgba(190, 190, 222, 1);
+  background: transparent;
+  border-radius: 5px;
+}
+
+QCheckBox::indicator:unchecked:hover {
+  background: rgba(110, 110, 135, 1);
+}
+
+QCheckBox::indicator:checked {
+  border: 1px solid rgba(190, 190, 222, 1);
+  background: rgba(190, 190, 222, 1);
+  border-radius: 5px;
+}
+
+QCheckBox::indicator:checked:hover {
+  background: rgba(110, 110, 135, 1);
+  border-color: rgba(110, 110, 135, 1);
+}
+
+
+/* spinbox */
+
+QSpinBox {
+  padding: 2px;
+  border: 2px solid rgba(110, 110, 135, 1);
+  border-radius: 5px;
+  color: rgba(190, 190, 222, 1);
+}
+
+QSpinBox::up-button {
+  border: 0;
+}
+
+QSpinBox::down-button {
+  border: 0;
+}
+
+
+/* push button */
+
+QPushButton {
+  height: 16px;
+  min-height: 2em;
+  background: rgba(190, 190, 222, 1);
+  border: 0;
+  font-size: 11px;
+  color: rgba(40, 44, 52, 1);
+}
+
+QPushButton:pressed {
+  background: rgba(110, 110, 135, 1);
+}
+
+
+/* slider */
+
+QSlider {
+  max-height: 24px;
+  min-height: 24px;
+}
+
+QSlider::add-page:qlineargradient {
+  background: rgba(110, 110, 135, 1);
+}
+
+QSlider::groove:horizontal {
+  background: rgba(190, 190, 222, 1);
+  height: 2px;
+}
+
+QSlider::handle:horizontal {
+  background: rgba(190, 190, 222, 1);
+  border: 2px solid rgba(1, 1, 1, 0);
+  height: 10px; width: 10px;
+  margin: -6 -1px;
+  border-radius: 7px;
+}
+
+
+/* combo */
+
+QComboBox {
+  border-radius: 0;
+  min-height: 2em;
+  border-width: 0px;
+  background: rgba(190, 190, 222, 1);
+  font-size: 11px;
+  color: rgba(40, 44, 52, 1);
+}
+
+QComboBox:editable {
+  background: rgba(190, 190, 222, 1);
+}
+
+QComboBox QAbstractItemView {
+  background: rgba(40, 44, 52, 1);
+  selection-color: black;
+  color: rgba(190, 190, 222, 1);
+  selection-background-color: rgba(110, 110, 135, 1);
+}
+
+QComboBox QAbstractItemView::item {
+  min-height: 20px;
+  font-size: 10px;
+}

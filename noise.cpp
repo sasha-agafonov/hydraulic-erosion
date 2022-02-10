@@ -7,23 +7,7 @@
 #define MAP_SIZE 1000
 
 noise :: noise() {
-//    std :: ofstream happy_file;
-//    happy_file.open("heightmap.pgm");
-//    happy_file << "P2\n";
-//    happy_file << "100 100\n";
-//    happy_file << "255\n";
 
-//    for (int i = 0; i < 100; i++) {
-//        for (int k = 0; k < 100; k++) {
-//            if (k == 99) {
-//                happy_file << rand() % 255 << "\n";
-//                break;
-//            }
-//            happy_file << rand() % 255 << " ";
-//        }
-
-//    }
-//    happy_file.close();
 }
 
 void noise :: normalize_gradients() {
@@ -34,8 +18,6 @@ void noise :: normalize_gradients() {
             vector_grid[i][k].component_x /= vector_length;
             vector_grid[i][k].component_y /= vector_length;
 
-//            std :: cout << vector_grid[i][k].component_x << "x vec\n";
-//                           std :: cout << vector_grid[i][k].component_y << "y vec\n";
         }
     }
 }
@@ -115,6 +97,12 @@ float noise :: linear_interpolation(float point_1, float point_2, float weight) 
     return (point_2 - point_1) * weight + point_1;
 }
 
+float noise :: smoothstep_interpolation(float point_1, float point_2, float weight) {
+    if (weight < 0) return point_1;
+    if (weight > 1) return point_2;
+    return (point_2 - point_1) * ((weight * (weight * 6 - 15) + 10) * weight * weight * weight) + point_1;
+}
+
 
 float noise :: dot_product(float ivec_x, float ivec_y, int gvec_x, int gvec_y) {
     return ((ivec_x - gvec_x) * vector_grid[gvec_y][gvec_x].component_x + (ivec_y - gvec_y) * vector_grid[gvec_y][gvec_x].component_y);
@@ -157,11 +145,11 @@ void noise :: perlin_noise() {
             float wy = sample_grid[i][k].position_y - floor(sample_grid[i][k].position_y);
             float dvec1 = dot_product(sample_grid[i][k].position_x, sample_grid[i][k].position_y, int(floor(sample_grid[i][k].position_x)), int(floor(sample_grid[i][k].position_y)));
             float dvec2 = dot_product(sample_grid[i][k].position_x, sample_grid[i][k].position_y, int(ceil(sample_grid[i][k].position_x)), int(floor(sample_grid[i][k].position_y)));
-            float inter1 = linear_interpolation(dvec1, dvec2, wx);
+            float inter1 = smoothstep_interpolation(dvec1, dvec2, wx);
             float dvec3 = dot_product(sample_grid[i][k].position_x, sample_grid[i][k].position_y, int(floor(sample_grid[i][k].position_x)), int(ceil(sample_grid[i][k].position_y)));
             float dvec4 = dot_product(sample_grid[i][k].position_x, sample_grid[i][k].position_y, int(ceil(sample_grid[i][k].position_x)), int(ceil(sample_grid[i][k].position_y)));
-            float inter2 = linear_interpolation(dvec3 ,dvec4, wx);
-            sample_grid[i][k].position_z += linear_interpolation(inter1, inter2, wy);
+            float inter2 = smoothstep_interpolation(dvec3 ,dvec4, wx);
+            sample_grid[i][k].position_z += smoothstep_interpolation(inter1, inter2, wy);
         }
     }
 

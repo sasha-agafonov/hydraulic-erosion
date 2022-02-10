@@ -7,7 +7,10 @@ int main(int argc, char *argv[]) {
 
     interface_controller* main_menu = new interface_controller(NULL);
 
-    main_menu -> setStyleSheet("background: rgba(40, 44, 52, 1);");
+    QFile style_sheet("../terrain/style.qss");
+    style_sheet.open(QFile::ReadOnly);
+    app.setStyleSheet(style_sheet.readAll());
+
     main_menu -> resize(512, 712);
     main_menu -> show();
 
