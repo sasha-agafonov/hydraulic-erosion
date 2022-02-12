@@ -25,7 +25,7 @@ interface_controller :: interface_controller(QWidget* parent) : QWidget(parent) 
     splash = new splash_screen(this);
     QGLFormat format;
     format.setSampleBuffers(true);
-    format.setSamples(4);
+    format.setSamples(8);
 
     scene = new world(format, this, splash);
 

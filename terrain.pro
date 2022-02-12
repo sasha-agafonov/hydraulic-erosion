@@ -20,6 +20,7 @@ SOURCES += \
     interface_generation_menu.cpp \
     interface_heightmap_preview.cpp \
     interface_hydro_parameters_menu.cpp \
+    interface_noise_layer.cpp \
     interface_noise_parameters_menu.cpp \
     interface_scene_menu.cpp \
     interface_splash_screen.cpp \
@@ -40,6 +41,7 @@ HEADERS += \
     interface_generation_menu.h \
     interface_heightmap_preview.h \
     interface_hydro_parameters_menu.h \
+    interface_noise_layer.h \
     interface_noise_parameters_menu.h \
     interface_scene_menu.h \
     interface_splash_screen.h \
@@ -49,7 +51,7 @@ HEADERS += \
     super.h \
     terrain.h \
     world.h \
-    connections.h \
+#    connections.h \
     world_menu.h
 
 FORMS += \

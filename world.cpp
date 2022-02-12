@@ -289,8 +289,8 @@ void world :: initializeGL() {
     glEnable(GL_FOG);
 
     glFogi(GL_FOG_MODE, GL_LINEAR);
-    glFogf(GL_FOG_START, 100.f);
-    glFogf(GL_FOG_END, 400.f);
+    glFogf(GL_FOG_START, 200.f);
+    glFogf(GL_FOG_END, 1500.f);
 
     float fcolour[3]={0.4, 0.5, 0.8};
 
@@ -345,11 +345,11 @@ void world :: initializeGL() {
     //load_terrain();
  //emit_scene_ready_signal();
 
-       noisy -> create_vector_grid(10, 10);
+       noisy -> create_vector_grid(40, 40);
        noisy -> normalize_gradients();
 
 
-       noisy -> map_samples(300, 300);
+       noisy -> map_samples(500, 500);
        noisy -> perlin_noise();
 
        noisy -> black_noise();
@@ -389,7 +389,7 @@ void world :: resizeGL(int w, int h) {
     glViewport(0, 0, w, h);
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    glFrustum(-20 * ((double)w/h) * (1. / sqrt(3)), 20 * ((double)w/h)* (1. / sqrt(3)), -20* (1. / sqrt(3)), 20* (1. / sqrt(3)), 20, 400.0);
+    glFrustum(-20 * ((double)w/h) * (1. / sqrt(3)), 20 * ((double)w/h)* (1. / sqrt(3)), -20* (1. / sqrt(3)), 20* (1. / sqrt(3)), 20, 1500.0);
 
 }
 
