@@ -6,32 +6,40 @@
 #include <QLabel>
 #include <QHBoxLayout>
 #include <QPushButton>
+#include <QDoubleSpinBox>
 #include <QSpinBox>
+#include <QComboBox>
 #include <QObject>
 
+#include "noise_layer.h"
 
-class noise_layer : public QFrame {
+
+class interface_noise_layer : public QFrame {
 
     Q_OBJECT
 
 public:
 
-    noise_layer(QWidget* parent, int layer_number);
+    interface_noise_layer(QWidget* parent, int layer_number);
 
     QHBoxLayout* box;
 
     QPushButton* delete_layer_button;
     QPushButton* new_layer_button;
 
-    QSpinBox* scale_spinbox;
+    QDoubleSpinBox* scale_spinbox;
     QSpinBox* frequency_spinbox;
-    QSpinBox* persistence_spinbox;
+    QDoubleSpinBox* persistence_spinbox;
+
+    QComboBox* noise_type_combo;
 
     QLabel* layer_label;
     QLabel* empty_label;
     QLabel* scale_label;
     QLabel* frequency_label;
     QLabel* persistence_label;
+
+    noise_layer* noise;
 
     bool active;
 

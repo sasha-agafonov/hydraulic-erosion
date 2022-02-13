@@ -12,8 +12,8 @@ noise :: noise() {
 
 void noise :: normalize_gradients() {
     float vector_length;
-    for (int i = 0; i < vector_grid.size(); i++) {
-        for (int k = 0; k < vector_grid[i].size(); k++) {
+    for (size_t i = 0; i < vector_grid.size(); i++) {
+        for (size_t k = 0; k < vector_grid[i].size(); k++) {
             vector_length = sqrt(pow(vector_grid[i][k].component_x, 2) + pow(vector_grid[i][k].component_y, 2));
             vector_grid[i][k].component_x /= vector_length;
             vector_grid[i][k].component_y /= vector_length;
@@ -218,14 +218,14 @@ void noise :: create_preview_heightmap() {
     for (int i = 0; i < sample_grid.size(); i++) {
         for (int k = 0; k < sample_grid[0].size(); k++) {
             if (k == sample_grid[0].size()- 1) {
-                happy_file << sample_grid[i][k].position_z -20<< ' ';
-                happy_file << sample_grid[i][k].position_z << ' ';
-                happy_file << sample_grid[i][k].position_z -20<< '\n';
+                happy_file << sample_grid[i][k].position_z -40<< ' ';
+                happy_file << sample_grid[i][k].position_z - 40<< ' ';
+                happy_file << sample_grid[i][k].position_z - 25<< '\n';
             }
             else {
-                happy_file << sample_grid[i][k].position_z -20 << ' ';
-                happy_file << sample_grid[i][k].position_z << ' ';
-                happy_file << sample_grid[i][k].position_z -20 << ' ';
+                happy_file << sample_grid[i][k].position_z - 40 << ' ';
+                happy_file << sample_grid[i][k].position_z - 40<< ' ';
+                happy_file << sample_grid[i][k].position_z - 25 << ' ';
             }
         }
     }

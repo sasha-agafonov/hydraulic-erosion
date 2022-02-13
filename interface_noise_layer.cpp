@@ -1,38 +1,59 @@
 #include <QLabel>
 #include <QString>
+#include <QLineEdit>
+#include <QListView>
 
 #include "interface_noise_layer.h"
 
 
-noise_layer :: noise_layer(QWidget* parent, int layer_number) : QFrame(parent) {
+interface_noise_layer :: interface_noise_layer(QWidget* parent, int layer_number) : QFrame(parent) {
 
-    this -> setStyleSheet("QFrame { background-color: rgba(60, 66, 78, 1); border-radius: 6px; padding: 0; }");
+    this -> setStyleSheet("QFrame { background-color: rgba(60, 66, 78, 1); border-radius: 6px; padding: 0; height: 30px; }");
 
     box = new QHBoxLayout(this);
 
+    box -> setSpacing(0);
+    box -> setContentsMargins(0, 0, 0, 0);
+
     layer_label = new QLabel(QString("Layer " + QString :: number(layer_number)), this);
-    empty_label = new QLabel("Empty Layer Slot", this);
+
+    empty_label = new QLabel("Empty Slot", this);
+    empty_label -> setAlignment(Qt::AlignCenter);
     scale_label = new QLabel("Scale", this);
     frequency_label = new QLabel("Frequency", this);
     persistence_label = new QLabel("Persistence", this);
 
+    layer_label -> setFixedHeight(30);
+    empty_label -> setFixedHeight(30);
+    scale_label -> setFixedHeight(30);
+    frequency_label -> setFixedHeight(30);
+    persistence_label -> setFixedHeight(30);
+
     new_layer_button = new QPushButton("Add Layer", this);
+    new_layer_button -> setStyleSheet("");
+    new_layer_button -> setStyleSheet("QPushButton { height: 30px; min-height: 2em; background: rgba(190, 190, 222, 1); border: 0; margin: 0; border-radius: 6px; font-size: 11px; color: rgba(40, 44, 52, 1); } "
+                                      "QPushButton:pressed { background: rgba(110, 110, 135, 1); }");
 
-    //new_layer_button -> setStyleSheet( "QPushButton { padding: 0; height: 25px; min-height: 4em;background: rgba(190, 190, 222, 1);border: 0;font-size: 11px; color: rgba(40, 44, 52, 1); }");
+    delete_layer_button = new QPushButton(this);
+    delete_layer_button -> setSizePolicy(QSizePolicy :: Fixed, QSizePolicy :: Fixed);
+    delete_layer_button -> setIcon(QIcon("../terrain/delete_button.png"));
+    delete_layer_button -> setIconSize(QSize(20, 20));
+    delete_layer_button -> setStyleSheet("QPushButton { height: 30px; width: 44px; min-height: 2em; background: rgba(190, 190, 222, 1);  border-top-right-radius: 6px; border-bottom-right-radius: 6px; font-size: 11px; color: rgba(40, 44, 52, 1); margin-left: 10px; }"
+                                         "QPushButton:pressed { background: rgba(110, 110, 135, 1); }");
 
-    delete_layer_button = new QPushButton("Delete Layer", this);
-
-    scale_spinbox = new QSpinBox(this);
-    scale_spinbox -> setMinimum(1);
+    scale_spinbox = new QDoubleSpinBox(this);
+    scale_spinbox -> setMinimum(0.01);
     scale_spinbox -> setMaximum(10);
 
     frequency_spinbox = new QSpinBox(this);
-    frequency_spinbox -> setMinimum(1);
-    frequency_spinbox -> setMaximum(10);
+    frequency_spinbox -> setMinimum(2);
+    frequency_spinbox -> setMaximum(200);
 
-    persistence_spinbox = new QSpinBox(this);
-    persistence_spinbox -> setMinimum(1);
+    persistence_spinbox = new QDoubleSpinBox(this);
+    persistence_spinbox -> setMinimum(0.01);
     persistence_spinbox -> setMaximum(10);
+
+    noise = new noise_layer();
 
     connect(new_layer_button, SIGNAL(clicked()), this, SLOT(activate_layer()));
     connect(new_layer_button, SIGNAL(clicked()), parent, SLOT(update_new_layer_button()));
@@ -63,15 +84,16 @@ noise_layer :: noise_layer(QWidget* parent, int layer_number) : QFrame(parent) {
 
     active = false;
 
+    this -> setLayout(box);
+
 }
 
-void noise_layer :: activate_layer() {
+void interface_noise_layer :: activate_layer() {
 
-    this -> setStyleSheet("QFrame { background-color: rgba(110, 110, 135, 1); border-radius: 6px; }");
+    this -> setStyleSheet("QFrame { background-color: rgba(110, 110, 135, 1); border-radius: 6px; padding: 0; height: 30px;  }");
 
     new_layer_button -> hide();
     empty_label -> hide();
-
     layer_label -> show();
     scale_label -> show();
     scale_spinbox -> show();
@@ -84,12 +106,11 @@ void noise_layer :: activate_layer() {
     active = true;
 }
 
-void noise_layer :: deactivate_layer() {
+void interface_noise_layer :: deactivate_layer() {
 
-    this -> setStyleSheet("QFrame { background-color: rgba(60, 66, 78, 1); border-radius: 6px; }");
+    this -> setStyleSheet("QFrame { background-color: rgba(60, 66, 78, 1); border-radius: 6px; padding: 0; height: 30px;  }");
 
     new_layer_button -> hide();
-
     layer_label -> hide();
     scale_label -> hide();
     scale_spinbox -> hide();
@@ -97,18 +118,16 @@ void noise_layer :: deactivate_layer() {
     frequency_spinbox -> hide();
     persistence_label -> hide();
     persistence_spinbox -> hide();
-
     empty_label -> show();
 
     active = false;
 }
 
-void :: noise_layer :: display_button() {
+void interface_noise_layer :: display_button() {
 
     this -> setStyleSheet("QFrame { background-color: rgba(190, 190, 222, 1); border-radius: 6px; padding: 0; }");
 
     empty_label -> hide();
     delete_layer_button -> hide();
-
     new_layer_button -> show();
 }

@@ -19,6 +19,7 @@ public:
     heightmap_preview(QWidget *parent);
 
     QLabel* label;
+    QLabel* preview_label;
     QVBoxLayout* box;
     QPushButton* reload_button;
 

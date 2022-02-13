@@ -58,22 +58,32 @@ SOURCES       = fpp_camera.cpp \
 		hydro.cpp \
 		interface_controller.cpp \
 		interface_generation_menu.cpp \
+		interface_header.cpp \
 		interface_heightmap_preview.cpp \
 		interface_hydro_parameters_menu.cpp \
+		interface_noise_layer.cpp \
+		interface_noise_layers.cpp \
 		interface_noise_parameters_menu.cpp \
 		interface_scene_menu.cpp \
 		interface_splash_screen.cpp \
+		interface_terrain_parameters_menu.cpp \
 		loading_menu.cpp \
 		main.cpp \
 		noise.cpp \
+		noise_controller.cpp \
+		noise_layer.cpp \
 		super.cpp \
 		terrain.cpp \
 		world.cpp \
 		world_menu.cpp moc_interface_controller.cpp \
 		moc_interface_generation_menu.cpp \
 		moc_interface_heightmap_preview.cpp \
+		moc_interface_noise_layer.cpp \
+		moc_interface_noise_layers.cpp \
+		moc_interface_noise_parameters_menu.cpp \
 		moc_interface_scene_menu.cpp \
 		moc_interface_splash_screen.cpp \
+		moc_interface_terrain_parameters_menu.cpp \
 		moc_loading_menu.cpp \
 		moc_super.cpp \
 		moc_world.cpp
@@ -83,14 +93,20 @@ OBJECTS       = fpp_camera.o \
 		hydro.o \
 		interface_controller.o \
 		interface_generation_menu.o \
+		interface_header.o \
 		interface_heightmap_preview.o \
 		interface_hydro_parameters_menu.o \
+		interface_noise_layer.o \
+		interface_noise_layers.o \
 		interface_noise_parameters_menu.o \
 		interface_scene_menu.o \
 		interface_splash_screen.o \
+		interface_terrain_parameters_menu.o \
 		loading_menu.o \
 		main.o \
 		noise.o \
+		noise_controller.o \
+		noise_layer.o \
 		super.o \
 		terrain.o \
 		world.o \
@@ -98,8 +114,12 @@ OBJECTS       = fpp_camera.o \
 		moc_interface_controller.o \
 		moc_interface_generation_menu.o \
 		moc_interface_heightmap_preview.o \
+		moc_interface_noise_layer.o \
+		moc_interface_noise_layers.o \
+		moc_interface_noise_parameters_menu.o \
 		moc_interface_scene_menu.o \
 		moc_interface_splash_screen.o \
+		moc_interface_terrain_parameters_menu.o \
 		moc_loading_menu.o \
 		moc_super.o \
 		moc_world.o
@@ -336,14 +356,20 @@ DIST          = /usr/lib/qt/mkspecs/features/spec_pre.prf \
 		hydro.h \
 		interface_controller.h \
 		interface_generation_menu.h \
+		interface_header.h \
 		interface_heightmap_preview.h \
 		interface_hydro_parameters_menu.h \
+		interface_noise_layer.h \
+		interface_noise_layers.h \
 		interface_noise_parameters_menu.h \
 		interface_scene_menu.h \
 		interface_splash_screen.h \
+		interface_terrain_parameters_menu.h \
 		loading_menu.h \
 		main.h \
 		noise.h \
+		noise_controller.h \
+		noise_layer.h \
 		super.h \
 		terrain.h \
 		world.h \
@@ -354,14 +380,20 @@ DIST          = /usr/lib/qt/mkspecs/features/spec_pre.prf \
 		hydro.cpp \
 		interface_controller.cpp \
 		interface_generation_menu.cpp \
+		interface_header.cpp \
 		interface_heightmap_preview.cpp \
 		interface_hydro_parameters_menu.cpp \
+		interface_noise_layer.cpp \
+		interface_noise_layers.cpp \
 		interface_noise_parameters_menu.cpp \
 		interface_scene_menu.cpp \
 		interface_splash_screen.cpp \
+		interface_terrain_parameters_menu.cpp \
 		loading_menu.cpp \
 		main.cpp \
 		noise.cpp \
+		noise_controller.cpp \
+		noise_layer.cpp \
 		super.cpp \
 		terrain.cpp \
 		world.cpp \
@@ -849,8 +881,8 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents /usr/lib/qt/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents fpp_camera.h fpp_movement.h grid_layout.h hydro.h interface_controller.h interface_generation_menu.h interface_heightmap_preview.h interface_hydro_parameters_menu.h interface_noise_parameters_menu.h interface_scene_menu.h interface_splash_screen.h loading_menu.h main.h noise.h super.h terrain.h world.h connections.h world_menu.h $(DISTDIR)/
-	$(COPY_FILE) --parents fpp_camera.cpp fpp_movement.cpp grid_layout.cpp hydro.cpp interface_controller.cpp interface_generation_menu.cpp interface_heightmap_preview.cpp interface_hydro_parameters_menu.cpp interface_noise_parameters_menu.cpp interface_scene_menu.cpp interface_splash_screen.cpp loading_menu.cpp main.cpp noise.cpp super.cpp terrain.cpp world.cpp world_menu.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents fpp_camera.h fpp_movement.h grid_layout.h hydro.h interface_controller.h interface_generation_menu.h interface_header.h interface_heightmap_preview.h interface_hydro_parameters_menu.h interface_noise_layer.h interface_noise_layers.h interface_noise_parameters_menu.h interface_scene_menu.h interface_splash_screen.h interface_terrain_parameters_menu.h loading_menu.h main.h noise.h noise_controller.h noise_layer.h super.h terrain.h world.h connections.h world_menu.h $(DISTDIR)/
+	$(COPY_FILE) --parents fpp_camera.cpp fpp_movement.cpp grid_layout.cpp hydro.cpp interface_controller.cpp interface_generation_menu.cpp interface_header.cpp interface_heightmap_preview.cpp interface_hydro_parameters_menu.cpp interface_noise_layer.cpp interface_noise_layers.cpp interface_noise_parameters_menu.cpp interface_scene_menu.cpp interface_splash_screen.cpp interface_terrain_parameters_menu.cpp loading_menu.cpp main.cpp noise.cpp noise_controller.cpp noise_layer.cpp super.cpp terrain.cpp world.cpp world_menu.cpp $(DISTDIR)/
 	$(COPY_FILE) --parents main.ui $(DISTDIR)/
 
 
@@ -883,9 +915,9 @@ compiler_moc_predefs_clean:
 moc_predefs.h: /usr/lib/qt/mkspecs/features/data/dummy.cpp
 	g++ -pipe -O2 -std=gnu++11 -Wall -Wextra -dM -E -o moc_predefs.h /usr/lib/qt/mkspecs/features/data/dummy.cpp
 
-compiler_moc_header_make_all: moc_interface_controller.cpp moc_interface_generation_menu.cpp moc_interface_heightmap_preview.cpp moc_interface_scene_menu.cpp moc_interface_splash_screen.cpp moc_loading_menu.cpp moc_super.cpp moc_world.cpp
+compiler_moc_header_make_all: moc_interface_controller.cpp moc_interface_generation_menu.cpp moc_interface_heightmap_preview.cpp moc_interface_noise_layer.cpp moc_interface_noise_layers.cpp moc_interface_noise_parameters_menu.cpp moc_interface_scene_menu.cpp moc_interface_splash_screen.cpp moc_interface_terrain_parameters_menu.cpp moc_loading_menu.cpp moc_super.cpp moc_world.cpp
 compiler_moc_header_clean:
-	-$(DEL_FILE) moc_interface_controller.cpp moc_interface_generation_menu.cpp moc_interface_heightmap_preview.cpp moc_interface_scene_menu.cpp moc_interface_splash_screen.cpp moc_loading_menu.cpp moc_super.cpp moc_world.cpp
+	-$(DEL_FILE) moc_interface_controller.cpp moc_interface_generation_menu.cpp moc_interface_heightmap_preview.cpp moc_interface_noise_layer.cpp moc_interface_noise_layers.cpp moc_interface_noise_parameters_menu.cpp moc_interface_scene_menu.cpp moc_interface_splash_screen.cpp moc_interface_terrain_parameters_menu.cpp moc_loading_menu.cpp moc_super.cpp moc_world.cpp
 moc_interface_controller.cpp: interface_controller.h \
 		world.h \
 		noise.h \
@@ -898,7 +930,11 @@ moc_interface_controller.cpp: interface_controller.h \
 		interface_generation_menu.h \
 		interface_noise_parameters_menu.h \
 		interface_heightmap_preview.h \
+		interface_noise_layer.h \
+		noise_layer.h \
+		interface_noise_layers.h \
 		interface_hydro_parameters_menu.h \
+		interface_terrain_parameters_menu.h \
 		moc_predefs.h \
 		/usr/bin/moc
 	/usr/bin/moc $(DEFINES) --include /home/sasha/terrain/moc_predefs.h -I/usr/lib/qt/mkspecs/linux-g++ -I/home/sasha/terrain -I/usr/include/qt -I/usr/include/qt/QtOpenGL -I/usr/include/qt/QtWidgets -I/usr/include/qt/QtGui -I/usr/include/qt/QtCore -I/usr/include/c++/11.1.0 -I/usr/include/c++/11.1.0/x86_64-pc-linux-gnu -I/usr/include/c++/11.1.0/backward -I/usr/lib/gcc/x86_64-pc-linux-gnu/11.1.0/include -I/usr/local/include -I/usr/lib/gcc/x86_64-pc-linux-gnu/11.1.0/include-fixed -I/usr/include interface_controller.h -o moc_interface_controller.cpp
@@ -907,7 +943,11 @@ moc_interface_generation_menu.cpp: interface_generation_menu.h \
 		interface_noise_parameters_menu.h \
 		interface_heightmap_preview.h \
 		noise.h \
+		interface_noise_layer.h \
+		noise_layer.h \
+		interface_noise_layers.h \
 		interface_hydro_parameters_menu.h \
+		interface_terrain_parameters_menu.h \
 		moc_predefs.h \
 		/usr/bin/moc
 	/usr/bin/moc $(DEFINES) --include /home/sasha/terrain/moc_predefs.h -I/usr/lib/qt/mkspecs/linux-g++ -I/home/sasha/terrain -I/usr/include/qt -I/usr/include/qt/QtOpenGL -I/usr/include/qt/QtWidgets -I/usr/include/qt/QtGui -I/usr/include/qt/QtCore -I/usr/include/c++/11.1.0 -I/usr/include/c++/11.1.0/x86_64-pc-linux-gnu -I/usr/include/c++/11.1.0/backward -I/usr/lib/gcc/x86_64-pc-linux-gnu/11.1.0/include -I/usr/local/include -I/usr/lib/gcc/x86_64-pc-linux-gnu/11.1.0/include-fixed -I/usr/include interface_generation_menu.h -o moc_interface_generation_menu.cpp
@@ -918,6 +958,29 @@ moc_interface_heightmap_preview.cpp: interface_heightmap_preview.h \
 		/usr/bin/moc
 	/usr/bin/moc $(DEFINES) --include /home/sasha/terrain/moc_predefs.h -I/usr/lib/qt/mkspecs/linux-g++ -I/home/sasha/terrain -I/usr/include/qt -I/usr/include/qt/QtOpenGL -I/usr/include/qt/QtWidgets -I/usr/include/qt/QtGui -I/usr/include/qt/QtCore -I/usr/include/c++/11.1.0 -I/usr/include/c++/11.1.0/x86_64-pc-linux-gnu -I/usr/include/c++/11.1.0/backward -I/usr/lib/gcc/x86_64-pc-linux-gnu/11.1.0/include -I/usr/local/include -I/usr/lib/gcc/x86_64-pc-linux-gnu/11.1.0/include-fixed -I/usr/include interface_heightmap_preview.h -o moc_interface_heightmap_preview.cpp
 
+moc_interface_noise_layer.cpp: interface_noise_layer.h \
+		noise_layer.h \
+		moc_predefs.h \
+		/usr/bin/moc
+	/usr/bin/moc $(DEFINES) --include /home/sasha/terrain/moc_predefs.h -I/usr/lib/qt/mkspecs/linux-g++ -I/home/sasha/terrain -I/usr/include/qt -I/usr/include/qt/QtOpenGL -I/usr/include/qt/QtWidgets -I/usr/include/qt/QtGui -I/usr/include/qt/QtCore -I/usr/include/c++/11.1.0 -I/usr/include/c++/11.1.0/x86_64-pc-linux-gnu -I/usr/include/c++/11.1.0/backward -I/usr/lib/gcc/x86_64-pc-linux-gnu/11.1.0/include -I/usr/local/include -I/usr/lib/gcc/x86_64-pc-linux-gnu/11.1.0/include-fixed -I/usr/include interface_noise_layer.h -o moc_interface_noise_layer.cpp
+
+moc_interface_noise_layers.cpp: interface_noise_layers.h \
+		interface_noise_layer.h \
+		noise_layer.h \
+		moc_predefs.h \
+		/usr/bin/moc
+	/usr/bin/moc $(DEFINES) --include /home/sasha/terrain/moc_predefs.h -I/usr/lib/qt/mkspecs/linux-g++ -I/home/sasha/terrain -I/usr/include/qt -I/usr/include/qt/QtOpenGL -I/usr/include/qt/QtWidgets -I/usr/include/qt/QtGui -I/usr/include/qt/QtCore -I/usr/include/c++/11.1.0 -I/usr/include/c++/11.1.0/x86_64-pc-linux-gnu -I/usr/include/c++/11.1.0/backward -I/usr/lib/gcc/x86_64-pc-linux-gnu/11.1.0/include -I/usr/local/include -I/usr/lib/gcc/x86_64-pc-linux-gnu/11.1.0/include-fixed -I/usr/include interface_noise_layers.h -o moc_interface_noise_layers.cpp
+
+moc_interface_noise_parameters_menu.cpp: interface_noise_parameters_menu.h \
+		interface_heightmap_preview.h \
+		noise.h \
+		interface_noise_layer.h \
+		noise_layer.h \
+		interface_noise_layers.h \
+		moc_predefs.h \
+		/usr/bin/moc
+	/usr/bin/moc $(DEFINES) --include /home/sasha/terrain/moc_predefs.h -I/usr/lib/qt/mkspecs/linux-g++ -I/home/sasha/terrain -I/usr/include/qt -I/usr/include/qt/QtOpenGL -I/usr/include/qt/QtWidgets -I/usr/include/qt/QtGui -I/usr/include/qt/QtCore -I/usr/include/c++/11.1.0 -I/usr/include/c++/11.1.0/x86_64-pc-linux-gnu -I/usr/include/c++/11.1.0/backward -I/usr/lib/gcc/x86_64-pc-linux-gnu/11.1.0/include -I/usr/local/include -I/usr/lib/gcc/x86_64-pc-linux-gnu/11.1.0/include-fixed -I/usr/include interface_noise_parameters_menu.h -o moc_interface_noise_parameters_menu.cpp
+
 moc_interface_scene_menu.cpp: interface_scene_menu.h \
 		moc_predefs.h \
 		/usr/bin/moc
@@ -927,6 +990,11 @@ moc_interface_splash_screen.cpp: interface_splash_screen.h \
 		moc_predefs.h \
 		/usr/bin/moc
 	/usr/bin/moc $(DEFINES) --include /home/sasha/terrain/moc_predefs.h -I/usr/lib/qt/mkspecs/linux-g++ -I/home/sasha/terrain -I/usr/include/qt -I/usr/include/qt/QtOpenGL -I/usr/include/qt/QtWidgets -I/usr/include/qt/QtGui -I/usr/include/qt/QtCore -I/usr/include/c++/11.1.0 -I/usr/include/c++/11.1.0/x86_64-pc-linux-gnu -I/usr/include/c++/11.1.0/backward -I/usr/lib/gcc/x86_64-pc-linux-gnu/11.1.0/include -I/usr/local/include -I/usr/lib/gcc/x86_64-pc-linux-gnu/11.1.0/include-fixed -I/usr/include interface_splash_screen.h -o moc_interface_splash_screen.cpp
+
+moc_interface_terrain_parameters_menu.cpp: interface_terrain_parameters_menu.h \
+		moc_predefs.h \
+		/usr/bin/moc
+	/usr/bin/moc $(DEFINES) --include /home/sasha/terrain/moc_predefs.h -I/usr/lib/qt/mkspecs/linux-g++ -I/home/sasha/terrain -I/usr/include/qt -I/usr/include/qt/QtOpenGL -I/usr/include/qt/QtWidgets -I/usr/include/qt/QtGui -I/usr/include/qt/QtCore -I/usr/include/c++/11.1.0 -I/usr/include/c++/11.1.0/x86_64-pc-linux-gnu -I/usr/include/c++/11.1.0/backward -I/usr/lib/gcc/x86_64-pc-linux-gnu/11.1.0/include -I/usr/local/include -I/usr/lib/gcc/x86_64-pc-linux-gnu/11.1.0/include-fixed -I/usr/include interface_terrain_parameters_menu.h -o moc_interface_terrain_parameters_menu.cpp
 
 moc_loading_menu.cpp: loading_menu.h \
 		moc_predefs.h \
@@ -992,15 +1060,26 @@ interface_controller.o: interface_controller.cpp interface_controller.h \
 		interface_generation_menu.h \
 		interface_noise_parameters_menu.h \
 		interface_heightmap_preview.h \
-		interface_hydro_parameters_menu.h
+		interface_noise_layer.h \
+		noise_layer.h \
+		interface_noise_layers.h \
+		interface_hydro_parameters_menu.h \
+		interface_terrain_parameters_menu.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o interface_controller.o interface_controller.cpp
 
 interface_generation_menu.o: interface_generation_menu.cpp interface_generation_menu.h \
 		interface_noise_parameters_menu.h \
 		interface_heightmap_preview.h \
 		noise.h \
-		interface_hydro_parameters_menu.h
+		interface_noise_layer.h \
+		noise_layer.h \
+		interface_noise_layers.h \
+		interface_hydro_parameters_menu.h \
+		interface_terrain_parameters_menu.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o interface_generation_menu.o interface_generation_menu.cpp
+
+interface_header.o: interface_header.cpp interface_header.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o interface_header.o interface_header.cpp
 
 interface_heightmap_preview.o: interface_heightmap_preview.cpp interface_heightmap_preview.h \
 		noise.h
@@ -1009,9 +1088,21 @@ interface_heightmap_preview.o: interface_heightmap_preview.cpp interface_heightm
 interface_hydro_parameters_menu.o: interface_hydro_parameters_menu.cpp interface_hydro_parameters_menu.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o interface_hydro_parameters_menu.o interface_hydro_parameters_menu.cpp
 
+interface_noise_layer.o: interface_noise_layer.cpp interface_noise_layer.h \
+		noise_layer.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o interface_noise_layer.o interface_noise_layer.cpp
+
+interface_noise_layers.o: interface_noise_layers.cpp interface_noise_layers.h \
+		interface_noise_layer.h \
+		noise_layer.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o interface_noise_layers.o interface_noise_layers.cpp
+
 interface_noise_parameters_menu.o: interface_noise_parameters_menu.cpp interface_noise_parameters_menu.h \
 		interface_heightmap_preview.h \
-		noise.h
+		noise.h \
+		interface_noise_layer.h \
+		noise_layer.h \
+		interface_noise_layers.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o interface_noise_parameters_menu.o interface_noise_parameters_menu.cpp
 
 interface_scene_menu.o: interface_scene_menu.cpp interface_scene_menu.h
@@ -1019,6 +1110,9 @@ interface_scene_menu.o: interface_scene_menu.cpp interface_scene_menu.h
 
 interface_splash_screen.o: interface_splash_screen.cpp interface_splash_screen.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o interface_splash_screen.o interface_splash_screen.cpp
+
+interface_terrain_parameters_menu.o: interface_terrain_parameters_menu.cpp interface_terrain_parameters_menu.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o interface_terrain_parameters_menu.o interface_terrain_parameters_menu.cpp
 
 loading_menu.o: loading_menu.cpp loading_menu.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o loading_menu.o loading_menu.cpp
@@ -1035,11 +1129,21 @@ main.o: main.cpp interface_controller.h \
 		interface_generation_menu.h \
 		interface_noise_parameters_menu.h \
 		interface_heightmap_preview.h \
-		interface_hydro_parameters_menu.h
+		interface_noise_layer.h \
+		noise_layer.h \
+		interface_noise_layers.h \
+		interface_hydro_parameters_menu.h \
+		interface_terrain_parameters_menu.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o main.cpp
 
 noise.o: noise.cpp noise.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o noise.o noise.cpp
+
+noise_controller.o: noise_controller.cpp noise_controller.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o noise_controller.o noise_controller.cpp
+
+noise_layer.o: noise_layer.cpp noise_layer.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o noise_layer.o noise_layer.cpp
 
 super.o: super.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o super.o super.cpp
@@ -1066,11 +1170,23 @@ moc_interface_generation_menu.o: moc_interface_generation_menu.cpp
 moc_interface_heightmap_preview.o: moc_interface_heightmap_preview.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_interface_heightmap_preview.o moc_interface_heightmap_preview.cpp
 
+moc_interface_noise_layer.o: moc_interface_noise_layer.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_interface_noise_layer.o moc_interface_noise_layer.cpp
+
+moc_interface_noise_layers.o: moc_interface_noise_layers.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_interface_noise_layers.o moc_interface_noise_layers.cpp
+
+moc_interface_noise_parameters_menu.o: moc_interface_noise_parameters_menu.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_interface_noise_parameters_menu.o moc_interface_noise_parameters_menu.cpp
+
 moc_interface_scene_menu.o: moc_interface_scene_menu.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_interface_scene_menu.o moc_interface_scene_menu.cpp
 
 moc_interface_splash_screen.o: moc_interface_splash_screen.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_interface_splash_screen.o moc_interface_splash_screen.cpp
+
+moc_interface_terrain_parameters_menu.o: moc_interface_terrain_parameters_menu.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_interface_terrain_parameters_menu.o moc_interface_terrain_parameters_menu.cpp
 
 moc_loading_menu.o: moc_loading_menu.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_loading_menu.o moc_loading_menu.cpp

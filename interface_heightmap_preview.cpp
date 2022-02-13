@@ -2,19 +2,36 @@
 
 heightmap_preview :: heightmap_preview(QWidget *parent) : QWidget(parent) {
 
-    QPixmap pixmap("../terrain/heightmap_preview.ppm");
+    this -> setSizePolicy(QSizePolicy :: Fixed, QSizePolicy :: Fixed);
 
+//    QPixmap pixmap("../terrain/heightmap_preview.ppm");
+
+    QPixmap pixmap("../terrain/heightmap2.pgm");
+
+    box -> setAlignment(Qt :: AlignTop);
     box = new QVBoxLayout(this);
+    box -> setSpacing(15);
+    box -> setContentsMargins(10, 0, 0, 0);
+
+    preview_label = new QLabel("Heightmap Preview", parent);
+    preview_label -> setAlignment(Qt::AlignCenter);
+    preview_label -> setFixedHeight(30);
+    preview_label -> setStyleSheet("QLabel { color: rgba(190, 190, 222, 1); background-color: rgba(30, 33, 39, 1);  height: 30px; margin: 0;}");
 
     label = new QLabel();
-    label -> setPixmap(pixmap);
+    label -> setPixmap(pixmap.scaled(390, 390, Qt :: KeepAspectRatio));
+    label -> setSizePolicy(QSizePolicy :: Fixed, QSizePolicy :: Fixed);
 
     reload_button = new QPushButton("Reload heightmap", this);
-    reload_button -> setStyleSheet("QPushButton { height: 16px; min-height: 2em; background: rgba(190, 190, 222, 1); border: 0; font-size: 11px; color: rgba(40, 44, 52, 1); } "
+    reload_button -> setStyleSheet("QPushButton { height: 30px; min-height: 2em; background: rgba(190, 190, 222, 1); border: 0; margin: 0; border-radius: 6px; font-size: 11px; color: rgba(40, 44, 52, 1); } "
                                    "QPushButton:pressed { background: rgba(110, 110, 135, 1); } ");
 
+    connect(reload_button, SIGNAL(clicked()), parent, SLOT(reload_heightmap()));
     connect(reload_button, SIGNAL(clicked()), this, SLOT(reload_heightmap()));
 
+    reload_button -> setEnabled(true);
+
+    box -> addWidget(preview_label);
     box -> addWidget(label);
     box -> addWidget(reload_button);
 
@@ -23,27 +40,27 @@ heightmap_preview :: heightmap_preview(QWidget *parent) : QWidget(parent) {
 
 void heightmap_preview :: reload_heightmap() {
 
-    noisy -> create_vector_grid(10, 10);
-    noisy -> normalize_gradients();
+//    reload_button -> setEnabled(false);
+
+//    noisy -> create_vector_grid(100, 100);
+//    noisy -> normalize_gradients();
 
 
-    noisy -> map_samples(300, 300);
-    noisy -> perlin_noise();
+//    noisy -> map_samples(10, 10);
+//    noisy -> perlin_noise();
 
-    noisy -> black_noise();
+//    noisy -> black_noise();
 
-    noisy -> create_heightmap();
-    noisy -> create_preview_heightmap();
+//    noisy -> create_heightmap();
+//    noisy -> create_preview_heightmap();
 
 //       noisy -> map_samples2(500, 500);
 //       noisy -> create_map();
 //       noisy -> create_heightmap2();
 
 
+    QPixmap pixmap("../terrain/heightmap2.pgm");
+    label -> setPixmap(pixmap.scaled(390, 390, Qt :: KeepAspectRatio));
 
-
-    // generate new img by telling qopenglw to generate new img
-
-    QPixmap pixmap("../terrain/heightmap_preview.ppm");
-    label -> setPixmap(pixmap);
+    reload_button -> setEnabled(true);
 }

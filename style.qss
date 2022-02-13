@@ -10,7 +10,6 @@ QWidget {
 
 QLabel {
   color: rgba(190, 190, 222, 1);
-  margin-right: 6px;
 }
 
 
@@ -19,6 +18,9 @@ QLabel {
 QFrame {
   background-color: rgba(110, 110, 135, 1);
   border-radius: 6px;
+  height: 30px;
+  border: 0;
+  margin: 0px;
 }
 
 
@@ -68,19 +70,42 @@ QSpinBox::down-button {
 }
 
 
+/* double spinbox */
+
+QDoubleSpinBox {
+  padding: 2px;
+  border: 2px solid rgba(110, 110, 135, 1);
+  border-radius: 5px;
+  color: rgba(190, 190, 222, 1);
+}
+
+QDoubleSpinBox::up-button {
+  border: 0;
+}
+
+QDoubleSpinBox::down-button {
+  border: 0;
+}
+
+
 /* push button */
 
 QPushButton {
-  height: 16px;
+  height: 30px;
+  width: 44px;
   min-height: 2em;
   background: rgba(190, 190, 222, 1);
-  border: 0;
+/*  border-radius: 6px;  */
   font-size: 11px;
   color: rgba(40, 44, 52, 1);
 }
 
 QPushButton:pressed {
   background: rgba(110, 110, 135, 1);
+}
+
+QPushButton:disabled {
+    background :rgba(110, 110, 135, 1);
 }
 
 

@@ -18,15 +18,20 @@ SOURCES += \
     hydro.cpp \
     interface_controller.cpp \
     interface_generation_menu.cpp \
+    interface_header.cpp \
     interface_heightmap_preview.cpp \
     interface_hydro_parameters_menu.cpp \
     interface_noise_layer.cpp \
+    interface_noise_layers.cpp \
     interface_noise_parameters_menu.cpp \
     interface_scene_menu.cpp \
     interface_splash_screen.cpp \
+    interface_terrain_parameters_menu.cpp \
     loading_menu.cpp \
     main.cpp \
     noise.cpp \
+    noise_controller.cpp \
+    noise_layer.cpp \
     super.cpp \
     terrain.cpp \
     world.cpp \
@@ -39,19 +44,24 @@ HEADERS += \
     hydro.h \
     interface_controller.h \
     interface_generation_menu.h \
+    interface_header.h \
     interface_heightmap_preview.h \
     interface_hydro_parameters_menu.h \
     interface_noise_layer.h \
+    interface_noise_layers.h \
     interface_noise_parameters_menu.h \
     interface_scene_menu.h \
     interface_splash_screen.h \
+    interface_terrain_parameters_menu.h \
     loading_menu.h \
     main.h \
     noise.h \
+    noise_controller.h \
+    noise_layer.h \
     super.h \
     terrain.h \
     world.h \
-#    connections.h \
+    connections.h \
     world_menu.h
 
 FORMS += \
