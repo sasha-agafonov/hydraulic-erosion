@@ -27,7 +27,7 @@ public slots:
     void cameraUpdate(double x, double y, double z);
 
 public:
-    world(QGLFormat format, QWidget *parent, splash_screen* splash);
+    world( QWidget *parent);
 
     void initializeGL();
     void resizeGL(int w, int h);
@@ -53,8 +53,8 @@ public:
 
 signals:
     void toggle_menu_signal();
-    void scene_ready_signal();
-    void current_stage_signal();
+//    void scene_ready_signal();
+//    void current_stage_signal();
     //void paintEvent();
 
 private:

@@ -15,4 +15,8 @@ noise_parameters_menu :: noise_parameters_menu(QWidget *parent) : QWidget(parent
 
 }
 
-void noise_parameters_menu :: reload_heightmap() { emit reload_heightmap_signal(); }
+void noise_parameters_menu :: reload_heightmap() {
+
+    heightmap_widget -> reload_button -> setEnabled(false);
+    emit reload_heightmap_signal();
+}

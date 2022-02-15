@@ -17,15 +17,18 @@
 #include "noise.h"
 
 
-
 #define PGM_8_BIT 255
 #define PGM_16_BIT 65535
 #define PI_EXTERN 3.141592653589793238462643383279502884197169399375105820974944592307816406286
 
 
-world :: world(QGLFormat format, QWidget* parent, splash_screen* splash) : QGLWidget(parent) {
+world :: world( QWidget* parent) : QGLWidget(parent) {
+
+    QGLFormat format;
+    format.setSampleBuffers(true);
+    format.setSamples(4);
     setFormat(format);
-    this -> splash = splash;
+   // this -> splash = splash;
     tick = 0;
     zoom = 0;
     fps = 0;
@@ -34,9 +37,11 @@ world :: world(QGLFormat format, QWidget* parent, splash_screen* splash) : QGLWi
     loaded =false;
     sc_width = 0;
     sc_height = 0;
+
     setCursor(Qt::BlankCursor);
-       setMouseTracking(true);
+    setMouseTracking(true);
     this->setFocusPolicy(Qt::StrongFocus);
+    //this -> grabKeyboard();
 
 
     //painter = new QPainter(this);
@@ -56,8 +61,8 @@ world :: world(QGLFormat format, QWidget* parent, splash_screen* splash) : QGLWi
     menu = false;
 
     connect(this, SIGNAL(toggle_menu_signal()), parentWidget(), SLOT(toggle_scene_menu()));
-    connect(this, SIGNAL(scene_ready_signal()), parentWidget(), SLOT(scene_ready()));
-    connect(this, SIGNAL(current_stage_signal()), this -> splash, SLOT(update_stage()));
+//    connect(this, SIGNAL(scene_ready_signal()), parentWidget(), SLOT(scene_ready()));
+//    connect(this, SIGNAL(current_stage_signal()), this -> splash, SLOT(update_stage()));
 
 
           //painter = new QPainter(this);
@@ -116,7 +121,7 @@ void world :: cameraUpdate(double x, double y, double z) {
 
 void world :: emit_toggle_menu_signal() { emit toggle_menu_signal(); }
 
-void world :: emit_scene_ready_signal() { emit scene_ready_signal(); }
+//void world :: emit_scene_ready_signal() { emit scene_ready_signal(); }
 
 
 
@@ -290,7 +295,7 @@ void world :: initializeGL() {
 
     glFogi(GL_FOG_MODE, GL_LINEAR);
     glFogf(GL_FOG_START, 200.f);
-    glFogf(GL_FOG_END, 1500.f);
+    glFogf(GL_FOG_END, 3000.f);
 
     float fcolour[3]={0.4, 0.5, 0.8};
 
@@ -375,11 +380,11 @@ void world :: initializeGL() {
 }
 
 
-void world :: load_arrays() {
+//void world :: load_arrays() {
 
 
 
-}
+//}
 
 
 void world :: resizeGL(int w, int h) {
@@ -389,7 +394,7 @@ void world :: resizeGL(int w, int h) {
     glViewport(0, 0, w, h);
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    glFrustum(-20 * ((double)w/h) * (1. / sqrt(3)), 20 * ((double)w/h)* (1. / sqrt(3)), -20* (1. / sqrt(3)), 20* (1. / sqrt(3)), 20, 1500.0);
+    glFrustum(-20 * ((double)w/h) * (1. / sqrt(3)), 20 * ((double)w/h)* (1. / sqrt(3)), -20* (1. / sqrt(3)), 20* (1. / sqrt(3)), 20, 3000.0);
 
 }
 

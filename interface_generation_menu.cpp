@@ -19,16 +19,11 @@ generation_menu :: generation_menu(QWidget *parent) : QWidget(parent) {
 
     noisy = new noise();
 
-//    layer = new noise_layer();
-//    layer -> initialize_heightmap(200, 200);
-//    layer -> initialize_gradients(40, 40, true);
-//    layer -> apply_gradients();
-//    layer -> normalize_heightmap();
-
 }
 
 void generation_menu :: reload_heightmap() {
 
     noise_parameters -> noise_layers_widget -> build_layers(terrain_parameters -> width_x_spinbox -> value(),
-                                                            terrain_parameters -> width_y_spinbox -> value());
+                                                            terrain_parameters -> width_y_spinbox -> value(),
+                                                            terrain_parameters -> gradient_seed_checkbox -> isChecked());
 }

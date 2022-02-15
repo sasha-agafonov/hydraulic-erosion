@@ -27,17 +27,18 @@ public:
     QPushButton* delete_layer_button;
     QPushButton* new_layer_button;
 
-    QDoubleSpinBox* scale_spinbox;
+    //QDoubleSpinBox* scale_spinbox;
     QSpinBox* frequency_spinbox;
-    QDoubleSpinBox* persistence_spinbox;
+    QSpinBox* amplitude_spinbox;
+    QDoubleSpinBox* transparency_spinbox;
 
     QComboBox* noise_type_combo;
 
     QLabel* layer_label;
     QLabel* empty_label;
-    QLabel* scale_label;
+    QLabel* amplitude_label;
     QLabel* frequency_label;
-    QLabel* persistence_label;
+    QLabel* transparency_label;
 
     noise_layer* noise;
 

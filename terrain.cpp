@@ -236,8 +236,8 @@ void terrain :: load_terrain() {
 
     load_heightmap();
     load_triangles();
-    normalize_terrain(1);
-    stretch_terrain(2, 2);
+    normalize_terrain(30);
+    stretch_terrain(8, 8);
     load_normals();
     load_arrays();
 }

@@ -16,7 +16,7 @@ public:
     interface_noise_layers(QWidget* parent);
 
     void sort_layers();
-    void build_layers(int width, int height);
+    void build_layers(int width, int height, bool random);
     //void create_heightmap(int width, int height);
 
     QVBoxLayout* box;

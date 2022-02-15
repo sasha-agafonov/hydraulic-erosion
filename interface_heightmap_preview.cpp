@@ -40,24 +40,7 @@ heightmap_preview :: heightmap_preview(QWidget *parent) : QWidget(parent) {
 
 void heightmap_preview :: reload_heightmap() {
 
-//    reload_button -> setEnabled(false);
-
-//    noisy -> create_vector_grid(100, 100);
-//    noisy -> normalize_gradients();
-
-
-//    noisy -> map_samples(10, 10);
-//    noisy -> perlin_noise();
-
-//    noisy -> black_noise();
-
-//    noisy -> create_heightmap();
-//    noisy -> create_preview_heightmap();
-
-//       noisy -> map_samples2(500, 500);
-//       noisy -> create_map();
-//       noisy -> create_heightmap2();
-
+    reload_button -> setEnabled(true);
 
     QPixmap pixmap("../terrain/heightmap2.pgm");
     label -> setPixmap(pixmap.scaled(390, 390, Qt :: KeepAspectRatio));

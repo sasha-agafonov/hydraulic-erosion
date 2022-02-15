@@ -4,10 +4,12 @@ terrain_parameters_menu :: terrain_parameters_menu(QWidget* parent) : QWidget(pa
 
     this -> setSizePolicy(QSizePolicy :: Expanding, QSizePolicy :: Fixed);
 
-    box = new QHBoxLayout(this);
-    box -> setSpacing(15);
-    box -> setContentsMargins(20, 20, 0, 0);
-    box -> setAlignment(Qt :: AlignBottom);
+    v_box = new QVBoxLayout(this);
+
+    h_box_1 = new QHBoxLayout(this);
+    h_box_1 -> setSpacing(15);
+    h_box_1 -> setContentsMargins(10, 20, 0, 0);
+    h_box_1 -> setAlignment(Qt :: AlignBottom);
 
     terrain_size_label = new QLabel("Terrain Size", this);
     terrain_size_label -> setStyleSheet("QLabel { background-color: rgba(1,1,1, 0); color: rgba(190, 190, 222, 1); } ");
@@ -31,9 +33,27 @@ terrain_parameters_menu :: terrain_parameters_menu(QWidget* parent) : QWidget(pa
     connect(width_x_spinbox, SIGNAL(valueChanged(int)), this, SLOT(equalize_size_y()));
     connect(width_y_spinbox, SIGNAL(valueChanged(int)), this, SLOT(equalize_size_x()));
 
-    box -> addWidget(terrain_size_label);
-    box -> addWidget(width_x_spinbox);
-    box -> addWidget(width_y_spinbox);
+    h_box_1 -> addWidget(terrain_size_label);
+    h_box_1 -> addWidget(width_x_spinbox);
+    h_box_1 -> addWidget(width_y_spinbox);
+
+    h_box_2 = new QHBoxLayout(this);
+    h_box_2 -> setSpacing(15);
+    h_box_2 -> setContentsMargins(10, 10, 0, 0);
+
+    gradient_seed_label = new QLabel("Random Gradients", this);
+    gradient_seed_label -> setFixedHeight(30);
+    gradient_seed_label -> setFixedWidth(100);
+    gradient_seed_label -> setStyleSheet("QLabel { color: rgba(190, 190, 222, 1); background-color: rgba(30, 33, 39, 0); height: 30px; margin: 0; }");
+
+    gradient_seed_checkbox = new QCheckBox(this);
+
+    h_box_2 -> addWidget(gradient_seed_label);
+    h_box_2 -> addWidget(gradient_seed_checkbox);
+
+    v_box -> addLayout(h_box_1);
+    v_box -> addLayout(h_box_2);
+
 
 }
 

@@ -6,12 +6,31 @@
 
 splash_screen :: splash_screen(QWidget* parent) {
 
-//    this -> showMessage(QSplashScreen::tr("Building the terrain..."), Qt :: AlignCenter | Qt :: AlignHCenter, QColor(190, 190, 222, 255));
-//    QApplication::processEvents();
+    v_box = new QVBoxLayout(this);
+    v_box -> setAlignment(Qt:: AlignHCenter | Qt:: AlignVCenter);
 
-    QMovie *movie = new QMovie("../terrain/splash_loader.gif");
+    QMovie *movie = new QMovie("../terrain/ringer_sm2.gif");
     QLabel *label = new QLabel(this);
+    label -> setStyleSheet("QLabel { background-color: rgba(1,1,1,0); } ");
     label -> setMovie(movie);
-    movie -> start();
 
+    QLabel* message_label = new QLabel("Building Terrain...", this);
+    message_label -> setAlignment(Qt::AlignHCenter);
+    message_label -> setStyleSheet("QLabel { background-color: rgba(1,1,1,0); margin-top: 15px;} ");
+
+    v_box -> addWidget(label);
+    v_box -> addWidget(message_label);
+
+    movie -> start();
+   // setMouseTracking(false);
+     // setKeyboardTracking(true);
+
+}
+
+void splash_screen :: mousePressEvent(QMouseEvent* event) {
+    return;
+}
+
+void splash_screen :: keyPressEvent(QKeyEvent* event) {
+    return;
 }

@@ -16,7 +16,7 @@ class noise_layer {
 
 public:
 
-    void create_layer(int tn_size_x, int tn_size_y, int gg_size_x, int gg_size_y, int amp);
+    void create_layer(int tn_size_x, int tn_size_y, int gg_size_x, int gg_size_y, int amp, bool random);
 
     void initialize_heightmap(int width, int height);
     void create_heightmap();

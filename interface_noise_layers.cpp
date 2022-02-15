@@ -1,10 +1,11 @@
 #include <fstream>
 #include <iostream>
-
+#include <cmath>
 #include "interface_noise_layers.h"
 
-
 #define NOISE_LAYERS 10
+#define PGM_16_BIT 65535
+
 
 interface_noise_layers :: interface_noise_layers(QWidget* parent) : QWidget(parent) {
 
@@ -27,12 +28,12 @@ interface_noise_layers :: interface_noise_layers(QWidget* parent) : QWidget(pare
     }
 
     layers_vector[0] -> activate_layer();
-
     update_new_layer_button();
 
 }
 
-void interface_noise_layers :: build_layers(int width, int height) {
+
+void interface_noise_layers :: build_layers(int width, int height, bool random) {
 
     std :: vector < std :: vector <int> > heightmap(height, std :: vector <int> (width, 0));
 
@@ -42,19 +43,41 @@ void interface_noise_layers :: build_layers(int width, int height) {
     for (int i = 0; i < NOISE_LAYERS; i++) {
         if (layers_vector[i] -> active) {
             ctr ++;
-            layers_vector[i] -> noise -> create_layer(width, height, layers_vector[i] -> frequency_spinbox -> value(), layers_vector[i] -> frequency_spinbox -> value(), 1);
+            layers_vector[i] -> noise -> create_layer(width, height,
+            layers_vector[i] -> frequency_spinbox -> value() + 1, layers_vector[i] -> frequency_spinbox -> value() + 1,
+            layers_vector[i] -> amplitude_spinbox -> value(), random);
 //            layers_vector[i] -> noise -> create_layer(width, height,
 //            width * layers_vector[i] -> frequency_spinbox -> value(), height * layers_vector[i] -> frequency_spinbox -> value(), 1);
 //            layers_vector[i] -> noise
 
             for (int k = 0; k < height; k++) {
                 for (int x = 0; x < width; x++) {
-                    heightmap[k][x] += layers_vector[i] -> noise -> heightmap[k][x];
+                    heightmap[k][x] += (layers_vector[i] -> noise -> heightmap[k][x] * layers_vector[i] -> transparency_spinbox -> value());
                    //std :: cout << heightmap[k][x] << "hmap val\n";
                 }
             }
         }
     }
+
+
+//    float min = -1;
+//    float max = 100000;
+
+//    for (int i = 0; i < height; i++) {
+//        for (int k = 0; k < width; k++) {
+//            if (heightmap[i][k] < min) min = heightmap[i][k];
+//            if (heightmap[i][k] > max) max = heightmap[i][k];
+//        }
+//    }
+
+    for (int i = 0; i < height; i++) {
+        for (int k = 0; k < width; k++ ) {
+//            heightmap[i][k] *= ((max - min) / 65535);
+            heightmap[i][k] = floor(heightmap[i][k]);
+        }
+    }
+
+
 
 
 //    for (int k = 0; k < height; k++) {
@@ -68,7 +91,7 @@ void interface_noise_layers :: build_layers(int width, int height) {
         happy_file.open("../terrain/heightmap2.pgm");
         happy_file << "P2\n";
         happy_file << width << ' ' << height << '\n';
-        happy_file << "255\n";
+        happy_file << "65535\n";
 
         for (int i = 0; i < static_cast <int> (heightmap.size()); i++) {
             for (int k = 0; k < static_cast <int> (heightmap[0].size()); k++) {
@@ -111,7 +134,7 @@ void interface_noise_layers :: sort_layers() {
     }
 
     for (int i = 0; i < NOISE_LAYERS; i++) {
-        layers_vector[i] -> layer_label -> setText(QString("Layer " + QString :: number(i + 1)));
+        layers_vector[i] -> layer_label -> setText(QString("L" + QString :: number(i + 1)));
         box -> addWidget(layers_vector[i]);
     }
 }
