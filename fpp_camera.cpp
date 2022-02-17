@@ -17,7 +17,7 @@ fpp_camera :: fpp_camera(double horizontal_ang, double vertical_ang) {
 
     position_x = 0;
     position_y = 0;
-    position_z = 0;
+    position_z = 350;
 }
 
 void fpp_camera :: set_angles(double horizontal_ang, double vertical_ang) {

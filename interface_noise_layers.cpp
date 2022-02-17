@@ -30,6 +30,34 @@ interface_noise_layers :: interface_noise_layers(QWidget* parent) : QWidget(pare
     layers_vector[0] -> activate_layer();
     update_new_layer_button();
 
+    layers_vector[1] -> activate_layer();
+    update_new_layer_button();
+    layers_vector[1] -> frequency_spinbox -> setValue(2);
+
+    layers_vector[2] -> activate_layer();
+    update_new_layer_button();
+    layers_vector[2] -> frequency_spinbox -> setValue(4);
+
+    layers_vector[3] -> activate_layer();
+    update_new_layer_button();
+    layers_vector[3] -> frequency_spinbox -> setValue(6);
+
+    layers_vector[4] -> activate_layer();
+    update_new_layer_button();
+    layers_vector[4] -> frequency_spinbox -> setValue(20);
+    layers_vector[4] -> amplitude_spinbox -> setValue(50);
+
+    layers_vector[5] -> activate_layer();
+    update_new_layer_button();
+    layers_vector[5] -> frequency_spinbox -> setValue(30);
+    layers_vector[5] -> amplitude_spinbox -> setValue(30);
+
+    layers_vector[6] -> activate_layer();
+    update_new_layer_button();
+    layers_vector[6] -> frequency_spinbox -> setValue(70);
+    layers_vector[6] -> amplitude_spinbox -> setValue(10);
+
+
 }
 
 

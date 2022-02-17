@@ -19,15 +19,18 @@ public:
 
     QHBoxLayout* h_box_1;
     QHBoxLayout* h_box_2;
+    QHBoxLayout* h_box_3;
     QVBoxLayout* v_box;
 
     QSpinBox* width_x_spinbox;
     QSpinBox* width_y_spinbox;
 
     QCheckBox* gradient_seed_checkbox;
+    QCheckBox* materials_checkbox;
 
     QLabel* terrain_size_label;
     QLabel* gradient_seed_label;
+    QLabel* materials_label;
 
 public slots:
 

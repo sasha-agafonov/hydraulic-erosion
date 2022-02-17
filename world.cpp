@@ -75,8 +75,8 @@ world :: world( QWidget* parent) : QGLWidget(parent) {
 
     noisy = new noise();
 
-    cursor_x = 270;
-    cursor_y = 90;
+    cursor_x = -135;
+    cursor_y = 110;
     camera = new fpp_camera(cursor_x, cursor_y);
 
     terrarray = new int[10000];
@@ -295,7 +295,7 @@ void world :: initializeGL() {
 
     glFogi(GL_FOG_MODE, GL_LINEAR);
     glFogf(GL_FOG_START, 200.f);
-    glFogf(GL_FOG_END, 3000.f);
+    glFogf(GL_FOG_END, 1500.f);
 
     float fcolour[3]={0.4, 0.5, 0.8};
 
@@ -330,8 +330,17 @@ void world :: initializeGL() {
 //    GLuint vbo;
 //        terra -> load_terrain();
 
+
+    glMaterialfv(GL_FRONT, GL_DIFFUSE,   base.diffuse);
+    glMaterialfv(GL_FRONT, GL_SPECULAR,  base.specular);
+    glMaterialf( GL_FRONT, GL_SHININESS, base.shininess);
+    glMaterialfv(GL_FRONT, GL_AMBIENT,   base.ambient);
+
+    glColorMaterial(GL_FRONT, GL_AMBIENT_AND_DIFFUSE);
+    glEnable(GL_COLOR_MATERIAL);
     glEnableClientState(GL_VERTEX_ARRAY);
     glEnableClientState(GL_NORMAL_ARRAY);
+    glEnableClientState(GL_COLOR_ARRAY);
 
 //    glGenBuffers(1, &vbo);
 //        glBindBuffer(GL_ARRAY_BUFFER, vbo);
@@ -394,7 +403,7 @@ void world :: resizeGL(int w, int h) {
     glViewport(0, 0, w, h);
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    glFrustum(-20 * ((double)w/h) * (1. / sqrt(3)), 20 * ((double)w/h)* (1. / sqrt(3)), -20* (1. / sqrt(3)), 20* (1. / sqrt(3)), 20, 3000.0);
+    glFrustum(-20 * ((double)w/h) * (1. / sqrt(3)), 20 * ((double)w/h)* (1. / sqrt(3)), -20* (1. / sqrt(3)), 20* (1. / sqrt(3)), 20, 1500.0);
 
 }
 
@@ -458,6 +467,7 @@ void world :: paintGL() {
 
 
     terra -> draw_terrain_arrays();
+    //terra -> draw_terrain_material_arrays();
 
     //emit current_stage_signal();
 

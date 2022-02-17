@@ -37,6 +37,8 @@ terrain_parameters_menu :: terrain_parameters_menu(QWidget* parent) : QWidget(pa
     h_box_1 -> addWidget(width_x_spinbox);
     h_box_1 -> addWidget(width_y_spinbox);
 
+
+
     h_box_2 = new QHBoxLayout(this);
     h_box_2 -> setSpacing(15);
     h_box_2 -> setContentsMargins(10, 10, 0, 0);
@@ -51,9 +53,24 @@ terrain_parameters_menu :: terrain_parameters_menu(QWidget* parent) : QWidget(pa
     h_box_2 -> addWidget(gradient_seed_label);
     h_box_2 -> addWidget(gradient_seed_checkbox);
 
+
+    h_box_3 = new QHBoxLayout(this);
+    h_box_3 -> setSpacing(15);
+    h_box_3 -> setContentsMargins(10, 10, 0, 0);
+
+    materials_label = new QLabel("T2", this);
+    materials_label -> setFixedHeight(30);
+    materials_label -> setFixedWidth(100);
+    materials_label -> setStyleSheet("QLabel { color: rgba(190, 190, 222, 1); background-color: rgba(30, 33, 39, 0); height: 30px; margin: 0; }");
+
+    materials_checkbox = new QCheckBox(this);
+
+    h_box_3 -> addWidget(materials_label);
+    h_box_3 -> addWidget(materials_checkbox);
+
     v_box -> addLayout(h_box_1);
     v_box -> addLayout(h_box_2);
-
+    v_box -> addLayout(h_box_3);
 
 }
 

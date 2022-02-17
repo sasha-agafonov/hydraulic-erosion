@@ -16,6 +16,7 @@
 
 #define PGM_8_BIT 255
 #define PGM_16_BIT 65535
+#define PI_EXTERN 3.141592653589793238462643383279502884197169399375105820974944592307816406286
 
 
 terrain :: terrain() : terrain_size(0) {
@@ -187,6 +188,124 @@ void terrain :: load_normals() {
     }
 }
 
+void terrain :: load_colors() {
+
+    terrain_colors.clear();
+
+    float color1 = 0;
+    float color2 = 0;
+    float color3 = 0;
+    float ang = 0;
+
+    for (int i = 0; i < triangles_count; i++) {
+
+        for (int x = 0; x < 3; x++) {
+        ang = normal_angle(terrain_normals[i * 9 + 3 * x], terrain_normals[i * 9 + 1 + 3 * x], terrain_normals[i * 9 + 2 + 3 * x] );
+        // green
+        if (terrain_positions[i * 9 + 2] < 100) {
+
+            color1 = 0.2f;
+            color2 = 0.45f;
+            color3 = 0.2f;
+
+//            for (int x = 0; x < 3; x++) {
+////                terrain_colors.push_back(0.2f );
+////                // G
+////                terrain_colors.push_back(0.45f );
+////                // B
+////                terrain_colors.push_back(0.2f );
+
+//                color1 = 0.2f;
+//                color2 = 0.45f;
+//                color3 = 0.2f;
+//            }
+        }
+        // green to black
+
+        //0.25 0.2 0.2
+        else if (terrain_positions[i * 9 + 2 + 3 * x] < 150 && terrain_positions[i * 9 + 2 + 3 * x] >= 100) {
+
+             color1 = (0.05 * ((terrain_positions[i * 9 + 2 + 3 * x] - 100 ) / 50)  + 0.2f);
+             // G
+             color2 = (-0.25f * ((terrain_positions[i * 9 + 2 + 3 * x] - 100 ) / 50)  + 0.45f);
+             // B
+             color3 = (0 * ((terrain_positions[i * 9 + 2 + 3 * x] - 100 ) / 50)  + 0.2f);
+
+//            for (int x = 0; x < 3; x++) {
+//                terrain_colors.push_back((0.05 * ((terrain_positions[i * 9 + 2] - 100 ) / 50)  + 0.2f));
+//                // G
+//                terrain_colors.push_back((-0.25f * ((terrain_positions[i * 9 + 2] - 100 ) / 50)  + 0.45f));
+//                // B
+//                terrain_colors.push_back((0 * ((terrain_positions[i * 9 + 2] - 100 ) / 50)  + 0.2f));
+
+//            }
+        }
+
+        // black
+        else if (terrain_positions[i * 9 + 2 + 3 * x] < 200 && terrain_positions[i * 9 + 2 + 3 * x] >= 150) {
+
+                   color1 = 0.25f;
+                   color2 = 0.2f;
+                   color3 = 0.2f;
+//            for (int x = 0; x < 3; x++) {
+//                terrain_colors.push_back(0.25f);
+//                terrain_colors.push_back(0.2f);
+//                terrain_colors.push_back(0.2f);
+//            }
+        }
+
+        // black to white
+        else if (terrain_positions[i * 9 + 2 + 3 * x] < 250 && terrain_positions[i * 9 + 2 + 3 * x] >= 200) {
+                color1 = 0.55f * (terrain_positions[i * 9 + 2 + 3 * x] - 200 ) / 50 + 0.25f;
+                color2 = 0.6f * (terrain_positions[i * 9 + 2 + 3 * x] - 200 ) / 50 + 0.2f;
+                color3 = 0.7f * (terrain_positions[i * 9 + 2 + 3 * x] - 200 ) / 50 + 0.2f;
+
+//            for (int x = 0; x < 3; x++) {
+//                terrain_colors.push_back(0.35f * (terrain_positions[i * 9 + 2] - 200 ) / 50 + 0.25f);
+//                terrain_colors.push_back(0.4f * (terrain_positions[i * 9 + 2] - 200 ) / 50 + 0.2f);
+//                terrain_colors.push_back(0.5f * (terrain_positions[i * 9 + 2] - 200 ) / 50 + 0.2f);
+//            }
+        }
+
+        //white
+        else {
+
+                color1 = 0.8f;
+                color2 = 0.8f;
+                color3 = 0.9f;
+//            for (int x = 0; x < 3; x++) {
+//                terrain_colors.push_back(0.6f );
+//                terrain_colors.push_back(0.6f );
+//                terrain_colors.push_back(0.7f );
+//            }
+        }
+
+        color1 = (0.25f - color1) * (interpolate_angle(ang)) + color1;
+        color2 = (0.2f - color2) * (interpolate_angle(ang)) + color2;
+        color3 = (0.2f - color3) * (interpolate_angle(ang)) + color3;
+
+
+        terrain_colors.push_back(color1);
+        terrain_colors.push_back(color2);
+        terrain_colors.push_back(color3);
+//        terrain_colors.push_back(color1);
+//        terrain_colors.push_back(color2);
+//        terrain_colors.push_back(color3);
+//        terrain_colors.push_back(color1);
+//        terrain_colors.push_back(color2);
+//        terrain_colors.push_back(color3);
+        }
+
+    }
+}
+
+
+float terrain :: interpolate_angle(float ang) {
+    if (ang >= 100) return 1.f;
+    else if (ang <= 50) return 0;
+    else return ((ang - 50) / 50.f);
+
+}
 void terrain :: load_arrays() {
 
     triangles_count = num_triangles();
@@ -231,15 +350,152 @@ void terrain :: load_arrays() {
 
 }
 
+float terrain :: normal_angle(float x, float y, float z) {
+//    std :: cout <<  ( std :: acos( z / (vec_len(x, y, z)) * vec_len(0, 0, 1)) * (float) 180 /  PI_EXTERN) << "/n";
+    return ( std :: acos( z / (vec_len(x, y, z)) * vec_len(0, 0, 1)) * (float) 180 / PI_EXTERN ) ;
+}
+
+float terrain :: vec_len(float x, float y, float z) {
+    return (sqrt(pow(x, 2) + pow(y, 2) + pow(z, 2)));
+}
+
+void terrain :: load_material_arrays() {
+
+    terrain_positions_snow.clear();
+    terrain_normals_snow.clear();
+    terrain_positions_grass.clear();
+    terrain_normals_grass.clear();
+    terrain_positions_rock.clear();
+    terrain_normals_rock.clear();
+
+    for (int i = 0; i < triangles_count; i++) {
+
+        if (normal_angle(terrain_normals[i * 9], terrain_normals[i * 9 + 1], terrain_normals[i * 9 + 2]) > 48 || (terrain_positions[i*9 + 2] > 150 && terrain_positions[i*9 + 2] < 200) && terrain_positions[i*9 + 2] < 250) {
+            terrain_positions_rock.push_back(terrain_positions[i * 9]);
+            terrain_positions_rock.push_back(terrain_positions[i * 9 + 1]);
+            terrain_positions_rock.push_back(terrain_positions[i * 9 + 2]);
+
+            terrain_positions_rock.push_back(terrain_positions[i * 9 + 3]);
+            terrain_positions_rock.push_back(terrain_positions[i * 9 + 4]);
+            terrain_positions_rock.push_back(terrain_positions[i * 9 + 5]);
+
+            terrain_positions_rock.push_back(terrain_positions[i * 9 + 6]);
+            terrain_positions_rock.push_back(terrain_positions[i * 9 + 7]);
+            terrain_positions_rock.push_back(terrain_positions[i * 9 + 8]);
+
+            terrain_normals_rock.push_back(terrain_normals[i * 9]);
+            terrain_normals_rock.push_back(terrain_normals[i * 9 + 1]);
+            terrain_normals_rock.push_back(terrain_normals[i * 9 + 2]);
+
+            terrain_normals_rock.push_back(terrain_normals[i * 9 + 3]);
+            terrain_normals_rock.push_back(terrain_normals[i * 9 + 4]);
+            terrain_normals_rock.push_back(terrain_normals[i * 9 + 5]);
+
+            terrain_normals_rock.push_back(terrain_normals[i * 9 + 6]);
+            terrain_normals_rock.push_back(terrain_normals[i * 9 + 7]);
+            terrain_normals_rock.push_back(terrain_normals[i * 9 + 8]);
+        }
+        else {
+            if (terrain_positions[i * 9 + 2] >= 200) {
+
+                terrain_positions_snow.push_back(terrain_positions[i * 9]);
+                terrain_positions_snow.push_back(terrain_positions[i * 9 + 1]);
+                terrain_positions_snow.push_back(terrain_positions[i * 9 + 2]);
+
+                terrain_positions_snow.push_back(terrain_positions[i * 9 + 3]);
+                terrain_positions_snow.push_back(terrain_positions[i * 9 + 4]);
+                terrain_positions_snow.push_back(terrain_positions[i * 9 + 5]);
+
+                terrain_positions_snow.push_back(terrain_positions[i * 9 + 6]);
+                terrain_positions_snow.push_back(terrain_positions[i * 9 + 7]);
+                terrain_positions_snow.push_back(terrain_positions[i * 9 + 8]);
+
+                terrain_normals_snow.push_back(terrain_normals[i * 9]);
+                terrain_normals_snow.push_back(terrain_normals[i * 9 + 1]);
+                terrain_normals_snow.push_back(terrain_normals[i * 9 + 2]);
+
+                terrain_normals_snow.push_back(terrain_normals[i * 9 + 3]);
+                terrain_normals_snow.push_back(terrain_normals[i * 9 + 4]);
+                terrain_normals_snow.push_back(terrain_normals[i * 9 + 5]);
+
+                terrain_normals_snow.push_back(terrain_normals[i * 9 + 6]);
+                terrain_normals_snow.push_back(terrain_normals[i * 9 + 7]);
+                terrain_normals_snow.push_back(terrain_normals[i * 9 + 8]);
+            }
+            else {
+                terrain_positions_grass.push_back(terrain_positions[i * 9]);
+                terrain_positions_grass.push_back(terrain_positions[i * 9 + 1]);
+                terrain_positions_grass.push_back(terrain_positions[i * 9 + 2]);
+
+                terrain_positions_grass.push_back(terrain_positions[i * 9 + 3]);
+                terrain_positions_grass.push_back(terrain_positions[i * 9 + 4]);
+                terrain_positions_grass.push_back(terrain_positions[i * 9 + 5]);
+
+                terrain_positions_grass.push_back(terrain_positions[i * 9 + 6]);
+                terrain_positions_grass.push_back(terrain_positions[i * 9 + 7]);
+                terrain_positions_grass.push_back(terrain_positions[i * 9 + 8]);
+
+                terrain_normals_grass.push_back(terrain_normals[i * 9]);
+                terrain_normals_grass.push_back(terrain_normals[i * 9 + 1]);
+                terrain_normals_grass.push_back(terrain_normals[i * 9 + 2]);
+
+                terrain_normals_grass.push_back(terrain_normals[i * 9 + 3]);
+                terrain_normals_grass.push_back(terrain_normals[i * 9 + 4]);
+                terrain_normals_grass.push_back(terrain_normals[i * 9 + 5]);
+
+                terrain_normals_grass.push_back(terrain_normals[i * 9 + 6]);
+                terrain_normals_grass.push_back(terrain_normals[i * 9 + 7]);
+                terrain_normals_grass.push_back(terrain_normals[i * 9 + 8]);
+            }
+        }
+    }
+}
+
+void terrain :: draw_terrain_material_arrays() {
+
+    glPushMatrix();
+    //glBindBuffer(GL_ARRAY_BUFFER, vbo);
+    glMaterialfv(GL_FRONT, GL_DIFFUSE,   m200.diffuse);
+    glMaterialfv(GL_FRONT, GL_SPECULAR,  m200.specular);
+    glMaterialf( GL_FRONT, GL_SHININESS, m200.shininess);
+    glMaterialfv(GL_FRONT, GL_AMBIENT,   m200.ambient);
+
+    glVertexPointer(3, GL_FLOAT, 0, terrain_positions_grass.data());
+    glNormalPointer(GL_FLOAT, 0, terrain_normals_grass.data());
+    glDrawArrays( GL_TRIANGLES, 0,  static_cast <int>  (terrain_positions_grass.size()) / 3);
+
+    glMaterialfv(GL_FRONT, GL_DIFFUSE,   rocky.diffuse);
+    glMaterialfv(GL_FRONT, GL_SPECULAR,  rocky.specular);
+    glMaterialf( GL_FRONT, GL_SHININESS, rocky.shininess);
+    glMaterialfv(GL_FRONT, GL_AMBIENT,   rocky.ambient);
+
+    glVertexPointer(3, GL_FLOAT, 0, terrain_positions_rock.data());
+    glNormalPointer(GL_FLOAT, 0, terrain_normals_rock.data());
+    glDrawArrays( GL_TRIANGLES, 0, static_cast <int> (terrain_positions_rock.size()) / 3);
+
+    glMaterialfv(GL_FRONT, GL_DIFFUSE,   whitesh.diffuse);
+    glMaterialfv(GL_FRONT, GL_SPECULAR,  whitesh.specular);
+    glMaterialf( GL_FRONT, GL_SHININESS, whitesh.shininess);
+    glMaterialfv(GL_FRONT, GL_AMBIENT,   whitesh.ambient);
+
+    glVertexPointer(3, GL_FLOAT, 0, terrain_positions_snow.data());
+    glNormalPointer(GL_FLOAT, 0, terrain_normals_snow.data());
+    glDrawArrays( GL_TRIANGLES, 0, static_cast <int> (terrain_positions_snow.size()) / 3);
+
+    glPopMatrix();
+}
+
 
 void terrain :: load_terrain() {
 
     load_heightmap();
     load_triangles();
-    normalize_terrain(30);
-    stretch_terrain(8, 8);
+    normalize_terrain(100);
+    stretch_terrain(2, 2);
     load_normals();
     load_arrays();
+    load_material_arrays();
+    load_colors();
 }
 
 
@@ -277,12 +533,13 @@ void terrain :: draw_terrain_arrays() {
 
     glPushMatrix();
     //glBindBuffer(GL_ARRAY_BUFFER, vbo);
-    glMaterialfv(GL_FRONT, GL_DIFFUSE,   m200.diffuse);
-    glMaterialfv(GL_FRONT, GL_SPECULAR,  m200.specular);
-    glMaterialf( GL_FRONT, GL_SHININESS, m200.shininess);
-    glMaterialfv(GL_FRONT, GL_AMBIENT,   m200.ambient);
+//    glMaterialfv(GL_FRONT, GL_DIFFUSE,   m200.diffuse);
+//    glMaterialfv(GL_FRONT, GL_SPECULAR,  m200.specular);
+//    glMaterialf( GL_FRONT, GL_SHININESS, m200.shininess);
+//    glMaterialfv(GL_FRONT, GL_AMBIENT,   m200.ambient);
 
     glVertexPointer(3, GL_FLOAT, 0, terrain_positions);
+    glColorPointer(3, GL_FLOAT, 0, terrain_colors.data());
     glNormalPointer(GL_FLOAT, 0, terrain_normals);
     glDrawArrays( GL_TRIANGLES, 0, triangles_count * 3);
 
