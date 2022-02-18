@@ -109,14 +109,29 @@ void terrain :: load_triangles() {
             happy_vertex_4.position_y = row;
             happy_vertex_4.position_z = terrain_numerical_mx[row][col + 1];
 
-            happy_triangle_1.vertex_1 = happy_vertex_1;
-            happy_triangle_2.vertex_1 = happy_vertex_1;
+            if ((col + row % 2) % 2 == 0) {
 
-            happy_triangle_1.vertex_2 = happy_vertex_3;
-            happy_triangle_2.vertex_2 = happy_vertex_4;
+                happy_triangle_1.vertex_1 = happy_vertex_1;
+                happy_triangle_2.vertex_1 = happy_vertex_1;
 
-            happy_triangle_1.vertex_3 = happy_vertex_2;
-            happy_triangle_2.vertex_3 = happy_vertex_3;
+                happy_triangle_1.vertex_2 = happy_vertex_3;
+                happy_triangle_2.vertex_2 = happy_vertex_4;
+
+                happy_triangle_1.vertex_3 = happy_vertex_2;
+                happy_triangle_2.vertex_3 = happy_vertex_3;
+
+            } else {
+
+                happy_triangle_1.vertex_1 = happy_vertex_4;
+                happy_triangle_2.vertex_1 = happy_vertex_4;
+
+                happy_triangle_1.vertex_2 = happy_vertex_2;
+                happy_triangle_2.vertex_2 = happy_vertex_3;
+
+                happy_triangle_1.vertex_3 = happy_vertex_1;
+                happy_triangle_2.vertex_3 = happy_vertex_2;
+
+            }
 
             triangle_row.push_back(happy_triangle_1);
             triangle_row.push_back(happy_triangle_2);
@@ -126,6 +141,7 @@ void terrain :: load_triangles() {
         terrain_triangle_mx.push_back(triangle_row);
     }
 }
+
 
 
 // compute normals
