@@ -24,10 +24,10 @@
 
 world :: world( QWidget* parent) : QGLWidget(parent) {
 
-    QGLFormat format;
-    format.setSampleBuffers(true);
-    format.setSamples(4);
-    setFormat(format);
+//    QGLFormat format;
+//   // format.setSampleBuffers(true);
+//    format.setSamples(4);
+//    setFormat(format);
    // this -> splash = splash;
     tick = 0;
     zoom = 0;
@@ -229,65 +229,18 @@ void world :: reload() {
 }
 
 
-//void world :: load_terrain() {
-
-//    using namespace std;
-
-//    // open .pgm image
-//    ifstream terrain_data("heightmap.pgm");
-
-//    // or don't
-//    if (terrain_data.fail()) return;
-
-//    int terrain_size = 0;
-//    string happy_string, unhappy_string, str;
-//    istringstream happy_string_stream;
-
-//    // image file checks
-//    for (int i = 0; i < 3; i++) {
-//        getline(terrain_data, happy_string);
-
-//        // check P2 header
-//        if (i == 0 && happy_string.compare("P2") != 0) return;
-
-//        // get terrain dimensions
-//        else if (i == 1) terrain_size = stoi(happy_string.substr(0, happy_string.find(' ')));
-
-//        // accept 8-bit or 16-bit pgm only.
-//        else if (i == 2 && stoi(happy_string) != PGM_8_BIT && stoi(happy_string) != PGM_16_BIT) return;
-//    }
-
-//    for (int i = 0; i < terrain_mx.size(); i++) terrain_mx[i].clear();
-
-//    terrain_mx.clear();
-//    //terrain_mx.resize(terrain_size, vector <int> (terrain_size));
-
-//    for (int i = 0; i < terrain_size; i++) {
-
-//        getline(terrain_data, happy_string);
-
-//        istringstream unhappy_string_stream(happy_string);
-//        vector <int> pixel_row;
-
-//        while (getline(unhappy_string_stream, unhappy_string, ' ')) pixel_row.push_back(stoi(unhappy_string));
-
-//        terrain_mx.push_back(pixel_row);
-
-//    }
-//}
-
-
 static const float PI = 3.1415926535;
 
 void world :: initializeGL() {
 
    // interface -> ldg_menu -> show();
 
-    glClearColor(0.4, 0.5, 0.8, 0.0);
-    glEnable(GL_MULTISAMPLE);
+    glClearColor(0.337, 0.796, 0.996, 1.0);
+
 
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
+
     glEnable(GL_CULL_FACE);
     glCullFace(GL_BACK);
 
@@ -297,7 +250,7 @@ void world :: initializeGL() {
     glFogf(GL_FOG_START, 200.f);
     glFogf(GL_FOG_END, 1500.f);
 
-    float fcolour[3]={0.4, 0.5, 0.8};
+    float fcolour[3]={0.337, 0.796, 0.996};
 
     glEnable(GL_DEPTH_TEST);
     glDepthMask(GL_TRUE);
@@ -341,6 +294,7 @@ void world :: initializeGL() {
     glEnableClientState(GL_VERTEX_ARRAY);
     glEnableClientState(GL_NORMAL_ARRAY);
     glEnableClientState(GL_COLOR_ARRAY);
+
 
 //    glGenBuffers(1, &vbo);
 //        glBindBuffer(GL_ARRAY_BUFFER, vbo);
@@ -422,6 +376,7 @@ void world :: paintGL() {
 
     glMatrixMode(GL_MODELVIEW);
     glEnable(GL_DEPTH_TEST);
+    glEnable(GL_MULTISAMPLE);
 
     glLoadIdentity();
 

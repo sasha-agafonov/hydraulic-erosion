@@ -220,9 +220,9 @@ void terrain :: load_colors() {
         // green
         if (terrain_positions[i * 9 + 2] < 100) {
 
-            color1 = 0.2f;
-            color2 = 0.45f;
-            color3 = 0.2f;
+            color1 = 0.466f;
+            color2 = 0.556f;
+            color3 = 0.419f;
 
 //            for (int x = 0; x < 3; x++) {
 ////                terrain_colors.push_back(0.2f );
@@ -239,13 +239,15 @@ void terrain :: load_colors() {
         // green to black
 
         //0.25 0.2 0.2
-        else if (terrain_positions[i * 9 + 2 + 3 * x] < 150 && terrain_positions[i * 9 + 2 + 3 * x] >= 100) {
 
-             color1 = (0.05 * ((terrain_positions[i * 9 + 2 + 3 * x] - 100 ) / 50)  + 0.2f);
+        // 0.188, 0.392, 0.478
+        else if (terrain_positions[i * 9 + 2 + 3 * x] < 180 && terrain_positions[i * 9 + 2 + 3 * x] >= 100) {
+
+             color1 = (-0.278 * ((terrain_positions[i * 9 + 2 + 3 * x] - 100 ) / 80)  + 0.466f);
              // G
-             color2 = (-0.25f * ((terrain_positions[i * 9 + 2 + 3 * x] - 100 ) / 50)  + 0.45f);
+             color2 = (-0.164f * ((terrain_positions[i * 9 + 2 + 3 * x] - 100 ) / 80)  + 0.556f);
              // B
-             color3 = (0 * ((terrain_positions[i * 9 + 2 + 3 * x] - 100 ) / 50)  + 0.2f);
+             color3 = (0.059 * ((terrain_positions[i * 9 + 2 + 3 * x] - 100 ) / 80)  + 0.419f);
 
 //            for (int x = 0; x < 3; x++) {
 //                terrain_colors.push_back((0.05 * ((terrain_positions[i * 9 + 2] - 100 ) / 50)  + 0.2f));
@@ -258,11 +260,11 @@ void terrain :: load_colors() {
         }
 
         // black
-        else if (terrain_positions[i * 9 + 2 + 3 * x] < 200 && terrain_positions[i * 9 + 2 + 3 * x] >= 150) {
+        else if (terrain_positions[i * 9 + 2 + 3 * x] < 200 && terrain_positions[i * 9 + 2 + 3 * x] >= 180) {
 
-                   color1 = 0.25f;
-                   color2 = 0.2f;
-                   color3 = 0.2f;
+                   color1 = 0.188f;
+                   color2 = 0.392f;
+                   color3 = 0.478f;
 //            for (int x = 0; x < 3; x++) {
 //                terrain_colors.push_back(0.25f);
 //                terrain_colors.push_back(0.2f);
@@ -272,9 +274,9 @@ void terrain :: load_colors() {
 
         // black to white
         else if (terrain_positions[i * 9 + 2 + 3 * x] < 250 && terrain_positions[i * 9 + 2 + 3 * x] >= 200) {
-                color1 = 0.55f * (terrain_positions[i * 9 + 2 + 3 * x] - 200 ) / 50 + 0.25f;
-                color2 = 0.6f * (terrain_positions[i * 9 + 2 + 3 * x] - 200 ) / 50 + 0.2f;
-                color3 = 0.7f * (terrain_positions[i * 9 + 2 + 3 * x] - 200 ) / 50 + 0.2f;
+                color1 = 0.482f * (terrain_positions[i * 9 + 2 + 3 * x] - 200 ) / 50 + 0.188f;
+                color2 = 0.345f * (terrain_positions[i * 9 + 2 + 3 * x] - 200 ) / 50 + 0.392f;
+                color3 = 0.118f * (terrain_positions[i * 9 + 2 + 3 * x] - 200 ) / 50 + 0.478f;
 
 //            for (int x = 0; x < 3; x++) {
 //                terrain_colors.push_back(0.35f * (terrain_positions[i * 9 + 2] - 200 ) / 50 + 0.25f);
@@ -286,9 +288,9 @@ void terrain :: load_colors() {
         //white
         else {
 
-                color1 = 0.8f;
-                color2 = 0.8f;
-                color3 = 0.9f;
+                color1 = 0.670f;
+                color2 = 0.737f;
+                color3 = 0.596f;
 //            for (int x = 0; x < 3; x++) {
 //                terrain_colors.push_back(0.6f );
 //                terrain_colors.push_back(0.6f );
@@ -507,7 +509,7 @@ void terrain :: load_terrain() {
     load_heightmap();
     load_triangles();
     normalize_terrain(100);
-    stretch_terrain(2, 2);
+    stretch_terrain(8, 8);
     load_normals();
     load_arrays();
     load_material_arrays();

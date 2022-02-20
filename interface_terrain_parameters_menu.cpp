@@ -21,14 +21,14 @@ terrain_parameters_menu :: terrain_parameters_menu(QWidget* parent) : QWidget(pa
     width_x_spinbox -> setFixedWidth(60);
     width_x_spinbox -> setMinimum(1);
     width_x_spinbox -> setMaximum(1000);
-    width_x_spinbox -> setValue(400);
+    width_x_spinbox -> setValue(100);
 
     width_y_spinbox = new QSpinBox(this);
     width_y_spinbox -> setFixedHeight(25);
     width_y_spinbox -> setFixedWidth(60);
     width_y_spinbox -> setMinimum(1);
     width_y_spinbox -> setMaximum(1000);
-    width_y_spinbox -> setValue(400);
+    width_y_spinbox -> setValue(100);
 
     connect(width_x_spinbox, SIGNAL(valueChanged(int)), this, SLOT(equalize_size_y()));
     connect(width_y_spinbox, SIGNAL(valueChanged(int)), this, SLOT(equalize_size_x()));

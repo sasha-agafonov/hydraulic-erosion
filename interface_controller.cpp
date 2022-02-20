@@ -28,7 +28,12 @@ interface_controller :: interface_controller(QWidget* parent) : QWidget(parent) 
 //    format.setSampleBuffers(true);
 //    format.setSamples(4);
 
+    QGLFormat format;
+    format.setSampleBuffers(true);
+    format.setSamples(4);
+
     scene = new world(this);
+    scene -> setFormat(format);
 
     sc_menu = new scene_menu(this);
     gen_menu = new generation_menu(this);

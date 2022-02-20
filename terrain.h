@@ -35,9 +35,9 @@ static materialStruct whitesh {
 };
 
 static materialStruct base {
-    { 0.5f, 0.5f, 0.5f, 1.f },
-    { 0.2f, 0.2f, 0.2f, 1.f },
     { 0.1f, 0.1f, 0.1f, 1.f },
+    { 0.1f, 0.1f, 0.1f, 1.f },
+    { 0.3f, 0.3f, 0.3f, 1.f },
     2.f
 };
 
