@@ -235,7 +235,9 @@ void world :: initializeGL() {
 
    // interface -> ldg_menu -> show();
 
-    glClearColor(0.337, 0.796, 0.996, 1.0);
+   // glClearColor(0.337, 0.796, 0.996, 1.0);
+
+    glClearColor(0.4, 0.7, 0.9, 1.0);
 
 
     glMatrixMode(GL_MODELVIEW);
@@ -248,9 +250,9 @@ void world :: initializeGL() {
 
     glFogi(GL_FOG_MODE, GL_LINEAR);
     glFogf(GL_FOG_START, 200.f);
-    glFogf(GL_FOG_END, 1500.f);
+    glFogf(GL_FOG_END, 2000.f);
 
-    float fcolour[3]={0.337, 0.796, 0.996};
+    float fcolour[3]={0.4, 0.7, 0.9};
 
     glEnable(GL_DEPTH_TEST);
     glDepthMask(GL_TRUE);
@@ -357,7 +359,7 @@ void world :: resizeGL(int w, int h) {
     glViewport(0, 0, w, h);
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    glFrustum(-20 * ((double)w/h) * (1. / sqrt(3)), 20 * ((double)w/h)* (1. / sqrt(3)), -20* (1. / sqrt(3)), 20* (1. / sqrt(3)), 20, 1500.0);
+    glFrustum(-20 * ((double)w/h) * (1. / sqrt(3)), 20 * ((double)w/h)* (1. / sqrt(3)), -20* (1. / sqrt(3)), 20* (1. / sqrt(3)), 20, 2000.0);
 
 }
 
@@ -372,7 +374,7 @@ void world :: paintGL() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     glEnable(GL_NORMALIZE);
-    glShadeModel(GL_FLAT);
+    glShadeModel(GL_SMOOTH);
 
     glMatrixMode(GL_MODELVIEW);
     glEnable(GL_DEPTH_TEST);

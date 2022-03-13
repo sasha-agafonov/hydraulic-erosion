@@ -4,6 +4,8 @@
 #include <GL/glu.h>
 #include <vector>
 
+#include "hydro.h"
+
 typedef struct materialStruct {
 
     GLfloat ambient[4];
@@ -37,7 +39,7 @@ static materialStruct whitesh {
 static materialStruct base {
     { 0.1f, 0.1f, 0.1f, 1.f },
     { 0.1f, 0.1f, 0.1f, 1.f },
-    { 0.3f, 0.3f, 0.3f, 1.f },
+    { 0.05f, 0.05f, 0.05f, 1.f },
     2.f
 };
 
@@ -71,11 +73,14 @@ public:
     void load_heightmap();
     void load_triangles();
     void load_normals();
+    void load_smooth_normals();
     void load_arrays();
     void load_colors();
     void load_terrain();
 
     float interpolate_angle(float ang);
+
+    hydro* water;
 
 
     GLuint vbo;
@@ -109,6 +114,7 @@ public:
 
     std :: vector < std :: vector <float> > terrain_numerical_mx;
     std :: vector < std :: vector <triangle> > terrain_triangle_mx;
+    std :: vector < std :: vector <triangle> > terrain_smooth_triangle_mx;
 
 };
 

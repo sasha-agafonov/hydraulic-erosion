@@ -17,6 +17,7 @@
 
 #include "noise.h"
 #include "noise_layer.h"
+#include "hydro.h"
 
 
 class generation_menu : public QWidget {
@@ -35,6 +36,7 @@ public:
     terrain_parameters_menu* terrain_parameters;
 
     noise* noisy;
+    hydro* water;
     noise_layer* layer;
 
 public slots:

@@ -18,6 +18,7 @@ generation_menu :: generation_menu(QWidget *parent) : QWidget(parent) {
     v_box -> addWidget(build_button);
 
     noisy = new noise();
+    water = new hydro();
 
 }
 

@@ -22,6 +22,7 @@
 terrain :: terrain() : terrain_size(0) {
 
     triangles_count = 0;
+    water = new hydro();
 }
 
 
@@ -81,6 +82,7 @@ void terrain :: load_triangles() {
 //    v2--------v3
 
     terrain_triangle_mx.clear();
+    terrain_smooth_triangle_mx.clear();
 
     triangle happy_triangle_1, happy_triangle_2;
     vertex happy_vertex_1, happy_vertex_2;
@@ -109,29 +111,29 @@ void terrain :: load_triangles() {
             happy_vertex_4.position_y = row;
             happy_vertex_4.position_z = terrain_numerical_mx[row][col + 1];
 
-            if ((col + row % 2) % 2 == 0) {
+//            if ((col + row % 2) % 2 == 0) {
 
-                happy_triangle_1.vertex_1 = happy_vertex_1;
+//                happy_triangle_1.vertex_1 = happy_vertex_1;
+//                happy_triangle_2.vertex_1 = happy_vertex_1;
+
+//                happy_triangle_1.vertex_2 = happy_vertex_3;
+//                happy_triangle_2.vertex_2 = happy_vertex_4;
+
+//                happy_triangle_1.vertex_3 = happy_vertex_2;
+//                happy_triangle_2.vertex_3 = happy_vertex_3;
+
+//            } else {
+
                 happy_triangle_2.vertex_1 = happy_vertex_1;
+                happy_triangle_1.vertex_1 = happy_vertex_1;
 
-                happy_triangle_1.vertex_2 = happy_vertex_3;
                 happy_triangle_2.vertex_2 = happy_vertex_4;
+                happy_triangle_1.vertex_2 = happy_vertex_3;
 
-                happy_triangle_1.vertex_3 = happy_vertex_2;
                 happy_triangle_2.vertex_3 = happy_vertex_3;
+                happy_triangle_1.vertex_3 = happy_vertex_2;
 
-            } else {
-
-                happy_triangle_1.vertex_1 = happy_vertex_4;
-                happy_triangle_2.vertex_1 = happy_vertex_4;
-
-                happy_triangle_1.vertex_2 = happy_vertex_2;
-                happy_triangle_2.vertex_2 = happy_vertex_3;
-
-                happy_triangle_1.vertex_3 = happy_vertex_1;
-                happy_triangle_2.vertex_3 = happy_vertex_2;
-
-            }
+//            }
 
             triangle_row.push_back(happy_triangle_1);
             triangle_row.push_back(happy_triangle_2);
@@ -139,10 +141,174 @@ void terrain :: load_triangles() {
         }
 
         terrain_triangle_mx.push_back(triangle_row);
+        terrain_smooth_triangle_mx.push_back(triangle_row);
     }
 }
 
 
+void terrain :: load_smooth_normals() {
+    for (int row = 0; row < static_cast <int> (terrain_smooth_triangle_mx.size()); row++) {
+        for (int col = 0; col < static_cast <int> (terrain_smooth_triangle_mx[0].size()); col++) {
+            if ((row <= 1|| col <= 1) || (row >= terrain_smooth_triangle_mx.size() - 2 || col >= terrain_smooth_triangle_mx[0].size() - 2)) {
+
+            }
+            else {
+                if (col % 2 == 0) {
+                    terrain_smooth_triangle_mx[row][col].vertex_1.normal_x = ((terrain_triangle_mx[row - 1][col].vertex_1.normal_x
+                                                                           + terrain_triangle_mx[row - 1][col - 1].vertex_1.normal_x
+                                                                           + terrain_triangle_mx[row - 1][col - 2].vertex_1.normal_x
+                                                                           + terrain_triangle_mx[row][col + 1].vertex_1.normal_x
+                                                                           + terrain_triangle_mx[row][col].vertex_1.normal_x
+                                                                           + terrain_triangle_mx[row][col - 1].vertex_1.normal_x)
+                                                                           / 6.f);
+
+                    terrain_smooth_triangle_mx[row][col].vertex_1.normal_y = ((terrain_triangle_mx[row - 1][col].vertex_1.normal_y
+                                                                           + terrain_triangle_mx[row - 1][col - 1].vertex_1.normal_y
+                                                                           + terrain_triangle_mx[row - 1][col - 2].vertex_1.normal_y
+                                                                           + terrain_triangle_mx[row][col + 1].vertex_1.normal_y
+                                                                           + terrain_triangle_mx[row][col].vertex_1.normal_y
+                                                                           + terrain_triangle_mx[row][col - 1].vertex_1.normal_y)
+                                                                           / 6.f);
+
+                    terrain_smooth_triangle_mx[row][col].vertex_1.normal_z = ((terrain_triangle_mx[row - 1][col].vertex_1.normal_z
+                                                                           + terrain_triangle_mx[row - 1][col - 1].vertex_1.normal_z
+                                                                           + terrain_triangle_mx[row - 1][col - 2].vertex_1.normal_z
+                                                                           + terrain_triangle_mx[row][col + 1].vertex_1.normal_z
+                                                                           + terrain_triangle_mx[row][col].vertex_1.normal_z
+                                                                           + terrain_triangle_mx[row][col - 1].vertex_1.normal_z)
+                                                                           / 6.f);
+
+
+                    terrain_smooth_triangle_mx[row][col].vertex_2.normal_x = ((terrain_triangle_mx[row][col + 2].vertex_1.normal_x
+                                                                           + terrain_triangle_mx[row][col + 1].vertex_1.normal_x
+                                                                           + terrain_triangle_mx[row][col].vertex_1.normal_x
+                                                                           + terrain_triangle_mx[row + 1][col + 3].vertex_1.normal_x
+                                                                           + terrain_triangle_mx[row + 1][col + 2].vertex_1.normal_x
+                                                                           + terrain_triangle_mx[row + 1][col + 1].vertex_1.normal_x)
+                                                                           / 6.f);
+
+                    terrain_smooth_triangle_mx[row][col].vertex_2.normal_y = ((terrain_triangle_mx[row][col + 2].vertex_1.normal_y
+                                                                           + terrain_triangle_mx[row][col + 1].vertex_1.normal_y
+                                                                           + terrain_triangle_mx[row][col].vertex_1.normal_y
+                                                                           + terrain_triangle_mx[row + 1][col + 3].vertex_1.normal_y
+                                                                           + terrain_triangle_mx[row + 1][col + 2].vertex_1.normal_y
+                                                                           + terrain_triangle_mx[row + 1][col + 1].vertex_1.normal_y)
+                                                                           / 6.f);
+
+                    terrain_smooth_triangle_mx[row][col].vertex_2.normal_z = ((terrain_triangle_mx[row][col + 2].vertex_1.normal_z
+                                                                           + terrain_triangle_mx[row][col + 1].vertex_1.normal_z
+                                                                           + terrain_triangle_mx[row][col].vertex_1.normal_z
+                                                                           + terrain_triangle_mx[row + 1][col + 3].vertex_1.normal_z
+                                                                           + terrain_triangle_mx[row + 1][col + 2].vertex_1.normal_z
+                                                                           + terrain_triangle_mx[row + 1][col + 1].vertex_1.normal_z)
+                                                                           / 6.f);
+
+
+                    terrain_smooth_triangle_mx[row][col].vertex_3.normal_x = ((terrain_triangle_mx[row][col].vertex_1.normal_x
+                                                                           + terrain_triangle_mx[row][col - 1].vertex_1.normal_x
+                                                                           + terrain_triangle_mx[row][col - 2].vertex_1.normal_x
+                                                                           + terrain_triangle_mx[row + 1][col + 1].vertex_1.normal_x
+                                                                           + terrain_triangle_mx[row + 1][col].vertex_1.normal_x
+                                                                           + terrain_triangle_mx[row + 1][col - 1].vertex_1.normal_x)
+                                                                           / 6.f);
+
+                    terrain_smooth_triangle_mx[row][col].vertex_3.normal_y = ((terrain_triangle_mx[row][col].vertex_1.normal_y
+                                                                           + terrain_triangle_mx[row][col - 1].vertex_1.normal_y
+                                                                           + terrain_triangle_mx[row][col - 2].vertex_1.normal_y
+                                                                           + terrain_triangle_mx[row + 1][col + 1].vertex_1.normal_y
+                                                                           + terrain_triangle_mx[row + 1][col].vertex_1.normal_y
+                                                                           + terrain_triangle_mx[row + 1][col - 1].vertex_1.normal_y)
+                                                                           / 6.f);
+
+                    terrain_smooth_triangle_mx[row][col].vertex_3.normal_z = ((terrain_triangle_mx[row][col].vertex_1.normal_z
+                                                                           + terrain_triangle_mx[row][col - 1].vertex_1.normal_z
+                                                                           + terrain_triangle_mx[row][col - 2].vertex_1.normal_z
+                                                                           + terrain_triangle_mx[row + 1][col + 1].vertex_1.normal_z
+                                                                           + terrain_triangle_mx[row + 1][col].vertex_1.normal_z
+                                                                           + terrain_triangle_mx[row + 1][col - 1].vertex_1.normal_z)
+                                                                           / 6.f);
+                } else {
+
+                    terrain_smooth_triangle_mx[row][col].vertex_1.normal_x = ((terrain_triangle_mx[row - 1][col - 1].vertex_1.normal_x
+                                                                           + terrain_triangle_mx[row - 1][col - 2].vertex_1.normal_x
+                                                                           + terrain_triangle_mx[row - 1][col - 3].vertex_1.normal_x
+                                                                           + terrain_triangle_mx[row][col].vertex_1.normal_x
+                                                                           + terrain_triangle_mx[row][col - 1].vertex_1.normal_x
+                                                                           + terrain_triangle_mx[row][col - 2].vertex_1.normal_x)
+                                                                           / 6.f);
+
+                    terrain_smooth_triangle_mx[row][col].vertex_1.normal_y = ((terrain_triangle_mx[row - 1][col - 1].vertex_1.normal_y
+                                                                           + terrain_triangle_mx[row - 1][col - 2].vertex_1.normal_y
+                                                                           + terrain_triangle_mx[row - 1][col - 3].vertex_1.normal_y
+                                                                           + terrain_triangle_mx[row][col].vertex_1.normal_y
+                                                                           + terrain_triangle_mx[row][col - 1].vertex_1.normal_y
+                                                                           + terrain_triangle_mx[row][col - 2].vertex_1.normal_y)
+                                                                           / 6.f);
+
+                    terrain_smooth_triangle_mx[row][col].vertex_1.normal_z = ((terrain_triangle_mx[row - 1][col - 1].vertex_1.normal_z
+                                                                           + terrain_triangle_mx[row - 1][col - 2].vertex_1.normal_z
+                                                                           + terrain_triangle_mx[row - 1][col - 3].vertex_1.normal_z
+                                                                           + terrain_triangle_mx[row][col].vertex_1.normal_z
+                                                                           + terrain_triangle_mx[row][col - 1].vertex_1.normal_z
+                                                                           + terrain_triangle_mx[row][col - 2].vertex_1.normal_z)
+                                                                           / 6.f);
+
+
+                    terrain_smooth_triangle_mx[row][col].vertex_2.normal_x = ((terrain_triangle_mx[row - 1][col + 1].vertex_1.normal_x
+                                                                           + terrain_triangle_mx[row - 1][col].vertex_1.normal_x
+                                                                           + terrain_triangle_mx[row - 1][col - 1].vertex_1.normal_x
+                                                                           + terrain_triangle_mx[row][col + 2].vertex_1.normal_x
+                                                                           + terrain_triangle_mx[row][col + 1].vertex_1.normal_x
+                                                                           + terrain_triangle_mx[row][col].vertex_1.normal_x)
+                                                                           / 6.f);
+
+                    terrain_smooth_triangle_mx[row][col].vertex_2.normal_y = ((terrain_triangle_mx[row - 1][col + 1].vertex_1.normal_y
+                                                                           + terrain_triangle_mx[row - 1][col].vertex_1.normal_y
+                                                                           + terrain_triangle_mx[row - 1][col - 1].vertex_1.normal_y
+                                                                           + terrain_triangle_mx[row][col + 2].vertex_1.normal_y
+                                                                           + terrain_triangle_mx[row][col + 1].vertex_1.normal_y
+                                                                           + terrain_triangle_mx[row][col].vertex_1.normal_y)
+                                                                           / 6.f);
+
+                    terrain_smooth_triangle_mx[row][col].vertex_2.normal_z = ((terrain_triangle_mx[row - 1][col + 1].vertex_1.normal_z
+                                                                           + terrain_triangle_mx[row - 1][col].vertex_1.normal_z
+                                                                           + terrain_triangle_mx[row - 1][col - 1].vertex_1.normal_z
+                                                                           + terrain_triangle_mx[row][col + 2].vertex_1.normal_z
+                                                                           + terrain_triangle_mx[row][col + 1].vertex_1.normal_z
+                                                                           + terrain_triangle_mx[row][col].vertex_1.normal_z)
+                                                                           / 6.f);
+
+
+                    terrain_smooth_triangle_mx[row][col].vertex_3.normal_x = ((terrain_triangle_mx[row][col + 1].vertex_1.normal_x
+                                                                           + terrain_triangle_mx[row][col].vertex_1.normal_x
+                                                                           + terrain_triangle_mx[row][col - 1].vertex_1.normal_x
+                                                                           + terrain_triangle_mx[row + 1][col].vertex_1.normal_x
+                                                                           + terrain_triangle_mx[row + 1][col + 1].vertex_1.normal_x
+                                                                           + terrain_triangle_mx[row + 1][col + 2].vertex_1.normal_x)
+                                                                           / 6.f);
+
+                    terrain_smooth_triangle_mx[row][col].vertex_3.normal_y = ((terrain_triangle_mx[row][col + 1].vertex_1.normal_y
+                                                                           + terrain_triangle_mx[row][col].vertex_1.normal_y
+                                                                           + terrain_triangle_mx[row][col - 1].vertex_1.normal_y
+                                                                           + terrain_triangle_mx[row + 1][col].vertex_1.normal_y
+                                                                           + terrain_triangle_mx[row + 1][col + 1].vertex_1.normal_y
+                                                                           + terrain_triangle_mx[row + 1][col + 2].vertex_1.normal_y)
+                                                                           / 6.f);
+
+                    terrain_smooth_triangle_mx[row][col].vertex_3.normal_z = ((terrain_triangle_mx[row][col + 1].vertex_1.normal_z
+                                                                           + terrain_triangle_mx[row][col].vertex_1.normal_z
+                                                                           + terrain_triangle_mx[row][col - 1].vertex_1.normal_z
+                                                                           + terrain_triangle_mx[row + 1][col].vertex_1.normal_z
+                                                                           + terrain_triangle_mx[row + 1][col + 1].vertex_1.normal_z
+                                                                           + terrain_triangle_mx[row + 1][col + 2].vertex_1.normal_z)
+                                                                           / 6.f);
+
+                }
+            }
+//            terrain_smooth_triangle_mx[row][col] = // average of 6 tris1;
+        }
+    }
+}
 
 // compute normals
 void terrain :: load_normals() {
@@ -218,30 +384,23 @@ void terrain :: load_colors() {
         for (int x = 0; x < 3; x++) {
         ang = normal_angle(terrain_normals[i * 9 + 3 * x], terrain_normals[i * 9 + 1 + 3 * x], terrain_normals[i * 9 + 2 + 3 * x] );
         // green
-        if (terrain_positions[i * 9 + 2] < 100) {
 
-            color1 = 0.466f;
-            color2 = 0.556f;
-            color3 = 0.419f;
+//        std :: cout << terrain_normals[i * 9 + 3 * x] << "\n";
+//        std :: cout << terrain_normals[i * 9 + 1 + 3 * x] << "\n";
+//        std :: cout << terrain_normals[i * 9 + 2 + 3 * x] << "\n";
 
-//            for (int x = 0; x < 3; x++) {
-////                terrain_colors.push_back(0.2f );
-////                // G
-////                terrain_colors.push_back(0.45f );
-////                // B
-////                terrain_colors.push_back(0.2f );
+//        if (terrain_positions[i * 9 + 2] < 100) {
 
-//                color1 = 0.2f;
-//                color2 = 0.45f;
-//                color3 = 0.2f;
-//            }
-        }
+//            color1 = 0.466f;
+//            color2 = 0.556f;
+//            color3 = 0.419f;
+//        }
         // green to black
 
         //0.25 0.2 0.2
 
         // 0.188, 0.392, 0.478
-        else if (terrain_positions[i * 9 + 2 + 3 * x] < 180 && terrain_positions[i * 9 + 2 + 3 * x] >= 100) {
+        if (terrain_positions[i * 9 + 2 + 3 * x] < 180 && terrain_positions[i * 9 + 2 + 3 * x] >= 100) {
 
              color1 = (-0.278 * ((terrain_positions[i * 9 + 2 + 3 * x] - 100 ) / 80)  + 0.466f);
              // G
@@ -249,14 +408,7 @@ void terrain :: load_colors() {
              // B
              color3 = (0.059 * ((terrain_positions[i * 9 + 2 + 3 * x] - 100 ) / 80)  + 0.419f);
 
-//            for (int x = 0; x < 3; x++) {
-//                terrain_colors.push_back((0.05 * ((terrain_positions[i * 9 + 2] - 100 ) / 50)  + 0.2f));
-//                // G
-//                terrain_colors.push_back((-0.25f * ((terrain_positions[i * 9 + 2] - 100 ) / 50)  + 0.45f));
-//                // B
-//                terrain_colors.push_back((0 * ((terrain_positions[i * 9 + 2] - 100 ) / 50)  + 0.2f));
 
-//            }
         }
 
         // black
@@ -265,11 +417,6 @@ void terrain :: load_colors() {
                    color1 = 0.188f;
                    color2 = 0.392f;
                    color3 = 0.478f;
-//            for (int x = 0; x < 3; x++) {
-//                terrain_colors.push_back(0.25f);
-//                terrain_colors.push_back(0.2f);
-//                terrain_colors.push_back(0.2f);
-//            }
         }
 
         // black to white
@@ -286,7 +433,11 @@ void terrain :: load_colors() {
         }
 
         //white
-        else {
+        else if (terrain_positions[i * 9 + 2 + 3 * x] >= 250){
+
+//                color1 = 0.670f;
+//                color2 = 0.737f;
+//                color3 = 0.596f;
 
                 color1 = 0.670f;
                 color2 = 0.737f;
@@ -298,9 +449,13 @@ void terrain :: load_colors() {
 //            }
         }
 
-        color1 = (0.25f - color1) * (interpolate_angle(ang)) + color1;
-        color2 = (0.2f - color2) * (interpolate_angle(ang)) + color2;
-        color3 = (0.2f - color3) * (interpolate_angle(ang)) + color3;
+        color1 = 0.670f;
+        color2 = 0.737f;
+        color3 = 0.596f;
+
+        color1 = (0.466f - color1) * (interpolate_angle(ang)) + color1;
+        color2 = (0.556f - color2) * (interpolate_angle(ang)) + color2;
+        color3 = (0.419f - color3) * (interpolate_angle(ang)) + color3;
 
 
         terrain_colors.push_back(color1);
@@ -332,9 +487,9 @@ void terrain :: load_arrays() {
 
     int counter = 0;
 
-    for (int i = 0; i < terrain_triangle_mx.size(); i++) {
+    for (int i = 2; i < terrain_triangle_mx.size() - 2; i++) {
 
-        for (int k = 0; k < terrain_triangle_mx[i].size(); k++) {
+        for (int k = 2; k < terrain_triangle_mx[i].size() - 2; k++) {
 
             // vx positions
             terrain_positions[counter   *   9] = terrain_triangle_mx[i][k].vertex_1.position_x;
@@ -350,17 +505,17 @@ void terrain :: load_arrays() {
             terrain_positions[counter * 9 + 8] = terrain_triangle_mx[i][k].vertex_3.position_z;
 
             // vx normals
-            terrain_normals[counter   *   9] = terrain_triangle_mx[i][k].vertex_1.normal_x;
-            terrain_normals[counter * 9 + 1] = terrain_triangle_mx[i][k].vertex_1.normal_y;
-            terrain_normals[counter * 9 + 2] = terrain_triangle_mx[i][k].vertex_1.normal_z;
+            terrain_normals[counter   *   9] = terrain_smooth_triangle_mx[i][k].vertex_1.normal_x;
+            terrain_normals[counter * 9 + 1] = terrain_smooth_triangle_mx[i][k].vertex_1.normal_y;
+            terrain_normals[counter * 9 + 2] = terrain_smooth_triangle_mx[i][k].vertex_1.normal_z;
 
-            terrain_normals[counter * 9 + 3] = terrain_triangle_mx[i][k].vertex_2.normal_x;
-            terrain_normals[counter * 9 + 4] = terrain_triangle_mx[i][k].vertex_2.normal_y;
-            terrain_normals[counter * 9 + 5] = terrain_triangle_mx[i][k].vertex_2.normal_z;
+            terrain_normals[counter * 9 + 3] = terrain_smooth_triangle_mx[i][k].vertex_2.normal_x;
+            terrain_normals[counter * 9 + 4] = terrain_smooth_triangle_mx[i][k].vertex_2.normal_y;
+            terrain_normals[counter * 9 + 5] = terrain_smooth_triangle_mx[i][k].vertex_2.normal_z;
 
-            terrain_normals[counter * 9 + 6] = terrain_triangle_mx[i][k].vertex_3.normal_x;
-            terrain_normals[counter * 9 + 7] = terrain_triangle_mx[i][k].vertex_3.normal_y;
-            terrain_normals[counter * 9 + 8] = terrain_triangle_mx[i][k].vertex_3.normal_z;
+            terrain_normals[counter * 9 + 6] = terrain_smooth_triangle_mx[i][k].vertex_3.normal_x;
+            terrain_normals[counter * 9 + 7] = terrain_smooth_triangle_mx[i][k].vertex_3.normal_y;
+            terrain_normals[counter * 9 + 8] = terrain_smooth_triangle_mx[i][k].vertex_3.normal_z;
 
             counter++;
         }
@@ -506,11 +661,20 @@ void terrain :: draw_terrain_material_arrays() {
 
 void terrain :: load_terrain() {
 
+//    load_heightmap();
+//    load_triangles();
+//    normalize_terrain(400);
+//    stretch_terrain(1, 1);
+//    load_normals();
+
+    water -> erode();
+
     load_heightmap();
     load_triangles();
-    normalize_terrain(100);
-    stretch_terrain(8, 8);
+    normalize_terrain(400);
+    stretch_terrain(1, 1);
     load_normals();
+    load_smooth_normals();
     load_arrays();
     load_material_arrays();
     load_colors();
@@ -596,7 +760,7 @@ void terrain :: stretch_terrain(int stretch_x, int stretch_y) {
 
 int terrain :: num_triangles() {
     int num = 0;
-    for (int i = 0; i < terrain_triangle_mx.size(); i++) num += terrain_triangle_mx[i].size();
+    for (int i = 2; i < terrain_triangle_mx.size() - 2; i++) num += (terrain_triangle_mx[i].size() - 4);
     return num;
 }
 

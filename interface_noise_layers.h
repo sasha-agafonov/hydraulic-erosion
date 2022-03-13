@@ -6,6 +6,7 @@
 #include <QVBoxLayout>
 
 #include "interface_noise_layer.h"
+#include "noise_layer.h"
 
 class interface_noise_layers : public QWidget {
 
@@ -24,6 +25,8 @@ public:
     QLabel* noise_layers_label;
 
     std :: vector <interface_noise_layer*> layers_vector;
+
+    noise_layer* alpha_map;
 
 public slots:
 

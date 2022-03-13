@@ -27,35 +27,42 @@ interface_noise_layers :: interface_noise_layers(QWidget* parent) : QWidget(pare
         box -> addWidget(layers_vector[i]);
     }
 
+    alpha_map = new noise_layer;
+
     layers_vector[0] -> activate_layer();
     update_new_layer_button();
 
     layers_vector[1] -> activate_layer();
     update_new_layer_button();
-    layers_vector[1] -> frequency_spinbox -> setValue(2);
+    layers_vector[1] -> frequency_spinbox -> setValue(3);
 
     layers_vector[2] -> activate_layer();
     update_new_layer_button();
-    layers_vector[2] -> frequency_spinbox -> setValue(4);
+    layers_vector[2] -> frequency_spinbox -> setValue(5);
 
     layers_vector[3] -> activate_layer();
     update_new_layer_button();
-    layers_vector[3] -> frequency_spinbox -> setValue(6);
+    layers_vector[3] -> frequency_spinbox -> setValue(10);
 
     layers_vector[4] -> activate_layer();
     update_new_layer_button();
-    layers_vector[4] -> frequency_spinbox -> setValue(20);
-    layers_vector[4] -> amplitude_spinbox -> setValue(50);
+    layers_vector[4] -> frequency_spinbox -> setValue(60);
+    layers_vector[4] -> amplitude_spinbox -> setValue(4);
 
-    layers_vector[5] -> activate_layer();
-    update_new_layer_button();
-    layers_vector[5] -> frequency_spinbox -> setValue(30);
-    layers_vector[5] -> amplitude_spinbox -> setValue(30);
+//    layers_vector[5] -> activate_layer();
+//    update_new_layer_button();
+//    layers_vector[5] -> frequency_spinbox -> setValue(60);
+//    layers_vector[5] -> amplitude_spinbox -> setValue(20);
 
-    layers_vector[6] -> activate_layer();
-    update_new_layer_button();
-    layers_vector[6] -> frequency_spinbox -> setValue(70);
-    layers_vector[6] -> amplitude_spinbox -> setValue(10);
+//    layers_vector[6] -> activate_layer();
+//    update_new_layer_button();
+//    layers_vector[6] -> frequency_spinbox -> setValue(80);
+//    layers_vector[6] -> amplitude_spinbox -> setValue(10);
+
+//    layers_vector[7] -> activate_layer();
+//    update_new_layer_button();
+//    layers_vector[7] -> frequency_spinbox -> setValue(200);
+//    layers_vector[7] -> amplitude_spinbox -> setValue(5);
 
 
 }
@@ -72,8 +79,8 @@ void interface_noise_layers :: build_layers(int width, int height, bool random) 
         if (layers_vector[i] -> active) {
             ctr ++;
             layers_vector[i] -> noise -> create_layer(width, height,
-            layers_vector[i] -> frequency_spinbox -> value() + 1, layers_vector[i] -> frequency_spinbox -> value() + 1,
-            layers_vector[i] -> amplitude_spinbox -> value(), random);
+                layers_vector[i] -> frequency_spinbox -> value() + 1, layers_vector[i] -> frequency_spinbox -> value() + 1,
+                layers_vector[i] -> amplitude_spinbox -> value(), random);
 //            layers_vector[i] -> noise -> create_layer(width, height,
 //            width * layers_vector[i] -> frequency_spinbox -> value(), height * layers_vector[i] -> frequency_spinbox -> value(), 1);
 //            layers_vector[i] -> noise
@@ -97,13 +104,41 @@ void interface_noise_layers :: build_layers(int width, int height, bool random) 
 //            if (heightmap[i][k] > max) max = heightmap[i][k];
 //        }
 //    }
+    alpha_map -> create_layer(width, height, 9, 9, 200, 200);
+    float min = 10000;
+    float max = 0;
+
+    for (int i = 0; i < height; i++) {
+        for (int k = 0; k < width; k++) {
+            if (alpha_map -> heightmap[i][k] < min) min = alpha_map -> heightmap[i][k];
+            if (alpha_map -> heightmap[i][k] > max) max = alpha_map -> heightmap[i][k];
+        }
+    }
+
+
+    for (int i = 0; i < height; i++) {
+        for (int k = 0; k < width; k++) {
+            alpha_map -> heightmap[i][k] -= min;
+        }
+    }
+
+    max -= min;
+
+    for (int i = 0; i < height; i++) {
+        for (int k = 0; k < width; k++) {
+            alpha_map -> heightmap[i][k] /= max;
+        }
+    }
 
     for (int i = 0; i < height; i++) {
         for (int k = 0; k < width; k++ ) {
 //            heightmap[i][k] *= ((max - min) / 65535);
             heightmap[i][k] = floor(heightmap[i][k]);
+            //heightmap[i][k] *= alpha_map -> heightmap[i][k];
         }
     }
+
+
 
 
 

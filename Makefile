@@ -15,8 +15,8 @@ EQ            = =
 CC            = gcc
 CXX           = g++
 DEFINES       = -DQT_DISABLE_DEPRECATED_BEFORE=0x060000 -DQT_NO_DEBUG -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB
-CFLAGS        = -pipe -O2 -Wall -Wextra -D_REENTRANT -fPIC $(DEFINES)
-CXXFLAGS      = -pipe -O2 -std=gnu++11 -Wall -Wextra -D_REENTRANT -fPIC $(DEFINES)
+CFLAGS        = -pipe -O2 -flto -fno-fat-lto-objects -Wall -Wextra -D_REENTRANT -fPIC $(DEFINES)
+CXXFLAGS      = -pipe -O2 -std=gnu++11 -flto -fno-fat-lto-objects -Wall -Wextra -D_REENTRANT -fPIC $(DEFINES)
 INCPATH       = -I. -I/usr/include/qt -I/usr/include/qt/QtOpenGL -I/usr/include/qt/QtWidgets -I/usr/include/qt/QtGui -I/usr/include/qt/QtCore -I. -I. -I/usr/lib/qt/mkspecs/linux-g++
 QMAKE         = /usr/bin/qmake
 DEL_FILE      = rm -f
@@ -39,9 +39,9 @@ COMPRESS      = gzip -9f
 DISTNAME      = terrain1.0.0
 DISTDIR = /home/sasha/terrain/.tmp/terrain1.0.0
 LINK          = g++
-LFLAGS        = -Wl,-O1 -fPIC
+LFLAGS        = -Wl,-O1 -pipe -O2 -std=gnu++11 -flto=8 -fno-fat-lto-objects -fuse-linker-plugin -fPIC
 LIBS          = $(SUBLIBS) -lGLU /usr/lib/libQt5OpenGL.so /usr/lib/libQt5Widgets.so /usr/lib/libQt5Gui.so /usr/lib/libQt5Core.so -lGL -lpthread   
-AR            = ar cqs
+AR            = gcc-ar cqs
 RANLIB        = 
 SED           = sed
 STRIP         = strip
@@ -335,12 +335,13 @@ DIST          = /usr/lib/qt/mkspecs/features/spec_pre.prf \
 		/usr/lib/qt/mkspecs/features/default_pre.prf \
 		/usr/lib/qt/mkspecs/features/resolve_config.prf \
 		/usr/lib/qt/mkspecs/features/default_post.prf \
+		/usr/lib/qt/mkspecs/features/link_ltcg.prf \
+		/usr/lib/qt/mkspecs/features/ltcg.prf \
 		/usr/lib/qt/mkspecs/features/warn_on.prf \
 		/usr/lib/qt/mkspecs/features/qt.prf \
 		/usr/lib/qt/mkspecs/features/resources_functions.prf \
 		/usr/lib/qt/mkspecs/features/resources.prf \
 		/usr/lib/qt/mkspecs/features/moc.prf \
-		/usr/lib/qt/mkspecs/features/link_ltcg.prf \
 		/usr/lib/qt/mkspecs/features/unix/opengl.prf \
 		/usr/lib/qt/mkspecs/features/uic.prf \
 		/usr/lib/qt/mkspecs/features/unix/thread.prf \
@@ -621,12 +622,13 @@ Makefile: terrain.pro /usr/lib/qt/mkspecs/linux-g++/qmake.conf /usr/lib/qt/mkspe
 		/usr/lib/qt/mkspecs/features/default_pre.prf \
 		/usr/lib/qt/mkspecs/features/resolve_config.prf \
 		/usr/lib/qt/mkspecs/features/default_post.prf \
+		/usr/lib/qt/mkspecs/features/link_ltcg.prf \
+		/usr/lib/qt/mkspecs/features/ltcg.prf \
 		/usr/lib/qt/mkspecs/features/warn_on.prf \
 		/usr/lib/qt/mkspecs/features/qt.prf \
 		/usr/lib/qt/mkspecs/features/resources_functions.prf \
 		/usr/lib/qt/mkspecs/features/resources.prf \
 		/usr/lib/qt/mkspecs/features/moc.prf \
-		/usr/lib/qt/mkspecs/features/link_ltcg.prf \
 		/usr/lib/qt/mkspecs/features/unix/opengl.prf \
 		/usr/lib/qt/mkspecs/features/uic.prf \
 		/usr/lib/qt/mkspecs/features/unix/thread.prf \
@@ -850,12 +852,13 @@ Makefile: terrain.pro /usr/lib/qt/mkspecs/linux-g++/qmake.conf /usr/lib/qt/mkspe
 /usr/lib/qt/mkspecs/features/default_pre.prf:
 /usr/lib/qt/mkspecs/features/resolve_config.prf:
 /usr/lib/qt/mkspecs/features/default_post.prf:
+/usr/lib/qt/mkspecs/features/link_ltcg.prf:
+/usr/lib/qt/mkspecs/features/ltcg.prf:
 /usr/lib/qt/mkspecs/features/warn_on.prf:
 /usr/lib/qt/mkspecs/features/qt.prf:
 /usr/lib/qt/mkspecs/features/resources_functions.prf:
 /usr/lib/qt/mkspecs/features/resources.prf:
 /usr/lib/qt/mkspecs/features/moc.prf:
-/usr/lib/qt/mkspecs/features/link_ltcg.prf:
 /usr/lib/qt/mkspecs/features/unix/opengl.prf:
 /usr/lib/qt/mkspecs/features/uic.prf:
 /usr/lib/qt/mkspecs/features/unix/thread.prf:
@@ -913,7 +916,7 @@ compiler_moc_predefs_make_all: moc_predefs.h
 compiler_moc_predefs_clean:
 	-$(DEL_FILE) moc_predefs.h
 moc_predefs.h: /usr/lib/qt/mkspecs/features/data/dummy.cpp
-	g++ -pipe -O2 -std=gnu++11 -Wall -Wextra -dM -E -o moc_predefs.h /usr/lib/qt/mkspecs/features/data/dummy.cpp
+	g++ -pipe -O2 -std=gnu++11 -flto -fno-fat-lto-objects -Wall -Wextra -dM -E -o moc_predefs.h /usr/lib/qt/mkspecs/features/data/dummy.cpp
 
 compiler_moc_header_make_all: moc_interface_controller.cpp moc_interface_generation_menu.cpp moc_interface_heightmap_preview.cpp moc_interface_noise_layer.cpp moc_interface_noise_layers.cpp moc_interface_noise_parameters_menu.cpp moc_interface_scene_menu.cpp moc_interface_splash_screen.cpp moc_interface_terrain_parameters_menu.cpp moc_loading_menu.cpp moc_super.cpp moc_world.cpp
 compiler_moc_header_clean:
@@ -922,6 +925,7 @@ moc_interface_controller.cpp: interface_controller.h \
 		world.h \
 		noise.h \
 		terrain.h \
+		hydro.h \
 		fpp_camera.h \
 		interface_splash_screen.h \
 		grid_layout.h \
@@ -948,6 +952,7 @@ moc_interface_generation_menu.cpp: interface_generation_menu.h \
 		interface_noise_layers.h \
 		interface_hydro_parameters_menu.h \
 		interface_terrain_parameters_menu.h \
+		hydro.h \
 		moc_predefs.h \
 		/usr/bin/moc
 	/usr/bin/moc $(DEFINES) --include /home/sasha/terrain/moc_predefs.h -I/usr/lib/qt/mkspecs/linux-g++ -I/home/sasha/terrain -I/usr/include/qt -I/usr/include/qt/QtOpenGL -I/usr/include/qt/QtWidgets -I/usr/include/qt/QtGui -I/usr/include/qt/QtCore -I/usr/include/c++/11.1.0 -I/usr/include/c++/11.1.0/x86_64-pc-linux-gnu -I/usr/include/c++/11.1.0/backward -I/usr/lib/gcc/x86_64-pc-linux-gnu/11.1.0/include -I/usr/local/include -I/usr/lib/gcc/x86_64-pc-linux-gnu/11.1.0/include-fixed -I/usr/include interface_generation_menu.h -o moc_interface_generation_menu.cpp
@@ -1009,6 +1014,7 @@ moc_super.cpp: super.h \
 moc_world.cpp: world.h \
 		noise.h \
 		terrain.h \
+		hydro.h \
 		fpp_camera.h \
 		interface_splash_screen.h \
 		moc_predefs.h \
@@ -1052,6 +1058,7 @@ interface_controller.o: interface_controller.cpp interface_controller.h \
 		world.h \
 		noise.h \
 		terrain.h \
+		hydro.h \
 		fpp_camera.h \
 		interface_splash_screen.h \
 		grid_layout.h \
@@ -1075,7 +1082,8 @@ interface_generation_menu.o: interface_generation_menu.cpp interface_generation_
 		noise_layer.h \
 		interface_noise_layers.h \
 		interface_hydro_parameters_menu.h \
-		interface_terrain_parameters_menu.h
+		interface_terrain_parameters_menu.h \
+		hydro.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o interface_generation_menu.o interface_generation_menu.cpp
 
 interface_header.o: interface_header.cpp interface_header.h
@@ -1121,6 +1129,7 @@ main.o: main.cpp interface_controller.h \
 		world.h \
 		noise.h \
 		terrain.h \
+		hydro.h \
 		fpp_camera.h \
 		interface_splash_screen.h \
 		grid_layout.h \
@@ -1148,12 +1157,14 @@ noise_layer.o: noise_layer.cpp noise_layer.h
 super.o: super.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o super.o super.cpp
 
-terrain.o: terrain.cpp terrain.h
+terrain.o: terrain.cpp terrain.h \
+		hydro.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o terrain.o terrain.cpp
 
 world.o: world.cpp world.h \
 		noise.h \
 		terrain.h \
+		hydro.h \
 		fpp_camera.h \
 		interface_splash_screen.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o world.o world.cpp
