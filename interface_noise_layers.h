@@ -14,14 +14,12 @@ class interface_noise_layers : public QWidget {
 
 public:
 
-    interface_noise_layers(QWidget* parent);
+    interface_noise_layers(QWidget* parent, int wx, int wy, bool random);
 
     void sort_layers();
     void build_layers(int width, int height, bool random);
-    //void create_heightmap(int width, int height);
 
     QVBoxLayout* box;
-
     QLabel* noise_layers_label;
 
     std :: vector <interface_noise_layer*> layers_vector;
@@ -31,6 +29,10 @@ public:
 public slots:
 
     void update_new_layer_button();
+    void layer_state_changed();
+
+signals:
+    void invalidate_heightmap_signal();
 };
 
 #endif // INTERFACE_NOISE_LAYERS_H

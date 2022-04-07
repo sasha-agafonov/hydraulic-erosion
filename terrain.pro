@@ -13,10 +13,11 @@ DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000
 
 SOURCES += \
     fpp_camera.cpp \
-    fpp_movement.cpp \
     grid_layout.cpp \
     hydro.cpp \
+    hydro2.cpp \
     interface_controller.cpp \
+    interface_eroded_heightmap_preview.cpp \
     interface_generation_menu.cpp \
     interface_header.cpp \
     interface_heightmap_preview.cpp \
@@ -39,10 +40,11 @@ SOURCES += \
 
 HEADERS += \
     fpp_camera.h \
-    fpp_movement.h \
     grid_layout.h \
     hydro.h \
+    hydro2.h \
     interface_controller.h \
+    interface_eroded_heightmap_preview.h \
     interface_generation_menu.h \
     interface_header.h \
     interface_heightmap_preview.h \
@@ -61,7 +63,7 @@ HEADERS += \
     super.h \
     terrain.h \
     world.h \
-    connections.h \
+#    connections.h \
     world_menu.h
 
 FORMS += \

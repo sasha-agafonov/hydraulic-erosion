@@ -24,11 +24,6 @@
 
 world :: world( QWidget* parent) : QGLWidget(parent) {
 
-//    QGLFormat format;
-//   // format.setSampleBuffers(true);
-//    format.setSamples(4);
-//    setFormat(format);
-   // this -> splash = splash;
     tick = 0;
     zoom = 0;
     fps = 0;
@@ -40,6 +35,7 @@ world :: world( QWidget* parent) : QGLWidget(parent) {
 
     setCursor(Qt::BlankCursor);
     setMouseTracking(true);
+
     this->setFocusPolicy(Qt::StrongFocus);
     //this -> grabKeyboard();
 
@@ -67,7 +63,7 @@ world :: world( QWidget* parent) : QGLWidget(parent) {
 
           //painter = new QPainter(this);
 
-    int start = time(NULL);
+
 
     cx = 0;
     cy = 0;
@@ -102,21 +98,11 @@ world :: world( QWidget* parent) : QGLWidget(parent) {
 
     this -> terra = new terrain();
 
-
-//    terrain_mx(10, std :: vector <int>, (10));
-    //terrain_mx.resize(10, std :: vector <int> (10));
-
-
-
-
-//    view_x = 0.;
-//    view_y = 0.;
-//    view_z = 0.;
 }
 
 void world :: cameraUpdate(double x, double y, double z) {
     zoom += 1;
-    //this -> repaint();
+
 }
 
 void world :: emit_toggle_menu_signal() { emit toggle_menu_signal(); }
@@ -186,7 +172,6 @@ void world :: keyPressEvent(QKeyEvent* event) {
             emit_toggle_menu_signal();
             break;
     }
-//    repaint();
 }
 
 void world :: keyReleaseEvent(QKeyEvent* event) {
@@ -212,7 +197,6 @@ void world :: keyReleaseEvent(QKeyEvent* event) {
             down = false;
             break;
     }
-//    repaint();
 }
 
 void world :: update_scene() {
@@ -233,12 +217,7 @@ static const float PI = 3.1415926535;
 
 void world :: initializeGL() {
 
-   // interface -> ldg_menu -> show();
-
-   // glClearColor(0.337, 0.796, 0.996, 1.0);
-
-    glClearColor(0.4, 0.7, 0.9, 1.0);
-
+    glClearColor(1.f, 1.f, 1.f, 1.f);
 
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
@@ -268,22 +247,8 @@ void world :: initializeGL() {
     glLightfv(GL_LIGHT0, GL_POSITION, light_pos);
     reload();
 
-//    float positions[36] = { 0, 0, 1.63f, 1, 1, 1.09f, 0, 1, 2.36f,
-//                            0, 0, 1.63f, 1, 0, 1.51f, 1, 1, 1.09f,
-//                            1, 0, 1.51f, 2, 1, 1.78f, 1, 1, 1.09f,
-//                            1, 0, 1.51f, 2, 0, 1.62f, 2, 1, 1.78f };
-
-
-
-
-
     //float positions[9] = { -100, -100, 0.5, 100, -100, 0.5, 100, 100, 0.5 };
     float colors[9] = { 1,0,0,  0,1,0,  1,0,0 };
-
-    //terra -> set_vbo();
-
-//    GLuint vbo;
-//        terra -> load_terrain();
 
 
     glMaterialfv(GL_FRONT, GL_DIFFUSE,   base.diffuse);
@@ -298,11 +263,6 @@ void world :: initializeGL() {
     glEnableClientState(GL_COLOR_ARRAY);
 
 
-//    glGenBuffers(1, &vbo);
-//        glBindBuffer(GL_ARRAY_BUFFER, vbo);
-//        glBufferData(GL_ARRAY_BUFFER, terra->triangles_count * 9 * sizeof(float), terra -> terrain_positions, GL_STATIC_DRAW);
-
-
     //glColorPointer( 3, GL_FLOAT, 0, colors );
 
   // Enable use of arrays.
@@ -315,41 +275,12 @@ void world :: initializeGL() {
     //load_terrain();
  //emit_scene_ready_signal();
 
-//       noisy -> create_vector_grid(40, 40);
-//       noisy -> normalize_gradients();
-
-
-//       noisy -> map_samples(500, 500);
-//       noisy -> perlin_noise();
-
-//       noisy -> black_noise();
-
-
-
-//       noisy -> create_heightmap();
-//       noisy -> create_preview_heightmap();
-
-//       noisy -> map_samples2(500, 500);
-//       noisy -> create_map();
-//       noisy -> create_heightmap2();
 
 
        terra -> load_terrain();
-//       emit current_stage_signal();
-//        for (int i = 0 ; i< 1000000000; i++) {}
 
-         // interface -> ldg_menu -> hide();
-
-   // terra -> set_vertex_arrays();
 
 }
-
-
-//void world :: load_arrays() {
-
-
-
-//}
 
 
 void world :: resizeGL(int w, int h) {
@@ -363,11 +294,6 @@ void world :: resizeGL(int w, int h) {
 
 }
 
-
-
-//void world :: paintEvent() {
-//QGLWidget::paintEvent(event);
-//}
 
 void world :: paintGL() {
 
@@ -387,7 +313,6 @@ void world :: paintGL() {
     camera -> move_camera(forward, back, left, right, up, down);
     camera -> look();
 
-
               // look from
     gluLookAt(camera -> position_x, camera -> position_y, camera -> position_z ,
               // look at
@@ -395,58 +320,16 @@ void world :: paintGL() {
               // camera rotation
               0., 0., 1.);
 
-//    glEnable(GL_FOG);
-    //glPushMatrix();
-    //glScalef(15, 15, 15);
-   // glScalef(5 + direction_x, 5 + direction_ydddddddddddddddd, 5 + direction_z);
-          //glRotatef(180, 0., 0., 1);
-
-//    glPushMatrix();
-    //gluDisk(gluNewQuadric(), 0, 12, 12, 12);
-
-    //gluSphere(gluNewQuadric(), 1, 12 ,12);
-//    glPopMatrix();
-
-    // pole
-//    glPushMatrix();
-//    glTranslatef(23, 23 ,1);
-//    gluCylinder(gluNewQuadric(), 1, 1, 12 ,12,12);
-//    glPopMatrix();
-
-
-    // test terrain
-
-
-    //glDrawArrays(GL_TRIANGLES, 0, 10000);
-
-//    glScalef(12, 12, 12);
-
-
-
     terra -> draw_terrain_arrays();
-    //terra -> draw_terrain_material_arrays();
-
-    //emit current_stage_signal();
-
-   // for (int i = 0 ; i< 1000000000; i++) {}
-  // terra -> draw_terrain();
-
-
-//   if (menu) {
-//       QPainter p(this);
-//         p.setPen(Qt::red);
-//         p.drawLine(rect().topLeft(), rect().bottomRight());
-//   }
-
-
 
     glLoadIdentity();
 
     glFlush();
 
+    // eats fps
     if (show_fps) {
           QPainter painter(this);
-          painter.setPen(Qt :: white);
+          painter.setPen(Qt :: black);
           painter.drawText(sc_width - 60, 20, "FPS: " + QString :: fromStdString(std :: to_string(fps)));
           painter.end(); }
 

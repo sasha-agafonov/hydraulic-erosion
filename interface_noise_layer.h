@@ -27,9 +27,9 @@ public:
     QPushButton* delete_layer_button;
     QPushButton* new_layer_button;
 
-    //QDoubleSpinBox* scale_spinbox;
     QSpinBox* frequency_spinbox;
     QSpinBox* amplitude_spinbox;
+
     QDoubleSpinBox* transparency_spinbox;
 
     QComboBox* noise_type_combo;

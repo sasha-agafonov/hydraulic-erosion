@@ -3,10 +3,12 @@
 
 #include <QWidget>
 #include <QHBoxLayout>
+#include <QVBoxLayout>
 #include <QSpinBox>
 #include <QLabel>
 #include <QObject>
 #include <QCheckBox>
+#include <QGridLayout>
 
 
 class terrain_parameters_menu : public QWidget {
@@ -17,20 +19,20 @@ public:
 
     terrain_parameters_menu(QWidget* parent);
 
-    QHBoxLayout* h_box_1;
-    QHBoxLayout* h_box_2;
-    QHBoxLayout* h_box_3;
-    QVBoxLayout* v_box;
+    QHBoxLayout* box;
+
+    QGridLayout* grid;
 
     QSpinBox* width_x_spinbox;
     QSpinBox* width_y_spinbox;
 
     QCheckBox* gradient_seed_checkbox;
-    QCheckBox* materials_checkbox;
+//    QCheckBox* materials_checkbox;
 
+    QLabel* terrain_parameters_label;
     QLabel* terrain_size_label;
     QLabel* gradient_seed_label;
-    QLabel* materials_label;
+//    QLabel* materials_label;
 
 public slots:
 

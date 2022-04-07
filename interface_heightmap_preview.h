@@ -7,8 +7,6 @@
 #include <QPixmap>
 #include <QPushButton>
 
-#include "noise.h"
-
 
 class heightmap_preview : public QWidget {
 
@@ -22,8 +20,6 @@ public:
     QLabel* preview_label;
     QVBoxLayout* box;
     QPushButton* reload_button;
-
-    noise* noisy;
 
 public slots:
 

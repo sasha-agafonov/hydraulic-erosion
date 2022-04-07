@@ -59,15 +59,23 @@ QSpinBox {
   border: 2px solid rgba(110, 110, 135, 1);
   border-radius: 5px;
   color: rgba(190, 190, 222, 1);
+
 }
 
 QSpinBox::up-button {
+  padding: 4px;
   border: 0;
+  height: 6px;
+  image: url(../terrain/cuarrow.png);
 }
 
 QSpinBox::down-button {
+  padding: 4px;
   border: 0;
+  height: 6px;
+  image: url(../terrain/cdarrow.png);
 }
+
 
 
 /* double spinbox */
@@ -80,11 +88,17 @@ QDoubleSpinBox {
 }
 
 QDoubleSpinBox::up-button {
+  padding: 4px;
   border: 0;
+  height: 6px;
+  image: url(../terrain/cuarrow.png);
 }
 
 QDoubleSpinBox::down-button {
+  padding: 4px;
   border: 0;
+  height: 6px;
+  image: url(../terrain/cdarrow.png);
 }
 
 
@@ -93,9 +107,8 @@ QDoubleSpinBox::down-button {
 QPushButton {
   height: 30px;
   width: 44px;
-  min-height: 2em;
   background: rgba(190, 190, 222, 1);
-/*  border-radius: 6px;  */
+  border-radius: 6px;
   font-size: 11px;
   color: rgba(40, 44, 52, 1);
 }

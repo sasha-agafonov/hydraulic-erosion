@@ -60,9 +60,7 @@ void noise_layer :: normalize_gradients() {
 void noise_layer :: apply_gradients() {
 
     for (int i = 0; i < static_cast <int> (heightmap.size()); i++) {
-        for (int k = 0; k < static_cast <int> (heightmap[i].size()); k++) {
-            heightmap[i][k] = perin_noise(i, k);
-        }
+        for (int k = 0; k < static_cast <int> (heightmap[i].size()); k++) heightmap[i][k] = perin_noise(i, k);
     }
 }
 

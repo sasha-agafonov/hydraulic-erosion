@@ -29,7 +29,9 @@ public:
     generation_menu(QWidget *parent);
 
     QVBoxLayout* v_box;
-    QPushButton* build_button;
+    QHBoxLayout* h_box;
+    QPushButton* build_uneroded_button;
+    QPushButton* build_eroded_button;
 
     noise_parameters_menu* noise_parameters;
     hydro_parameters_menu* hydro_parameters;
@@ -42,6 +44,13 @@ public:
 public slots:
 
     void reload_heightmap();
+    void terrain_changed();
+    void invalidate_eroded_heightmap();
+
+signals:
+
+    void invalidate_heightmap_signal();
+
 
 };
 

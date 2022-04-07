@@ -7,12 +7,11 @@
 #define PGM_16_BIT 65535
 
 
-interface_noise_layers :: interface_noise_layers(QWidget* parent) : QWidget(parent) {
-
-    this -> setSizePolicy(QSizePolicy :: Expanding, QSizePolicy :: Fixed);
+interface_noise_layers :: interface_noise_layers(QWidget* parent, int wx, int wy, bool random) : QWidget(parent) {
 
     box = new QVBoxLayout(this);
-    box -> setSpacing(15);
+    box -> setContentsMargins(0, 0, 0, 0);
+    box -> setSpacing(6);
     box -> setAlignment(Qt :: AlignTop);
 
     noise_layers_label = new QLabel("Noise Layers", this);
@@ -49,126 +48,101 @@ interface_noise_layers :: interface_noise_layers(QWidget* parent) : QWidget(pare
     layers_vector[4] -> frequency_spinbox -> setValue(60);
     layers_vector[4] -> amplitude_spinbox -> setValue(4);
 
-//    layers_vector[5] -> activate_layer();
-//    update_new_layer_button();
-//    layers_vector[5] -> frequency_spinbox -> setValue(60);
-//    layers_vector[5] -> amplitude_spinbox -> setValue(20);
+    connect(this, SIGNAL(invalidate_heightmap_signal()), parent, SLOT(invalidate_heightmap()));
 
-//    layers_vector[6] -> activate_layer();
-//    update_new_layer_button();
-//    layers_vector[6] -> frequency_spinbox -> setValue(80);
-//    layers_vector[6] -> amplitude_spinbox -> setValue(10);
-
-//    layers_vector[7] -> activate_layer();
-//    update_new_layer_button();
-//    layers_vector[7] -> frequency_spinbox -> setValue(200);
-//    layers_vector[7] -> amplitude_spinbox -> setValue(5);
-
+    build_layers(wx, wy, random);
 
 }
 
 
+// construct a heightmap from the current configuration of layers
 void interface_noise_layers :: build_layers(int width, int height, bool random) {
 
     std :: vector < std :: vector <int> > heightmap(height, std :: vector <int> (width, 0));
 
-
-    int ctr = 0;
-
     for (int i = 0; i < NOISE_LAYERS; i++) {
         if (layers_vector[i] -> active) {
-            ctr ++;
+
             layers_vector[i] -> noise -> create_layer(width, height,
-                layers_vector[i] -> frequency_spinbox -> value() + 1, layers_vector[i] -> frequency_spinbox -> value() + 1,
-                layers_vector[i] -> amplitude_spinbox -> value(), random);
-//            layers_vector[i] -> noise -> create_layer(width, height,
-//            width * layers_vector[i] -> frequency_spinbox -> value(), height * layers_vector[i] -> frequency_spinbox -> value(), 1);
-//            layers_vector[i] -> noise
+            layers_vector[i] -> frequency_spinbox -> value() + 1, layers_vector[i] -> frequency_spinbox -> value() + 1,
+            layers_vector[i] -> amplitude_spinbox -> value(), random);
 
             for (int k = 0; k < height; k++) {
-                for (int x = 0; x < width; x++) {
-                    heightmap[k][x] += (layers_vector[i] -> noise -> heightmap[k][x] * layers_vector[i] -> transparency_spinbox -> value());
-                   //std :: cout << heightmap[k][x] << "hmap val\n";
-                }
+                for (int x = 0; x < width; x++) heightmap[k][x] += (layers_vector[i] -> noise -> heightmap[k][x] * layers_vector[i] -> transparency_spinbox -> value());
             }
         }
     }
 
-
-//    float min = -1;
-//    float max = 100000;
-
-//    for (int i = 0; i < height; i++) {
-//        for (int k = 0; k < width; k++) {
-//            if (heightmap[i][k] < min) min = heightmap[i][k];
-//            if (heightmap[i][k] > max) max = heightmap[i][k];
-//        }
-//    }
-    alpha_map -> create_layer(width, height, 9, 9, 200, 200);
-    float min = 10000;
-    float max = 0;
+    float max = PGM_16_BIT;
+    float min = 0;
 
     for (int i = 0; i < height; i++) {
-        for (int k = 0; k < width; k++) {
-            if (alpha_map -> heightmap[i][k] < min) min = alpha_map -> heightmap[i][k];
-            if (alpha_map -> heightmap[i][k] > max) max = alpha_map -> heightmap[i][k];
+        for (int k = 0; k < height; k++) {
+            if (max < heightmap[i][k]) max = heightmap[i][k];
+            if (min > heightmap[i][k]) min = heightmap[i][k];
         }
     }
 
+    float compression_factor = (float) PGM_16_BIT / (max - min);
 
-    for (int i = 0; i < height; i++) {
-        for (int k = 0; k < width; k++) {
-            alpha_map -> heightmap[i][k] -= min;
-        }
-    }
+    std :: cout << "max: " << max << "\n";
+    std :: cout << "min: " << min << "\n";
+    std :: cout << "cof: " << compression_factor << "\n";
 
-    max -= min;
-
-    for (int i = 0; i < height; i++) {
-        for (int k = 0; k < width; k++) {
-            alpha_map -> heightmap[i][k] /= max;
-        }
-    }
 
     for (int i = 0; i < height; i++) {
         for (int k = 0; k < width; k++ ) {
-//            heightmap[i][k] *= ((max - min) / 65535);
+            if (min < 0) heightmap[i][k] += (-min);
+            heightmap[i][k] *= compression_factor;
             heightmap[i][k] = floor(heightmap[i][k]);
-            //heightmap[i][k] *= alpha_map -> heightmap[i][k];
         }
     }
 
+    std :: ofstream happy_file;
 
+    // heightmap for erosion
+    happy_file.open("../terrain/heightmap.pgm");
+    happy_file << "P2\n";
+    happy_file << width << ' ' << height << '\n';
+    happy_file << "65535\n";
 
-
-
-
-//    for (int k = 0; k < height; k++) {
-//        for (int x = 0; x < width; x++) {
-//            heightmap[k][x] = heightmap[k][x];
-//           //std :: cout << heightmap[k][x] << "hmap val\n";
-//        }
-//    }
-
-        std :: ofstream happy_file;
-        happy_file.open("../terrain/heightmap2.pgm");
-        happy_file << "P2\n";
-        happy_file << width << ' ' << height << '\n';
-        happy_file << "65535\n";
-
-        for (int i = 0; i < static_cast <int> (heightmap.size()); i++) {
-            for (int k = 0; k < static_cast <int> (heightmap[0].size()); k++) {
-                if (k == static_cast <int> (heightmap[0].size()) - 1) happy_file << heightmap[i][k] << '\n';
-                else happy_file << heightmap[i][k] << ' ';
-            }
+    for (int i = 0; i < static_cast <int> (heightmap.size()); i++) {
+        for (int k = 0; k < static_cast <int> (heightmap[0].size()); k++) {
+            if (k == static_cast <int> (heightmap[0].size()) - 1) happy_file << static_cast <int> (heightmap[i][k]) << '\n';
+            else happy_file << static_cast <int> (heightmap[i][k]) << ' ';
         }
-        happy_file.close();
+    }
 
+    happy_file.close();
+
+    // heightmap for preview
+    happy_file.open("../terrain/heightmap_preview.ppm");
+    happy_file << "P3\n";
+    happy_file << width << ' ' << height << '\n';
+    happy_file << "65535\n";
+
+    for (int i = 0; i < static_cast <int> (heightmap.size()); i++) {
+        for (int k = 0; k < static_cast <int> (heightmap[0].size()); k++) {
+
+            // make the preview heightmap slightly blue
+            happy_file << static_cast <int> (floor(heightmap[i][k] * 0.85)) << ' ';
+            happy_file << static_cast <int> (floor(heightmap[i][k] * 0.85)) << ' ';
+
+            if (k == static_cast <int> (heightmap[0].size()) - 1) happy_file << heightmap[i][k] << '\n';
+            else happy_file << static_cast <int> (heightmap[i][k]) << ' ';
+
+        }
+    }
+
+    happy_file.close();
 
 }
 
 
+// place the new layer button at the first inactive layer
 void interface_noise_layers :: update_new_layer_button() {
+
+    emit invalidate_heightmap_signal();
 
     sort_layers();
 
@@ -185,6 +159,7 @@ void interface_noise_layers :: update_new_layer_button() {
 }
 
 
+// active layers should stay on top
 void interface_noise_layers :: sort_layers() {
 
     for (int i = 0; i < NOISE_LAYERS; i++) {
@@ -201,3 +176,7 @@ void interface_noise_layers :: sort_layers() {
         box -> addWidget(layers_vector[i]);
     }
 }
+
+
+// unlock heightmap for reloading
+void interface_noise_layers :: layer_state_changed() { emit invalidate_heightmap_signal(); }

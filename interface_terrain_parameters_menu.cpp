@@ -2,75 +2,58 @@
 
 terrain_parameters_menu :: terrain_parameters_menu(QWidget* parent) : QWidget(parent) {
 
-    this -> setSizePolicy(QSizePolicy :: Expanding, QSizePolicy :: Fixed);
+    box = new QHBoxLayout(this);
+    box -> setAlignment(Qt :: AlignLeft | Qt :: AlignTop);
 
-    v_box = new QVBoxLayout(this);
-
-    h_box_1 = new QHBoxLayout(this);
-    h_box_1 -> setSpacing(15);
-    h_box_1 -> setContentsMargins(10, 20, 0, 0);
-    h_box_1 -> setAlignment(Qt :: AlignBottom);
+    grid = new QGridLayout(this);
+    grid -> setSpacing(15);
 
     terrain_size_label = new QLabel("Terrain Size", this);
-    terrain_size_label -> setStyleSheet("QLabel { background-color: rgba(1,1,1, 0); color: rgba(190, 190, 222, 1); } ");
-    terrain_size_label -> setFixedWidth(65);
+    terrain_size_label -> setStyleSheet("QLabel { color: rgba(190, 190, 222, 1); background-color: rgba(30, 33, 39, 1); height: 30px; margin: 0; padding-left: 8px; padding-right: 8px; }");
     terrain_size_label -> setFixedHeight(30);
+    terrain_size_label -> setFixedWidth(160);
+    terrain_size_label -> setAlignment(Qt::AlignCenter);
 
     width_x_spinbox = new QSpinBox(this);
-    width_x_spinbox -> setFixedHeight(25);
+    width_x_spinbox -> setFixedHeight(28);
     width_x_spinbox -> setFixedWidth(60);
     width_x_spinbox -> setMinimum(1);
     width_x_spinbox -> setMaximum(1000);
     width_x_spinbox -> setValue(500);
+    width_x_spinbox -> setAlignment(Qt::AlignCenter | Qt::AlignVCenter);
 
     width_y_spinbox = new QSpinBox(this);
-    width_y_spinbox -> setFixedHeight(25);
+    width_y_spinbox -> setFixedHeight(28);
     width_y_spinbox -> setFixedWidth(60);
     width_y_spinbox -> setMinimum(1);
     width_y_spinbox -> setMaximum(1000);
     width_y_spinbox -> setValue(500);
+    width_y_spinbox -> setAlignment(Qt::AlignCenter | Qt::AlignVCenter);
 
-    connect(width_x_spinbox, SIGNAL(valueChanged(int)), this, SLOT(equalize_size_y()));
-    connect(width_y_spinbox, SIGNAL(valueChanged(int)), this, SLOT(equalize_size_x()));
-
-    h_box_1 -> addWidget(terrain_size_label);
-    h_box_1 -> addWidget(width_x_spinbox);
-    h_box_1 -> addWidget(width_y_spinbox);
-
-
-
-    h_box_2 = new QHBoxLayout(this);
-    h_box_2 -> setSpacing(15);
-    h_box_2 -> setContentsMargins(10, 10, 0, 0);
-
-    gradient_seed_label = new QLabel("Random Gradients", this);
+    gradient_seed_label = new QLabel("Randomized Gradients", this);
     gradient_seed_label -> setFixedHeight(30);
-    gradient_seed_label -> setFixedWidth(100);
-    gradient_seed_label -> setStyleSheet("QLabel { color: rgba(190, 190, 222, 1); background-color: rgba(30, 33, 39, 0); height: 30px; margin: 0; }");
+    gradient_seed_label -> setAlignment(Qt::AlignCenter);
+    gradient_seed_label -> setStyleSheet("QLabel { color: rgba(190, 190, 222, 1); background-color: rgba(30, 33, 39, 1); height: 30px; margin: 0; padding-left: 8px; padding-right: 8px; }");
 
     gradient_seed_checkbox = new QCheckBox(this);
 
-    h_box_2 -> addWidget(gradient_seed_label);
-    h_box_2 -> addWidget(gradient_seed_checkbox);
+    // ensures terrain is a square
+    connect(width_x_spinbox, SIGNAL(valueChanged(int)), this, SLOT(equalize_size_y()));
+    connect(width_y_spinbox, SIGNAL(valueChanged(int)), this, SLOT(equalize_size_x()));
 
+    // allows to reload the heightmap when changing parameters
+    connect(width_x_spinbox, SIGNAL(valueChanged(int)), parent, SLOT(terrain_changed()));
+    connect(width_y_spinbox, SIGNAL(valueChanged(int)), parent, SLOT(terrain_changed()));
+    connect(gradient_seed_checkbox, SIGNAL(stateChanged(int)), parent, SLOT(terrain_changed()));
 
-    h_box_3 = new QHBoxLayout(this);
-    h_box_3 -> setSpacing(15);
-    h_box_3 -> setContentsMargins(10, 10, 0, 0);
+    grid -> addWidget(terrain_size_label, 0, 0, 1, 1);
+    grid -> addWidget(width_x_spinbox, 0, 1, 1, 1);
+    grid -> addWidget(width_y_spinbox, 0, 2, 1, 1);
+    grid -> addWidget(gradient_seed_label, 1, 0, 1, 1);
+    grid -> addWidget(gradient_seed_checkbox, 1, 1, 1, 1);
 
-    materials_label = new QLabel("T2", this);
-    materials_label -> setFixedHeight(30);
-    materials_label -> setFixedWidth(100);
-    materials_label -> setStyleSheet("QLabel { color: rgba(190, 190, 222, 1); background-color: rgba(30, 33, 39, 0); height: 30px; margin: 0; }");
-
-    materials_checkbox = new QCheckBox(this);
-
-    h_box_3 -> addWidget(materials_label);
-    h_box_3 -> addWidget(materials_checkbox);
-
-    v_box -> addLayout(h_box_1);
-    v_box -> addLayout(h_box_2);
-    v_box -> addLayout(h_box_3);
+    box -> addLayout(grid);
+    box -> setSizeConstraint(QLayout :: SetMinimumSize);
 
 }
 

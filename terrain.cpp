@@ -1,5 +1,3 @@
-
-
 #define GL_GLEXT_PROTOTYPES
 
 //#include <GL/GL.h>
@@ -26,12 +24,13 @@ terrain :: terrain() : terrain_size(0) {
 }
 
 
+// loads a heightmap that is to be rendered
 void terrain :: load_heightmap() {
 
     using namespace std;
 
     // open .pgm image
-    ifstream terrain_data("../terrain/heightmap2.pgm");
+    ifstream terrain_data("../terrain/heightmap_eroded2_preview.pgm");
 
     // or don't
     if (terrain_data.fail()) return;
@@ -71,7 +70,7 @@ void terrain :: load_heightmap() {
 
 }
 
-
+// split a heightmap into triangles
 void terrain :: load_triangles() {
 
 //    v1--------v4
@@ -146,6 +145,7 @@ void terrain :: load_triangles() {
 }
 
 
+// compute smooth normals
 void terrain :: load_smooth_normals() {
     for (int row = 0; row < static_cast <int> (terrain_smooth_triangle_mx.size()); row++) {
         for (int col = 0; col < static_cast <int> (terrain_smooth_triangle_mx[0].size()); col++) {
@@ -310,7 +310,7 @@ void terrain :: load_smooth_normals() {
     }
 }
 
-// compute normals
+// compute flat normals
 void terrain :: load_normals() {
 
     triangle happy_triangle;
@@ -370,6 +370,7 @@ void terrain :: load_normals() {
     }
 }
 
+// compute vertex colors
 void terrain :: load_colors() {
 
     terrain_colors.clear();
@@ -479,6 +480,8 @@ float terrain :: interpolate_angle(float ang) {
     else return ((ang - 50) / 50.f);
 
 }
+
+// load triangle vertices into an array
 void terrain :: load_arrays() {
 
     triangles_count = num_triangles();
@@ -659,6 +662,7 @@ void terrain :: draw_terrain_material_arrays() {
 }
 
 
+// controller
 void terrain :: load_terrain() {
 
 //    load_heightmap();
@@ -667,7 +671,8 @@ void terrain :: load_terrain() {
 //    stretch_terrain(1, 1);
 //    load_normals();
 
-    water -> erode();
+    // erode first!!!
+//    water -> erode();
 
     load_heightmap();
     load_triangles();
@@ -681,6 +686,7 @@ void terrain :: load_terrain() {
 }
 
 
+// draw triangle by triangle, deprecated
 void terrain :: draw_terrain() {
 
     glPushMatrix();
@@ -711,6 +717,7 @@ void terrain :: draw_terrain() {
     glPopMatrix();
 }
 
+// draw from an array of vertices, slightly better
 void terrain :: draw_terrain_arrays() {
 
     glPushMatrix();
@@ -728,7 +735,7 @@ void terrain :: draw_terrain_arrays() {
     glPopMatrix();
 }
 
-
+// scale the height
 void terrain :: normalize_terrain(int factor) {
 
     for (int i = 0; i < terrain_triangle_mx.size(); i++) {
@@ -740,7 +747,7 @@ void terrain :: normalize_terrain(int factor) {
     }
 }
 
-
+// extrude
 void terrain :: stretch_terrain(int stretch_x, int stretch_y) {
 
     for (int i = 0; i < terrain_triangle_mx.size(); i++) {
@@ -757,7 +764,7 @@ void terrain :: stretch_terrain(int stretch_x, int stretch_y) {
     }
 }
 
-
+// counts the number of triangles in the terrain
 int terrain :: num_triangles() {
     int num = 0;
     for (int i = 2; i < terrain_triangle_mx.size() - 2; i++) num += (terrain_triangle_mx[i].size() - 4);

@@ -28,6 +28,21 @@ public:
 
     hydro();
 
+    std :: vector <std :: vector <float> > heightmap;
+    std :: vector <std :: vector <float> > bounded_heightmap;
+    std :: vector <std :: vector <float> > watermap;
+
+    void initialize_heightmap(int wx, int wy);
+
+
+
+
+
+
+
+
+
+
     void erode(int cycles);
     void spawn_rain();
     void initialize_water_map();
@@ -40,6 +55,10 @@ public:
     void test_water();
     void accumulate();
     void flow();
+
+    void normalize_w_levels();
+
+    void erode_step();
 
     void erode();
 
@@ -59,7 +78,6 @@ public:
     std :: vector <std :: vector <float> > water_map;
     std :: vector <std :: vector <float> > sediment_map;
 
-    std :: vector <std :: vector <float> > heightmap;
 
 };
 

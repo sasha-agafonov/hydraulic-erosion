@@ -22,15 +22,9 @@ splash_screen :: splash_screen(QWidget* parent) {
     v_box -> addWidget(message_label);
 
     movie -> start();
-   // setMouseTracking(false);
-     // setKeyboardTracking(true);
 
 }
 
-void splash_screen :: mousePressEvent(QMouseEvent* event) {
-    return;
-}
+void splash_screen :: mousePressEvent(QMouseEvent* event) { return; }
 
-void splash_screen :: keyPressEvent(QKeyEvent* event) {
-    return;
-}
+void splash_screen :: keyPressEvent(QKeyEvent* event) { return; }

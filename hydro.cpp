@@ -14,7 +14,6 @@
 
 
 hydro :: hydro() {
-
 }
 
 
@@ -23,7 +22,7 @@ void hydro :: load_heightmap() {
     using namespace std;
 
     // open .pgm image
-    ifstream terrain_data("../terrain/heightmap2.pgm");
+    ifstream terrain_data("../terrain/heightmap.pgm");
 
     // or don't
     if (terrain_data.fail()) return;
@@ -61,6 +60,19 @@ void hydro :: load_heightmap() {
         heightmap.push_back(pixel_row);
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 void hydro :: load_surface_normals() {
@@ -175,7 +187,7 @@ void hydro :: erode() {
 
     load_surface_normals();
     int terrain_w = heightmap.size();
-    for (int drops = 0; drops < 3000000; drops++) {
+    for (int drops = 0; drops < 10000; drops++) {
         rain_drop(rand() % terrain_w, rand() % terrain_w);
     }
     normalize_heightmap();
@@ -237,7 +249,7 @@ void hydro :: rain_drop(int pos_x, int pos_y) {
         }
 
 
-        float dep = sed * nz * iteration * 0.008f + 1;
+        float dep = sed * nz * iteration * 0.1f + 1;
         if (dep > sed) dep = sed;
         float er = (1 - nz * 1.3) * (300.f) / (iteration * 10 + 10) ;
                 //100000 * (1 - nz) * (0.1 + it / 200.f);
@@ -283,20 +295,46 @@ void hydro :: normalize_heightmap() {
 void hydro :: write_heightmap() {
 
     std :: ofstream happy_file;
-    happy_file.open("../terrain/heightmap2.pgm");
+
+    // eroded heightmap for rendering
+    happy_file.open("../terrain/heightmap_eroded.pgm");
     happy_file << "P2\n";
-    happy_file << 500 << ' ' << 500 << '\n';
+    happy_file << heightmap.size() << ' ' << heightmap[0].size() << '\n';
     happy_file << "65535\n";
 
     for (int i = 0; i < static_cast <int> (heightmap.size()); i++) {
         for (int k = 0; k < static_cast <int> (heightmap[0].size()); k++) {
-//            if (i >= 100 && i < 200) happy_file << 0 << ' ';
             if (k == static_cast <int> (heightmap[0].size()) - 1) happy_file << heightmap[i][k] << '\n';
             else happy_file << heightmap[i][k] << ' ';
         }
     }
+
     happy_file.close();
+
+    // eroded heightmap for preview
+    happy_file.open("../terrain/heightmap_eroded_preview.ppm");
+    happy_file << "P3\n";
+    happy_file << heightmap.size() << ' ' << heightmap[0].size() << '\n';
+    happy_file << "65535\n";
+
+    for (int i = 0; i < static_cast <int> (heightmap.size()); i++) {
+        for (int k = 0; k < static_cast <int> (heightmap[0].size()); k++) {
+
+            // make the eroded preview heightmap slightly blue
+            happy_file << static_cast <int> (floor(heightmap[i][k] * 0.85)) << ' ';
+            happy_file << static_cast <int> (floor(heightmap[i][k] * 0.85)) << ' ';
+
+            if (k == static_cast <int> (heightmap[0].size()) - 1) happy_file << heightmap[i][k] << '\n';
+            else happy_file << static_cast <int> (heightmap[i][k]) << ' ';
+
+        }
+    }
+
+    happy_file.close();
+
 }
+
+
 
 
 //void hydro :: accumulate() {
