@@ -1,4 +1,5 @@
 #include "interface_hydro_parameters_menu.h"
+#include <iostream>
 
 hydro_parameters_menu :: hydro_parameters_menu(QWidget *parent) : QWidget(parent) {
 
@@ -88,6 +89,8 @@ hydro_parameters_menu :: hydro_parameters_menu(QWidget *parent) : QWidget(parent
     deposition_rate_label -> setAlignment(Qt::AlignCenter);
     deposition_rate_label -> setFixedHeight(30);
 
+    timer = new QTimer;
+
     // sorry
     connect(random_checkbox, SIGNAL(stateChanged(int)), this, SLOT(erosion_parameters_changed()));
 
@@ -101,17 +104,23 @@ hydro_parameters_menu :: hydro_parameters_menu(QWidget *parent) : QWidget(parent
     connect(erosion_rate_slider, SIGNAL(valueChanged(int)), this, SLOT(erosion_parameters_changed()));
     connect(deposition_rate_slider, SIGNAL(valueChanged(int)), this, SLOT(erosion_parameters_changed()));
 
+    connect(timer, SIGNAL(timeout()), this, SLOT(reload_heighmap()));
+
+
+
     hydraulic_erosion = new hydro();
 
 //    hydraulic_erosion -> erode();
 
     hydraulic_erosion2 = new hydro2();
 
-    hydraulic_erosion2 -> load_heightmap();
-    hydraulic_erosion2 -> create_bounded_heightmap();
-    hydraulic_erosion2 -> create_bounded_watermap();
-//    hydraulic_erosion2 -> create_sediment_map();
-    hydraulic_erosion2 -> output_heightmap();
+    hydraulic_erosion3 = new hydro3(this);
+
+//    hydraulic_erosion2 -> load_heightmap();
+//    hydraulic_erosion2 -> create_bounded_heightmap();
+//    hydraulic_erosion2 -> create_bounded_watermap();
+////    hydraulic_erosion2 -> create_sediment_map();
+//    hydraulic_erosion2 -> output_heightmap();
 
     eroded_heightmap = new eroded_heightmap_preview(this);
 
@@ -171,15 +180,23 @@ void hydro_parameters_menu :: erosion_parameters_changed() {
 void hydro_parameters_menu :: erode_heightmap() {
 
 
-    hydraulic_erosion2 -> load_heightmap();
-    hydraulic_erosion2 -> create_bounded_heightmap();
-    hydraulic_erosion2 -> create_bounded_watermap();
-    hydraulic_erosion2 -> create_sediment_map();
-//    hydraulic_erosion2 -> distribute_water(120000);
-    hydraulic_erosion2 -> erode(cycles_slider -> value());
-    hydraulic_erosion2 -> drop();
-    hydraulic_erosion2 -> output_heightmap();
+//    hydraulic_erosion2 -> load_heightmap();
+//    hydraulic_erosion2 -> create_bounded_heightmap();
+//    hydraulic_erosion2 -> create_bounded_watermap();
+//    hydraulic_erosion2 -> create_sediment_map();
+////    hydraulic_erosion2 -> distribute_water(120000);
+//    hydraulic_erosion2 -> erode(cycles_slider -> value());
+//    hydraulic_erosion2 -> drop();
+//    hydraulic_erosion2 -> output_heightmap();
+
+    hydraulic_erosion3 -> initialize_maps();
+
+//    hydraulic_erosion3 -> check();
+    hydraulic_erosion3 -> erode(1000);
 
     eroded_heightmap -> reload_heightmap();
 
 }
+
+
+void hydro_parameters_menu :: reload_heightmap() { eroded_heightmap -> refresh_heightmap(); }

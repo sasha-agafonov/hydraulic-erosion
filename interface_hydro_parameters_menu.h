@@ -10,10 +10,12 @@
 #include <QSlider>
 #include <QCheckBox>
 #include <QSpinBox>
+#include <QTimer>
 
 #include "interface_eroded_heightmap_preview.h"
 #include "hydro.h"
 #include "hydro2.h"
+#include "hydro3.h"
 
 class hydro_parameters_menu : public QWidget {
 
@@ -47,8 +49,11 @@ public:
     QLabel* erosion_rate_label;
     QLabel* deposition_rate_label;
 
+    QTimer* timer;
+
     hydro* hydraulic_erosion;
     hydro2* hydraulic_erosion2;
+    hydro3* hydraulic_erosion3;
     eroded_heightmap_preview* eroded_heightmap;
 
     void original_heightmap_invalid();
@@ -56,9 +61,9 @@ public:
 
 public slots:
 
-
     void erosion_parameters_changed();
     void erode_heightmap();
+    void reload_heightmap();
 
 };
 

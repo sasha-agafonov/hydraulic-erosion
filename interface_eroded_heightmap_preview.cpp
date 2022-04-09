@@ -50,7 +50,14 @@ void eroded_heightmap_preview :: reload_heightmap() {
     this -> reload_button -> setText("Currently up-to-date");
     this -> reload_button -> setStyleSheet("QPushButton { height: 30px; background: rgba(110, 110, 135, 1); border: 0; margin: 0; border-radius: 6px; font-size: 11px; color: rgba(40, 44, 52, 1); } "
                                    "QPushButton:pressed { background: rgba(110, 110, 135, 1); } ");
-    QPixmap pixmap("../terrain/heightmap_preview.ppm");
 
+    QPixmap pixmap("../terrain/heightmap_eroded2_preview.pgm");
+
+    label -> setPixmap(pixmap.scaled(318, 318, Qt :: KeepAspectRatio));
+}
+
+void eroded_heightmap_preview :: refresh_heightmap() {
+
+    QPixmap pixmap("../terrain/heightmap_eroded2_preview.pgm");
     label -> setPixmap(pixmap.scaled(318, 318, Qt :: KeepAspectRatio));
 }

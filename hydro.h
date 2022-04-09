@@ -34,15 +34,6 @@ public:
 
     void initialize_heightmap(int wx, int wy);
 
-
-
-
-
-
-
-
-
-
     void erode(int cycles);
     void spawn_rain();
     void initialize_water_map();
@@ -66,7 +57,6 @@ public:
     void rain_drop(int pos_x, int pos_y);
 
     void vec_norm(int x, int y);
-
     void normalize_heightmap();
     void write_heightmap();
 
@@ -77,6 +67,7 @@ public:
 
     std :: vector <std :: vector <float> > water_map;
     std :: vector <std :: vector <float> > sediment_map;
+
 
 
 };

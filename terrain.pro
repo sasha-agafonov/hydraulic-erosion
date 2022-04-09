@@ -16,6 +16,8 @@ SOURCES += \
     grid_layout.cpp \
     hydro.cpp \
     hydro2.cpp \
+    hydro3.cpp \
+    hydro_particle.cpp \
     interface_controller.cpp \
     interface_eroded_heightmap_preview.cpp \
     interface_generation_menu.cpp \
@@ -43,6 +45,8 @@ HEADERS += \
     grid_layout.h \
     hydro.h \
     hydro2.h \
+    hydro3.h \
+    hydro_particle.h \
     interface_controller.h \
     interface_eroded_heightmap_preview.h \
     interface_generation_menu.h \
@@ -63,7 +67,7 @@ HEADERS += \
     super.h \
     terrain.h \
     world.h \
-#    connections.h \
+    connections.h \
     world_menu.h
 
 FORMS += \

@@ -20,6 +20,7 @@ public:
     QPushButton* reload_button;
 
     void reload_heightmap();
+    void refresh_heightmap();
     void display_loader();
 
 };
