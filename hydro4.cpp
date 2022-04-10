@@ -14,13 +14,16 @@
 #define IF_OUT_OF_BOUNDS if (x < 0 || y < 0 || x >= static_cast <int> (heightmap.size()) || y >= static_cast <int> (heightmap[0].size()))
 #define GRAVITY 9.81f
 #define NORMALIZATION_FACTOR 400
-#define TIME_STEP 1.f
+#define TIME_STEP 0.1f
 #define FOR_EACH_CELL for (int i = 0; i < static_cast <int> (heightmap.size()); i++) { for (int k = 0; k < static_cast <int> (heightmap[0].size()); k++) {
 #define FOR_EACH_CELL_2 for (int i = static_cast <int> (heightmap.size()) - 1; i >= 0; i--) { for (int k = 0; k < static_cast <int> (heightmap[0].size()); k++) {
 #define END }}
-#define WATER 0.001
-#define CAPACITY 0.2
-
+#define WATER 0.001f
+#define CAPACITY 0.5f
+#define PI_EXTERN 3.141592653589793238462643383279502884197169399375105820974944592307816406286
+#define SOLUBILITY 0.01f
+#define DEPOSITION_RATE 0.05f
+#define EVAPORATION_RATE 0.1f
 
 hydro4 :: hydro4() {
 
@@ -130,6 +133,7 @@ void hydro4 :: update_water_cell(int x, int y) {
 
     updated_map -> watermap[x][y] = std :: max(0.f, current_map -> watermap[x][y] + TIME_STEP * (updated_map -> inflow_sum(x, y) - updated_map -> flux_field[x][y] -> sum()));
 
+    //if (updated_map -> watermap[x][y] > 1) updated_map -> watermap[x][y] = 1;
 //    heightmap[x][y] -= updated_map -> watermap[x][y] * 0.2;
 //    if (updated_map -> watermap[x][y] < 0) updated_map -> watermap[x][y] = 0;
 
@@ -156,45 +160,67 @@ normal_vector hydro4 :: normal(int x, int y) {
             not_normal.push_back(y - 1);
         }
 
-        if (!(x + 1 < 0 || x + 1 >= static_cast <int> (heightmap.size()))) {
+        if ((x + 1 > 0 && x + 1 < static_cast <int> (heightmap.size()))) {
             not_normal.push_back(x + 1);
             not_normal.push_back(y);
         }
 
-        if (!(y + 1 < 0 || y + 1 >= static_cast <int> (heightmap[0].size()))) {
+        if ((y + 1 > 0 && y + 1 < static_cast <int> (heightmap[0].size()))) {
             not_normal.push_back(x);
             not_normal.push_back(y + 1);
         }
 
+        int triangles = 0;
+
         for (int i = 0; i < static_cast <int> (not_normal.size()); i += 2) {
+
+            if (static_cast <int> (not_normal.size()) < 8 && i == static_cast <int> (not_normal.size()) - 2) break;
 
             float vector_vx = not_normal[i] - x;
             float vector_vy = not_normal[i + 1] - y;
-            float vector_vz = heightmap[i][i + 1] - heightmap[x][y];
+            float vector_vz = heightmap [not_normal[i]][not_normal[i + 1]] - heightmap[x][y];
 
             float vector_ux = not_normal[(i + 2) % static_cast <int> (not_normal.size())] - x;
             float vector_uy = not_normal[(i + 3) % static_cast <int> (not_normal.size())] - y;
-            float vector_uz = heightmap[(i + 2) % static_cast <int> (not_normal.size())][(i + 3) % static_cast <int> (not_normal.size())] - heightmap[x][y];
+            float vector_uz = heightmap [not_normal[(i + 2) % static_cast <int> (not_normal.size())]][not_normal[(i + 3) % static_cast <int> (not_normal.size())]] - heightmap[x][y];
 
             normal.x += ((vector_vy * vector_uz) - (vector_vz * vector_uy));
             normal.y += ((vector_vz * vector_ux) - (vector_vx * vector_uz));
             normal.z += ((vector_vx * vector_uy) - (vector_vy * vector_ux));
 
+            triangles++;
+
         }
 
-        if (static_cast <int> (not_normal.size()) > 0) {
-
-            normal.x /= static_cast <int> (not_normal.size());
-            normal.y /= static_cast <int> (not_normal.size());
-            normal.z /= static_cast <int> (not_normal.size());
+        if (triangles > 0) {
+            normal.x /= triangles;
+            normal.y /= triangles;
+            normal.z /= triangles;
         }
 
         return normal;
 
 }
 
-float hydro4 :: incline(normal_vector normal) { return acos(normal.z / sqrt(pow(normal.x, 2) + pow(normal.y, 2) + pow(normal.z, 2))); }
+float hydro4 :: incline_sin(normal_vector normal) { return sin(acos(normal.z / vector_length(normal.x, normal.y, normal.z) * vector_length(0, 0, 1))); }
 
+float hydro4 :: vector_length(float x, float y, float z) { return (sqrt(pow(x, 2) + pow(y, 2) + pow(z, 2))); }
+
+float hydro4 :: transport_capacity(int x, int y) { return CAPACITY * incline_sin(normal(x, y)) * current_map -> velocity_field[x][y] -> magnitude(); }
+
+float hydro4 :: euler_step(float x, float y) {
+
+    float sediment = 0;
+
+//    sediment += updated_map -> sedimap[floor(x)][floor(y)];
+//    sediment += updated_map -> sedimap[floor(x)][ ceil(y)];
+//    sediment += updated_map -> sedimap[ ceil(x)][floor(y)];
+//    sediment += updated_map -> sedimap[ ceil(x)][ ceil(y)];
+
+    sediment /= 4;
+
+    return sediment;
+}
 
 void hydro4 :: erode(int cycles) {
 
@@ -203,29 +229,49 @@ void hydro4 :: erode(int cycles) {
     FOR_EACH_CELL heightmap[i][k] /= NORMALIZATION_FACTOR; END
 
     current_map = new hydro_map(static_cast <int> (heightmap.size()), static_cast <int> (heightmap[0].size()));
-
     updated_map = new hydro_map(static_cast <int> (heightmap.size()), static_cast <int> (heightmap[0].size()));
-
-
-
-
 
     for (int cycle = 0; cycle < cycles; cycle++) {
 
+        // increment water level
         FOR_EACH_CELL current_map -> watermap[i][k] += WATER * TIME_STEP; END
-                // compute new flux here
+
+        // compute new flux
         FOR_EACH_CELL scale_flux(i, k, heightmap[i][k] + current_map -> watermap[i][k]); END
 
+        // update water level based on flux
         FOR_EACH_CELL update_water_cell(i, k); END
 
+        // velocity field
         FOR_EACH_CELL current_map -> update_velocity(i, k, current_map -> watermap[i][k], updated_map -> watermap[i][k]); END
 
-        FOR_EACH_CELL current_map -> sedimap[i][k] = CAPACITY * current_map -> velocity_field[i][k] -> magnitude() * sin(incline(normal(i, k)));    END
+        // erosion and deposition
+        FOR_EACH_CELL
 
+            // erosion
+            if (transport_capacity(i, k) > updated_map -> sedimap[i][k]) {
+                heightmap[i][k] -= SOLUBILITY * (transport_capacity(i, k) - updated_map -> sedimap[i][k]);
+                updated_map -> sedimap[i][k] += SOLUBILITY * transport_capacity(i, k) - updated_map -> sedimap[i][k];
+
+            // deposition
+            } else {
+                heightmap[i][k] += DEPOSITION_RATE * (updated_map -> sedimap[i][k] - transport_capacity(i, k));
+                updated_map -> sedimap[i][k] -= DEPOSITION_RATE * (updated_map -> sedimap[i][k] - transport_capacity(i, k));
+            }
+
+        END
+
+        // sediment transport
+        FOR_EACH_CELL updated_map -> sedimap[i][k] = euler_step(i - updated_map -> velocity_field[i][k] -> x, k - updated_map -> velocity_field[i][k] -> y); END
+
+        // evaporation
+        FOR_EACH_CELL updated_map -> watermap[i][k] *= (1 - EVAPORATION_RATE * TIME_STEP); END
+
+        // update parameters for next iteration
         *(current_map) = *(updated_map);
-
     }
 
+    // output results
     output_heightmap();
 
 }

@@ -231,7 +231,7 @@ void world :: initializeGL() {
     glFogf(GL_FOG_START, 200.f);
     glFogf(GL_FOG_END, 2000.f);
 
-    float fcolour[3]={0.4, 0.7, 0.9};
+    float fcolour[3]={1.f, 1.f, 1.f};
 
     glEnable(GL_DEPTH_TEST);
     glDepthMask(GL_TRUE);

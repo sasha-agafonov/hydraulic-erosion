@@ -194,7 +194,7 @@ void hydro_parameters_menu :: erode_heightmap() {
 //    hydraulic_erosion3 -> initialize_maps();
 
 //    hydraulic_erosion3 -> check();
-    hydraulic_erosion4 -> erode(200);
+    hydraulic_erosion4 -> erode(100);
 
     eroded_heightmap -> reload_heightmap();
 

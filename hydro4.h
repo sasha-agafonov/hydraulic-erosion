@@ -38,10 +38,18 @@ public:
     float get_total_height(int x, int y);
 
     hydro_flux compute_flux(int x, int y, float current_height);
-    normal_vector normal(int x, int y);
 
-    float incline(normal_vector normal);
+
     void scale_flux(int x, int y, float current_height);
+
+    float euler_step(float x, float y);
+
+
+    normal_vector normal(int x, int y);
+    float incline_sin(normal_vector normal);
+    float vector_length(float x, float y, float z);
+
+    float transport_capacity(int x, int y);
 
 };
 
