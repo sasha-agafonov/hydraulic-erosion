@@ -16,6 +16,7 @@
 #include "hydro.h"
 #include "hydro2.h"
 #include "hydro3.h"
+#include "hydro4.h"
 
 class hydro_parameters_menu : public QWidget {
 
@@ -54,6 +55,7 @@ public:
     hydro* hydraulic_erosion;
     hydro2* hydraulic_erosion2;
     hydro3* hydraulic_erosion3;
+    hydro4* hydraulic_erosion4;
     eroded_heightmap_preview* eroded_heightmap;
 
     void original_heightmap_invalid();

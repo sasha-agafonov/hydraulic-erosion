@@ -13,6 +13,7 @@
 #define PGM_16_BIT 65535
 #define OUT_OF_BOUNDS -1
 #define GRAVITY 9.81f
+#define NORMALIZATION_FACTOR 400
 #define FOR_EACH_CELL for (int i = 0; i < static_cast <int> (heightmap.size()); i++) { for (int k = 0; k < static_cast <int> (heightmap[0].size()); k++) {
 #define END }}
 
@@ -76,7 +77,8 @@ void hydro3 :: load_heightmap() {
 
 }
 
-void hydro3 :: normalize_heightmap() { FOR_EACH_CELL heightmap[i][k] /= 400; END }
+
+void hydro3 :: normalize_heightmap() { FOR_EACH_CELL heightmap[i][k] /= NORMALIZATION_FACTOR; END }
 
 
 void hydro3 :: initialize_watermap() {
@@ -162,16 +164,16 @@ outflow_flux hydro3 :: get_new_flux(int x, int y) {
     float current_height = heightmap[x][y] + watermap[x][y];
 
     if (x - 1 < 0) flux.up = 0;
-    else flux.up = std :: max(0.f, flux_field[x][y].up  + GRAVITY * (current_height - heightmap[x - 1][y] - watermap[x - 1][y]));
+    else flux.up = std :: max(0.f, flux_field[x][y].up + GRAVITY * (current_height - heightmap[x - 1][y] - watermap[x - 1][y]));
 
     if (y - 1 < 0) flux.left = 0;
-    else flux.left = std :: max(0.f, flux_field[x][y].left  + GRAVITY * (current_height - heightmap[x][y - 1] - watermap[x][y - 1]));
+    else flux.left = std :: max(0.f, flux_field[x][y].left + GRAVITY * (current_height - heightmap[x][y - 1] - watermap[x][y - 1]));
 
     if (x + 1 >= static_cast <int> (heightmap.size())) flux.down = 0;
-    else flux.down = std :: max(0.f, flux_field[x][y].down  + GRAVITY * (current_height - heightmap[x + 1][y] - watermap[x + 1][y]));
+    else flux.down = std :: max(0.f, flux_field[x][y].down + GRAVITY * (current_height - heightmap[x + 1][y] - watermap[x + 1][y]));
 
     if (y + 1 >= static_cast <int> (heightmap[0].size())) flux.right = 0;
-    else flux.right = std :: max(0.f, flux_field[x][y].right  + GRAVITY * (current_height - heightmap[x][y + 1] - watermap[x][y + 1]));
+    else flux.right = std :: max(0.f, flux_field[x][y].right + GRAVITY * (current_height - heightmap[x][y + 1] - watermap[x][y + 1]));
 
     return flux;
 
@@ -199,38 +201,28 @@ void hydro3 :: update_flux(int x, int y) {
 
     outflow_flux new_flux = get_new_flux(x, y);
 
-//    if (isnan(new_flux.left)) std :: cout << "\nleft nan before: " << new_flux.left;
-
-
     if (new_flux.up + new_flux.down + new_flux.left + new_flux.right <= 0) {
+
         new_flux.left = 0;
         new_flux.right = 0;
         new_flux.up = 0;
         new_flux.down = 0;
     }
     else {
+
         float flux_scale;
 
         if (watermap[x][y] / (new_flux.up + new_flux.down + new_flux.left + new_flux.right) < 1) flux_scale = watermap[x][y] / (new_flux.up + new_flux.down + new_flux.left + new_flux.right);
         else flux_scale = 1;
 
-
-//        = std :: min(1.f, watermap[x][y] / (new_flux.up + new_flux.down + new_flux.left + new_flux.right));
-
         new_flux.left = new_flux.left * flux_scale;
-
         new_flux.right *= flux_scale;
         new_flux.up *= flux_scale;
         new_flux.down *= flux_scale;
     }
 
-//    if (isnan(new_flux.left)) std :: cout << "\nleft nan after: " << new_flux.left;
-
     flux_field[x][y] = new_flux;
 
-//    watermap[x][y] += ((get_inflow_flux(x, y, x + 1, y) + get_inflow_flux(x, y, x - 1, y)
-//                    + get_inflow_flux(x, y, x, y + 1) + get_inflow_flux(x, y, x, y - 1))
-//                    - (new_flux.left + new_flux.right + new_flux.up + new_flux.down));
 }
 
 //void hydro3 :: update_water(int x, int y) {
@@ -255,9 +247,6 @@ void hydro3 :: check() {
 
 void hydro3 :: erode(int cycles) {
 
-    bool ch = true;
-
-    bool liar = true;
 
 //    for (int x = 0; x < 100; x++) {
 //    FOR_EACH_CELL watermap[i][k] += 0.01; update_flux(i, k); END
@@ -407,44 +396,3 @@ void hydro3 :: output_heightmap() {
 }
 
 
-// next position
-// get terrain normal at current position.
-// normal = normal_unit_vector(drop.x, drop.y)
-
-// dissolve some water
-
-// erode some water
-//disp +=  vel + norm.x * sin(ang of incline)
-//disp +=  vel + norm.y * sin (ang of incline)
-// energy = 0.5 mv^2 where m = w
-
-// erosion:
-// change in energy * constant erosion rate
-
-
-
-
-// if next energy lower, consume some material
-// evaporate water
-// if capacity low, drop material
-
-// if water amount = 0; delete drop
-//normal hydro3 :: normal_unit_vector(int x, int y) {
-
-//    float top = bounded_heightmap[x][y + 1];
-//    float bottom = bounded_heightmap[x][y - 1];
-//    float right = bounded_heightmap[x + 1][y];
-//    float left = bounded_heightmap[x - 1][y];
-
-////    for (int i = 0; i < 4; i++) {
-
-////    }
-
-
-//    normal unit;
-//    unit.x = 1;
-//    unit.y = 1;
-//    unit.z = 1;
-//    return unit;
-
-//}

@@ -17,7 +17,11 @@ SOURCES += \
     hydro.cpp \
     hydro2.cpp \
     hydro3.cpp \
+    hydro4.cpp \
+    hydro_flux.cpp \
+    hydro_map.cpp \
     hydro_particle.cpp \
+    hydro_velocity.cpp \
     interface_controller.cpp \
     interface_eroded_heightmap_preview.cpp \
     interface_generation_menu.cpp \
@@ -46,7 +50,11 @@ HEADERS += \
     hydro.h \
     hydro2.h \
     hydro3.h \
+    hydro4.h \
+    hydro_flux.h \
+    hydro_map.h \
     hydro_particle.h \
+    hydro_velocity.h \
     interface_controller.h \
     interface_eroded_heightmap_preview.h \
     interface_generation_menu.h \

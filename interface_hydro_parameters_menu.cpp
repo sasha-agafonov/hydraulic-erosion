@@ -116,6 +116,8 @@ hydro_parameters_menu :: hydro_parameters_menu(QWidget *parent) : QWidget(parent
 
     hydraulic_erosion3 = new hydro3(this);
 
+    hydraulic_erosion4 = new hydro4();
+
 //    hydraulic_erosion2 -> load_heightmap();
 //    hydraulic_erosion2 -> create_bounded_heightmap();
 //    hydraulic_erosion2 -> create_bounded_watermap();
@@ -189,10 +191,10 @@ void hydro_parameters_menu :: erode_heightmap() {
 //    hydraulic_erosion2 -> drop();
 //    hydraulic_erosion2 -> output_heightmap();
 
-    hydraulic_erosion3 -> initialize_maps();
+//    hydraulic_erosion3 -> initialize_maps();
 
 //    hydraulic_erosion3 -> check();
-    hydraulic_erosion3 -> erode(1000);
+    hydraulic_erosion4 -> erode(200);
 
     eroded_heightmap -> reload_heightmap();
 
