@@ -24,12 +24,11 @@ hydro_parameters_menu :: hydro_parameters_menu(QWidget *parent) : QWidget(parent
 
     cycles_slider = new QSlider(Qt :: Horizontal);
     cycles_slider -> setFixedHeight(30);
-    cycles_slider -> setMaximum(200);
-    cycles_slider -> setMinimum(10);
+    cycles_slider -> setRange(10, 1000);
 
     cycles_spinbox = new QSpinBox(this);
     cycles_spinbox -> setFixedWidth(54);
-    cycles_spinbox -> setRange(10, 200);
+    cycles_spinbox -> setRange(10, 1000);
     cycles_spinbox -> setAlignment(Qt::AlignCenter | Qt::AlignVCenter);
 
     cycles_label = new QLabel("Number of Cycles", this);
@@ -194,7 +193,7 @@ void hydro_parameters_menu :: erode_heightmap() {
 //    hydraulic_erosion3 -> initialize_maps();
 
 //    hydraulic_erosion3 -> check();
-    hydraulic_erosion4 -> erode(100);
+    hydraulic_erosion4 -> erode(cycles_slider -> value());
 
     eroded_heightmap -> reload_heightmap();
 

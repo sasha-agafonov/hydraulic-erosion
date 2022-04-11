@@ -70,7 +70,7 @@ void terrain :: load_heightmap() {
 
 }
 
-// split a heightmap into triangles
+// split the heightmap into triangles
 void terrain :: load_triangles() {
 
 //    v1--------v4

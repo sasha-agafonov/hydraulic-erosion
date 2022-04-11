@@ -22,6 +22,7 @@ public:
     hydro4();
 
     std :: vector <std :: vector <float> > heightmap;
+    std :: vector <std :: vector <float> > temp_heightmap;
 
     hydro_map* current_map;
     hydro_map* updated_map;
@@ -41,6 +42,8 @@ public:
 
 
     void scale_flux(int x, int y, float current_height);
+
+    void erosion_deposition(int x, int y);
 
     float euler_step(float x, float y);
 
