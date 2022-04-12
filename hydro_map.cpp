@@ -60,6 +60,21 @@ void hydro_map :: update_velocity(int x, int y, float intermediate_level, float 
     float volume_x = get_inflow_flux(x, y, x - 1, y) - get_inflow_flux(x, y, x + 1, y) + flux_field[x][y] -> up - flux_field[x][y] -> down;
     float volume_y = get_inflow_flux(x, y, x, y + 1) - get_inflow_flux(x, y, x, y - 1) + flux_field[x][y] -> right - flux_field[x][y] -> left;
 
-    velocity_field[x][y] -> x = 0.5 * volume_x / delta;
-    velocity_field[x][y] -> y = 0.5 * volume_y / delta;
+
+
+//    velocity_field[x][y] -> x = volume_x;
+//    velocity_field[x][y] -> y = volume_y;
+    if (delta == 0 || (volume_x != 0 && volume_y != 0)) {
+
+        velocity_field[x][y] -> y = 10;
+        velocity_field[x][y] -> y = 10;
+    }
+
+    else {
+        float vel_y = (0.5 * volume_y / delta);
+        float vel_x = (0.5 * volume_x / delta);
+
+        velocity_field[x][y] -> x = std :: min(10.f, vel_x);
+        velocity_field[x][y] -> y = std :: min(10.f, vel_y);
+    }
 }

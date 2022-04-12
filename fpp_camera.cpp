@@ -24,8 +24,8 @@ void fpp_camera :: set_angles(double horizontal_ang, double vertical_ang) {
 
     this -> vertical_ang = vertical_ang;
 
-    if (this -> vertical_ang < 0) this -> vertical_ang = 0;
-    else if (this -> vertical_ang > 180) this -> vertical_ang = 180;
+    if (this -> vertical_ang < 1) this -> vertical_ang = 1;
+    else if (this -> vertical_ang > 179) this -> vertical_ang = 179;
 
     this -> horizontal_ang = horizontal_ang;
 

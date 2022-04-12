@@ -12,22 +12,23 @@
 #define PGM_8_BIT 255
 #define PGM_16_BIT 65535
 #define IF_OUT_OF_BOUNDS if (x < 0 || y < 0 || x >= static_cast <int> (heightmap.size()) || y >= static_cast <int> (heightmap[0].size()))
-#define GRAVITY 9.81f
+#define GRAVITY 10.f
 #define NORMALIZATION_FACTOR 400
 #define TIME_STEP 0.1f
 #define FOR_EACH_CELL for (int i = 0; i < static_cast <int> (heightmap.size()); i++) { for (int k = 0; k < static_cast <int> (heightmap[0].size()); k++) {
 #define FOR_EACH_CELL_2 for (int i = static_cast <int> (heightmap.size()) - 1; i >= 0; i--) { for (int k = 0; k < static_cast <int> (heightmap[0].size()); k++) {
 #define END }}
-#define WATER 0.05f
+#define WATER 1.f
 #define CAPACITY 0.05f
 #define PI_EXTERN 3.141592653589793238462643383279502884197169399375105820974944592307816406286
-#define SOLUBILITY 0.01f
-#define DEPOSITION_RATE 0.03f
-#define EVAPORATION_RATE 0.6f
+#define SOLUBILITY 0.02f
+#define DEPOSITION_RATE 0.01f
+#define EVAPORATION_RATE 0.3f
 
 hydro4 :: hydro4() {
 
-
+    int cyc = 0;
+    bool rain = true;
 }
 
 void hydro4 :: load_heightmap() {
@@ -119,8 +120,15 @@ void hydro4 :: scale_flux(int x, int y, float current_height) {
     else if (flux.sum() > current_map -> watermap[x][y]) flux.scale(current_map -> watermap[x][y] / (flux.sum() * TIME_STEP));
 
 
-    *(updated_map -> flux_field[x][y]) = flux;
-    *(current_map -> flux_field[x][y]) = flux;
+    updated_map -> flux_field[x][y] -> up  = flux.up;
+    updated_map -> flux_field[x][y] -> down  = flux.down;
+    updated_map -> flux_field[x][y] -> left  = flux.left;
+    updated_map -> flux_field[x][y] -> right  = flux.right;
+
+    current_map -> flux_field[x][y] -> up = flux.up;
+    current_map -> flux_field[x][y] -> down = flux.down;
+    current_map -> flux_field[x][y] -> left = flux.left;
+    current_map -> flux_field[x][y] -> right = flux.right;
 
 }
 
@@ -203,11 +211,14 @@ normal_vector hydro4 :: normal(int x, int y) {
             normal.z /= triangles;
         }
 
+
+        if (normal.x == 0 && normal.y == 0 && normal.x == 0) normal.z = 1;
+
         return normal;
 
 }
 
-float hydro4 :: incline_sin(normal_vector normal) { return std :: max(0.02f, sin(acos(normal.z / vector_length(normal.x, normal.y, normal.z) * vector_length(0, 0, 1)))); }
+float hydro4 :: incline_sin(normal_vector normal) { return std :: max(0.1f, sin(acos(normal.z / vector_length(normal.x, normal.y, normal.z) * vector_length(0, 0, 1)))); }
 
 float hydro4 :: vector_length(float x, float y, float z) { return (sqrt(pow(x, 2) + pow(y, 2) + pow(z, 2))); }
 
@@ -215,22 +226,18 @@ float hydro4 :: transport_capacity(int x, int y) { return CAPACITY * incline_sin
 
 float hydro4 :: euler_step(float x, float y) {
 
-    float sediment = 0;
+//    float sediment = 0;
 
-    sediment += current_map -> sedimap[floor(x)][floor(y)];
-    sediment += current_map -> sedimap[floor(x)][ ceil(y)];
-    sediment += current_map -> sedimap[ ceil(x)][floor(y)];
-    sediment += current_map -> sedimap[ ceil(x)][ ceil(y)];
+//    float top_left = current_map -> sedimap[floor(x)][floor(y)];
+//    float top_right = current_map -> sedimap[floor(x)][ ceil(y)];
+//    float bottom_left= current_map -> sedimap[ ceil(x)][floor(y)];
+//    float bottom_right= current_map -> sedimap[ ceil(x)][ ceil(y)];
 
-    sediment /= 4;
+    float top    = current_map -> sedimap[floor(x)][floor(y)] * (y - floor(y)) + current_map -> sedimap[floor(x)][ceil(y)] * (ceil(y) - y);
+    float bottom = current_map -> sedimap[ ceil(x)][floor(y)] * (y - floor(y)) + current_map -> sedimap[ceil(x) ][ceil(y)] * (ceil(y) - y);
 
-//    std :: cout << "negativein euler " << sediment ;
+    return top * (x - floor(x)) + bottom * (ceil(x) - x);
 
-    if (sediment < 0) sediment = 0;
-
-
-
-    return sediment;
 }
 
 void hydro4 :: erosion_deposition(int x, int y) {
@@ -254,6 +261,16 @@ void hydro4 :: erosion_deposition(int x, int y) {
 
 }
 
+void hydro4 :: update_cell(int x, int y) {
+
+    current_map -> watermap[x][y] = updated_map -> watermap[x][y];
+    current_map -> sedimap[x][y] = updated_map -> sedimap[x][y];
+
+    *(current_map -> velocity_field[x][y]) = *(updated_map -> velocity_field[x][y]);
+    *(current_map -> flux_field[x][y]) = *(updated_map -> flux_field[x][y]);
+
+}
+
 
 void hydro4 :: erode(int cycles) {
 
@@ -270,7 +287,7 @@ void hydro4 :: erode(int cycles) {
         FOR_EACH_CELL current_map -> watermap[i][k] += (WATER * TIME_STEP); END
 
         // compute new flux
-        FOR_EACH_CELL scale_flux(i, k, heightmap[i][k] + current_map -> watermap[i][k]); END
+        FOR_EACH_CELL scale_flux(k, i, heightmap[k][i] + current_map -> watermap[k][i]); END
 
         // update water level based on flux
         FOR_EACH_CELL update_water_cell(i, k); END
@@ -279,25 +296,59 @@ void hydro4 :: erode(int cycles) {
         FOR_EACH_CELL updated_map -> update_velocity(i, k, current_map -> watermap[i][k], updated_map -> watermap[i][k]); END
 
         // erosion and deposition
-        FOR_EACH_CELL erosion_deposition(i, k); END
+//        FOR_EACH_CELL erosion_deposition(i, k); END
 
 
-        FOR_EACH_CELL heightmap[i][k] += temp_heightmap[i][k]; END
+//        FOR_EACH_CELL heightmap[i][k] += temp_heightmap[i][k];
 
-
-       // if (updated_map -> sedimap[i][k] < 0 ) std :: cout << "neg sedim: " << updated_map -> sedimap[i][k] <<"\n";
+//        if (updated_map -> sedimap[i][k] < 0 ) std :: cout << "neg sedim: " << updated_map -> sedimap[i][k] <<"\n";
+//        END
 
 
 
         // sediment transport
-        FOR_EACH_CELL updated_map -> sedimap[i][k] = euler_step(i - updated_map -> velocity_field[i][k] -> x * TIME_STEP, k - updated_map -> velocity_field[i][k] -> y * TIME_STEP); END
+       // FOR_EACH_CELL updated_map -> sedimap[i][k] = euler_step(i - updated_map -> velocity_field[i][k] -> x * TIME_STEP, k - updated_map -> velocity_field[i][k] -> y * TIME_STEP); END
 
         // evaporation
         FOR_EACH_CELL updated_map -> watermap[i][k] *= (1 - EVAPORATION_RATE * TIME_STEP); END
 
         // update parameters for next iteration
-        *(current_map) = *(updated_map);
+        FOR_EACH_CELL update_cell(i, k); END
     }
+
+    while(is_wet()) {
+
+        // compute new flux
+        FOR_EACH_CELL scale_flux(k, i, heightmap[k][i] + current_map -> watermap[k][i]); END
+
+        // update water level based on flux
+        FOR_EACH_CELL update_water_cell(i, k); END
+
+        // velocity field
+        FOR_EACH_CELL updated_map -> update_velocity(i, k, current_map -> watermap[i][k], updated_map -> watermap[i][k]); END
+
+                // erosion and deposition
+        //        FOR_EACH_CELL erosion_deposition(i, k); END
+
+
+        //        FOR_EACH_CELL heightmap[i][k] += temp_heightmap[i][k];
+
+        //        if (updated_map -> sedimap[i][k] < 0 ) std :: cout << "neg sedim: " << updated_map -> sedimap[i][k] <<"\n";
+        //        END
+
+
+
+                // sediment transport
+               // FOR_EACH_CELL updated_map -> sedimap[i][k] = euler_step(i - updated_map -> velocity_field[i][k] -> x * TIME_STEP, k - updated_map -> velocity_field[i][k] -> y * TIME_STEP); END
+
+                // evaporation
+                FOR_EACH_CELL updated_map -> watermap[i][k] *= (1 - EVAPORATION_RATE * TIME_STEP); END
+
+                // update parameters for next iteration
+                FOR_EACH_CELL update_cell(i, k); END
+    }
+
+
 
     // output results
     output_heightmap();
@@ -317,8 +368,8 @@ void hydro4 :: output_heightmap() {
 
     FOR_EACH_CELL
 
-        if (k == static_cast <int> (heightmap[0].size()) - 1) happy_file << ceil((  heightmap[i][k]) * 400 ) << '\n';
-        else happy_file << ceil(( ( heightmap[i][k]) + heightmap[i][k])  * 400)  << ' ';
+        if (k == static_cast <int> (heightmap[0].size()) - 1) happy_file << ceil((heightmap[i][k] + current_map -> sedimap[i][k]) * 400) << '\n';
+        else happy_file << ceil((heightmap[i][k] + current_map -> sedimap[i][k]) * 400)  << ' ';
 
     END
 
@@ -339,4 +390,106 @@ void hydro4 :: output_heightmap() {
 
     happy_file.close();
 
+}
+
+
+
+
+
+
+void hydro4 :: test_1() {
+
+    load_heightmap();
+
+    FOR_EACH_CELL heightmap[i][k] /= NORMALIZATION_FACTOR ; END
+
+    current_map = new hydro_map(static_cast <int> (heightmap.size()), static_cast <int> (heightmap[0].size()));
+    updated_map = new hydro_map(static_cast <int> (heightmap.size()), static_cast <int> (heightmap[0].size()));
+
+}
+
+
+void hydro4 :: test_2() {
+
+//    if (cyc < 300 && rain == true) {
+
+
+     FOR_EACH_CELL current_map -> watermap[i][k] += (WATER * TIME_STEP); END
+
+
+    // compute new flux
+    FOR_EACH_CELL scale_flux(i, k, heightmap[i][k] + current_map -> watermap[i][k]); END
+
+    // update water level based on flux
+    FOR_EACH_CELL update_water_cell(i, k); END
+
+    // velocity field
+    FOR_EACH_CELL updated_map -> update_velocity(i, k, current_map -> watermap[i][k], updated_map -> watermap[i][k]); END
+
+    // erosion and deposition
+    FOR_EACH_CELL erosion_deposition(i, k); END
+
+
+    FOR_EACH_CELL heightmap[i][k] += temp_heightmap[i][k];
+
+    if (updated_map -> sedimap[i][k] < 0 ) std :: cout << "neg sedim: " << updated_map -> sedimap[i][k] <<"\n";
+    END
+
+
+
+    // sediment transport
+    FOR_EACH_CELL updated_map -> sedimap[i][k] = euler_step(i - updated_map -> velocity_field[i][k] -> x * TIME_STEP, k - updated_map -> velocity_field[i][k] -> y * TIME_STEP); END
+
+    // evaporation
+    FOR_EACH_CELL
+            if (updated_map -> watermap[i][k] <= 0.00001) updated_map -> watermap[i][k] = 0;
+            updated_map -> watermap[i][k] *= (1 - EVAPORATION_RATE * TIME_STEP); END
+
+    // update parameters for next iteration
+    FOR_EACH_CELL update_cell(i, k); END
+
+}
+
+void hydro4 :: test_3() {
+
+    // compute new flux
+    FOR_EACH_CELL scale_flux(i, k, heightmap[i][k] + current_map -> watermap[i][k]); END
+
+    // update water level based on flux
+    FOR_EACH_CELL update_water_cell(i, k); END
+
+    // velocity field
+    FOR_EACH_CELL updated_map -> update_velocity(i, k, current_map -> watermap[i][k], updated_map -> watermap[i][k]); END
+
+    // erosion and deposition
+    FOR_EACH_CELL erosion_deposition(i, k); END
+
+
+    FOR_EACH_CELL heightmap[i][k] += temp_heightmap[i][k];
+
+    if (updated_map -> sedimap[i][k] < 0 ) std :: cout << "neg sedim: " << updated_map -> sedimap[i][k] <<"\n";
+    END
+
+
+
+    // sediment transport
+    FOR_EACH_CELL updated_map -> sedimap[i][k] = euler_step(i - updated_map -> velocity_field[i][k] -> x * TIME_STEP, k - updated_map -> velocity_field[i][k] -> y * TIME_STEP); END
+
+    // evaporation
+    FOR_EACH_CELL
+
+            updated_map -> watermap[i][k] *= (1 - EVAPORATION_RATE * TIME_STEP ) - 0.01;
+            if (updated_map -> watermap[i][k] <= 0.01) updated_map -> watermap[i][k] = 0;
+            END
+
+    // update parameters for next iteration
+    FOR_EACH_CELL update_cell(i, k); END
+
+}
+
+bool hydro4 :: is_wet() {
+
+    FOR_EACH_CELL if (current_map -> watermap[i][k] > 0) return true; END
+
+    return false;
 }

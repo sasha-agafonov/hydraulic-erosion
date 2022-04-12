@@ -10,6 +10,7 @@
 #include <QSlider>
 #include <QCheckBox>
 #include <QSpinBox>
+#include <QDoubleSpinBox>
 #include <QTimer>
 
 #include "interface_eroded_heightmap_preview.h"
@@ -40,6 +41,11 @@ public:
     QSlider* deposition_rate_slider;
 
     QSpinBox* cycles_spinbox;
+    QDoubleSpinBox* water_spinbox;
+    QDoubleSpinBox* carry_spinbox;
+    QDoubleSpinBox* erosion_spinbox;
+    QDoubleSpinBox* deposition_spinbox;
+    QDoubleSpinBox* evaporation_spinbox;
 
     QLabel* random_label;
     QLabel* hydro_parameters_label;
@@ -56,6 +62,7 @@ public:
     hydro2* hydraulic_erosion2;
     hydro3* hydraulic_erosion3;
     hydro4* hydraulic_erosion4;
+
     eroded_heightmap_preview* eroded_heightmap;
 
     void original_heightmap_invalid();

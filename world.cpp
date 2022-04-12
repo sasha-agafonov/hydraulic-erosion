@@ -1,7 +1,5 @@
-
 #define GL_GLEXT_PROTOTYPES
 
-//#include <GL/GL.h>
 #include <GL/glu.h>
 
 #include <QTimer>
@@ -12,10 +10,8 @@
 #include <sstream>
 #include <string>
 
-
 #include "world.h"
 #include "noise.h"
-
 
 #define PGM_8_BIT 255
 #define PGM_16_BIT 65535
@@ -24,23 +20,12 @@
 
 world :: world( QWidget* parent) : QGLWidget(parent) {
 
-    tick = 0;
-    zoom = 0;
-    fps = 0;
-    fps_counter = 0;
-    show_fps = true;
-    loaded =false;
-    sc_width = 0;
-    sc_height = 0;
-
     setCursor(Qt::BlankCursor);
     setMouseTracking(true);
 
-    this->setFocusPolicy(Qt::StrongFocus);
+    this -> setFocusPolicy(Qt::StrongFocus);
+
     //this -> grabKeyboard();
-
-
-    //painter = new QPainter(this);
 
 //    grabMouse();
 
@@ -56,64 +41,35 @@ world :: world( QWidget* parent) : QGLWidget(parent) {
     down = false;
     menu = false;
 
-    connect(this, SIGNAL(toggle_menu_signal()), parentWidget(), SLOT(toggle_scene_menu()));
-//    connect(this, SIGNAL(scene_ready_signal()), parentWidget(), SLOT(scene_ready()));
-//    connect(this, SIGNAL(current_stage_signal()), this -> splash, SLOT(update_stage()));
-
-
-          //painter = new QPainter(this);
-
-
-
-    cx = 0;
-    cy = 0;
-    cz = 0;
-
-    noisy = new noise();
-
     cursor_x = -135;
     cursor_y = 110;
-    camera = new fpp_camera(cursor_x, cursor_y);
-
-    terrarray = new int[10000];
-
-    noisy -> black_noise();
-    //this -> black_noise();
 
     mouse_prev_pos_x = 0;
     mouse_prev_pos_y = 0;
-
 
     camera_position_x = 0;
     camera_position_y = 0;
     camera_position_z = 0;
 
+    sc_width = 0;
+    sc_height = 0;
 
-    QPoint n;
-    mouse_position = n;
+    fps = 0;
+    fps_counter = 0;
 
-    shake = 0;
-    shake_right = true;
-    jump = false;
+    show_fps = false;
 
-    this -> terra = new terrain();
+    connect(this, SIGNAL(exit_signal()), parentWidget(), SLOT(exit_scene()));
+
+    camera = new fpp_camera(cursor_x, cursor_y);
+
+    bad_terrain = new terrain();
 
 }
-
-void world :: cameraUpdate(double x, double y, double z) {
-    zoom += 1;
-
-}
-
-void world :: emit_toggle_menu_signal() { emit toggle_menu_signal(); }
-
-//void world :: emit_scene_ready_signal() { emit scene_ready_signal(); }
-
 
 
 
 void world :: resetFPS() {
-    std :: cout << fps << "\n";
     fps = fps_counter;
     fps_counter = 0;
 }
@@ -135,10 +91,6 @@ void world :: mouseMoveEvent(QMouseEvent* event) {
     }
 }
 
-
-void world :: mousePressEvent(QMouseEvent* event) {
-
-}
 
 // keyboard
 void world :: keyPressEvent(QKeyEvent* event) {
@@ -169,10 +121,11 @@ void world :: keyPressEvent(QKeyEvent* event) {
         else show_fps = true;
         break;
         case Qt :: Key_Escape:
-            emit_toggle_menu_signal();
+            emit exit_signal();
             break;
     }
 }
+
 
 void world :: keyReleaseEvent(QKeyEvent* event) {
 
@@ -199,10 +152,12 @@ void world :: keyReleaseEvent(QKeyEvent* event) {
     }
 }
 
+
 void world :: update_scene() {
     tick++;
     this -> repaint();
 }
+
 
 void world :: reload() {
 
@@ -211,9 +166,6 @@ void world :: reload() {
 //    terrain_mx = terra -> load_terrain();
 
 }
-
-
-static const float PI = 3.1415926535;
 
 void world :: initializeGL() {
 
@@ -231,25 +183,21 @@ void world :: initializeGL() {
     glFogf(GL_FOG_START, 200.f);
     glFogf(GL_FOG_END, 2000.f);
 
-    float fcolour[3]={1.f, 1.f, 1.f};
+    float foggy[3] = {1.f, 1.f, 1.f};
 
     glEnable(GL_DEPTH_TEST);
     glDepthMask(GL_TRUE);
-    glFogfv(GL_FOG_COLOR, fcolour);
+    glFogfv(GL_FOG_COLOR, foggy);
     glHint(GL_FOG_HINT, GL_FASTEST);
-    glFogf(GL_FOG_DENSITY,1.f);
+    glFogf(GL_FOG_DENSITY, 1.f);
 
     glEnable(GL_LIGHTING);
     glEnable(GL_LIGHT0);
 
-    GLfloat light_pos[] = {0., 0., 1., 0.};
+    GLfloat light_pos[] = {0.f, 0.f, 1.f, 0.f};
 
     glLightfv(GL_LIGHT0, GL_POSITION, light_pos);
     reload();
-
-    //float positions[9] = { -100, -100, 0.5, 100, -100, 0.5, 100, 100, 0.5 };
-    float colors[9] = { 1,0,0,  0,1,0,  1,0,0 };
-
 
     glMaterialfv(GL_FRONT, GL_DIFFUSE,   base.diffuse);
     glMaterialfv(GL_FRONT, GL_SPECULAR,  base.specular);
@@ -262,22 +210,7 @@ void world :: initializeGL() {
     glEnableClientState(GL_NORMAL_ARRAY);
     glEnableClientState(GL_COLOR_ARRAY);
 
-
-    //glColorPointer( 3, GL_FLOAT, 0, colors );
-
-  // Enable use of arrays.
-   // glEnableClientState( GL_COLOR_ARRAY );
-
-
-   // glEnableClientState(GL_VERTEX_ARRAY);
-
-
-    //load_terrain();
- //emit_scene_ready_signal();
-
-
-
-       terra -> load_terrain();
+    bad_terrain -> load_terrain();
 
 
 }
@@ -290,7 +223,7 @@ void world :: resizeGL(int w, int h) {
     glViewport(0, 0, w, h);
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    glFrustum(-20 * ((double)w/h) * (1. / sqrt(3)), 20 * ((double)w/h)* (1. / sqrt(3)), -20* (1. / sqrt(3)), 20* (1. / sqrt(3)), 20, 2000.0);
+    glFrustum(-20 * ((double) w / h) * (1.f / sqrt(3)), 20 * ((double)w/h)* (1.f / sqrt(3)), -20 * (1.f / sqrt(3)), 20 * (1.f / sqrt(3)), 20, 2000.0);
 
 }
 
@@ -320,11 +253,7 @@ void world :: paintGL() {
               // camera rotation
               0., 0., 1.);
 
-    terra -> draw_terrain_arrays();
-
-    glLoadIdentity();
-
-    glFlush();
+    bad_terrain -> draw_terrain_arrays();
 
     // eats fps
     if (show_fps) {
@@ -332,5 +261,9 @@ void world :: paintGL() {
           painter.setPen(Qt :: black);
           painter.drawText(sc_width - 60, 20, "FPS: " + QString :: fromStdString(std :: to_string(fps)));
           painter.end(); }
+
+    glLoadIdentity();
+
+    glFlush();
 
 }

@@ -21,6 +21,14 @@ terrain :: terrain() : terrain_size(0) {
 
     triangles_count = 0;
     water = new hydro();
+    hyd = new hydro4();
+
+    hyd -> test_1();
+    terrain_numerical_mx = hyd -> heightmap;
+
+    cycles = 0;
+
+    dynamic = true;
 }
 
 
@@ -719,6 +727,42 @@ void terrain :: draw_terrain() {
 
 // draw from an array of vertices, slightly better
 void terrain :: draw_terrain_arrays() {
+
+    if (dynamic) {
+        // remove later, only for animations
+        free(terrain_positions);
+        free(terrain_normals);
+
+        if (cycles < 300) {
+            cycles ++;
+        hyd -> test_2();
+
+        terrain_numerical_mx = hyd -> heightmap;
+        for (int i = 0; i < hyd -> heightmap.size(); i++) {
+            for (int k = 0; k < hyd -> heightmap.size(); k++) {
+                terrain_numerical_mx[i][k] += hyd -> updated_map -> watermap[i][k]; }}
+        }
+        else {
+            hyd -> test_3();
+            terrain_numerical_mx = hyd -> heightmap;
+            for (int i = 0; i < hyd -> heightmap.size(); i++) {
+                for (int k = 0; k < hyd -> heightmap.size(); k++) {
+                    terrain_numerical_mx[i][k] += hyd -> updated_map -> watermap[i][k]; }}
+
+            if (!hyd -> is_wet()) dynamic = false;
+            }
+
+
+
+        load_triangles();
+        load_normals();
+        load_smooth_normals();
+        load_arrays();
+        load_material_arrays();
+        load_colors();
+
+    }
+
 
     glPushMatrix();
     //glBindBuffer(GL_ARRAY_BUFFER, vbo);

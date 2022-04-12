@@ -14,19 +14,7 @@ interface_controller :: interface_controller(QWidget* parent) : QWidget(parent) 
 
     in_menu = true;
 
-//    menuBar = new QMenuBar(this);
-
-//    fileMenu = menuBar->addMenu("&Black Noise");
-
-//    actionQuit = new QAction("&Quit", this);
-
-//    fileMenu->addAction(actionQuit);
-
     splash = new splash_screen(this);
-
-//    QGLFormat format;
-//    format.setSampleBuffers(true);
-//    format.setSamples(4);
 
     QGLFormat format;
     format.setSampleBuffers(true);
@@ -35,7 +23,6 @@ interface_controller :: interface_controller(QWidget* parent) : QWidget(parent) 
     scene = new world(this);
     scene -> setFormat(format);
 
-    sc_menu = new scene_menu(this);
     gen_menu = new generation_menu(this);
     ldg_menu = new loading_menu(this);
 
@@ -53,13 +40,11 @@ interface_controller :: interface_controller(QWidget* parent) : QWidget(parent) 
     connect(timer2, SIGNAL(timeout()), this->scene, SLOT(resetFPS()));
 
     box -> addWidget(scene);
-    box -> addWidget(sc_menu);
     box -> addWidget(gen_menu);
     box -> addWidget(ldg_menu);
     box -> addWidget(splash);
 
     scene -> hide();
-    sc_menu -> hide();
     ldg_menu -> hide();
     gen_menu -> show();
     splash -> hide();
@@ -70,9 +55,9 @@ interface_controller :: interface_controller(QWidget* parent) : QWidget(parent) 
 
 
 void interface_controller :: load_scene() {
+
     gen_menu -> hide();
     splash -> show();
-   // QCoreApplication :: processEvents();
     scene -> initializeGL();
     splash -> finish(scene);
     scene -> show();
@@ -86,7 +71,7 @@ void interface_controller :: scene_ready() {
 
 void interface_controller:: reload_scene() {
 
-    sc_menu -> hide();
+
     gen_menu -> hide();
     scene -> show();
 
@@ -96,34 +81,19 @@ void interface_controller:: reload_scene() {
 void interface_controller :: exit_scene() {
 
     scene -> hide();
-    sc_menu -> hide();
     gen_menu -> show();
-    ldg_menu -> hide();
 
 }
 
 
 void interface_controller :: toggle_scene_menu() {
      scene -> hide();
-     sc_menu -> show();
+
      gen_menu -> hide();
      ldg_menu -> hide();
 }
 
 
-void interface_controller :: main_menu() {
-//    randgenerate_button -> hide();
-//    antialiasing_combo -> hide();
-//    scene -> hide();
-
-//    /paramgenerate_button -> show();
-}
-
-
-void interface_controller :: world_view() {
-    delete scene;
-    sc_menu -> show();
-}
 
 interface_controller :: ~interface_controller() {
     delete box;

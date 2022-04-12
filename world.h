@@ -24,7 +24,6 @@ class world : public QGLWidget {
 public slots:
     void update_scene();
     void resetFPS();
-    void cameraUpdate(double x, double y, double z);
 
 public:
     world( QWidget *parent);
@@ -33,26 +32,19 @@ public:
     void resizeGL(int w, int h);
     void paintGL();
 
-    noise* noisy;
     fpp_camera* camera;
-    QWidget* interface;
-    splash_screen* splash;
-
-    void load_arrays();
-
-    //QPainter* painter;
 
     void keyPressEvent(QKeyEvent* event);
     void keyReleaseEvent(QKeyEvent* event);
     void mouseMoveEvent(QMouseEvent* event);
-    void mousePressEvent(QMouseEvent* event);
+
 
     int fps, fps_counter;
 
     int sc_width, sc_height;
 
 signals:
-    void toggle_menu_signal();
+    void exit_signal();
 //    void scene_ready_signal();
 //    void current_stage_signal();
     //void paintEvent();
@@ -114,7 +106,7 @@ private:
 
     bool show_fps;
 
-    terrain* terra;
+    terrain* bad_terrain;
 
     void icosahedron();
 

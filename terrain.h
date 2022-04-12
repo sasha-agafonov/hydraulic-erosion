@@ -5,6 +5,7 @@
 #include <vector>
 
 #include "hydro.h"
+#include "hydro4.h"
 
 typedef struct materialStruct {
 
@@ -81,7 +82,10 @@ public:
     float interpolate_angle(float ang);
 
     hydro* water;
+    hydro4* hyd;
+    int cycles;
 
+    bool dynamic;
 
     GLuint vbo;
     void set_vbo();

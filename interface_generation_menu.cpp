@@ -19,12 +19,17 @@ generation_menu :: generation_menu(QWidget *parent) : QWidget(parent) {
     hydro_parameters -> setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum);
 
 
-    build_eroded_button = new QPushButton("Build Eroded Terrain", this);
+    build_eroded_button = new QPushButton("Build eroded terrain", this);
     build_eroded_button -> setFixedHeight(30);
     build_eroded_button -> setStyleSheet("QPushButton { height: 30px; background: rgba(190, 190, 222, 1); border: 0; margin: 0; border-radius: 6px; font-size: 11px; color: rgba(40, 44, 52, 1); } "
                                   "QPushButton:pressed { background: rgba(110, 110, 135, 1); } ");
 
-    build_uneroded_button = new QPushButton("Build Uneroded Terrain", this);
+    build_uneroded_button = new QPushButton("Build uneroded terrain", this);
+    build_uneroded_button -> setFixedHeight(30);
+    build_uneroded_button -> setStyleSheet("QPushButton { height: 30px; background: rgba(190, 190, 222, 1); border: 0; margin: 0; border-radius: 6px; font-size: 11px; color: rgba(40, 44, 52, 1); } "
+                                          "QPushButton:pressed { background: rgba(110, 110, 135, 1); } ");
+
+    build_and_erode_button = new QPushButton("Build and erode terrain", this);
     build_uneroded_button -> setFixedHeight(30);
     build_uneroded_button -> setStyleSheet("QPushButton { height: 30px; background: rgba(190, 190, 222, 1); border: 0; margin: 0; border-radius: 6px; font-size: 11px; color: rgba(40, 44, 52, 1); } "
                                           "QPushButton:pressed { background: rgba(110, 110, 135, 1); } ");
@@ -36,7 +41,7 @@ generation_menu :: generation_menu(QWidget *parent) : QWidget(parent) {
     h_box -> setContentsMargins(11, 11, 11, 0);
     h_box -> addWidget(build_eroded_button);
     h_box -> addWidget(build_uneroded_button);
-
+    h_box -> addWidget(build_and_erode_button);
 
     v_box -> addWidget(terrain_parameters);
     v_box -> addWidget(noise_parameters);

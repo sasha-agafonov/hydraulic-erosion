@@ -17,7 +17,6 @@
 
 #include "world.h"
 #include "grid_layout.h"
-#include "interface_scene_menu.h"
 #include "loading_menu.h"
 #include "interface_generation_menu.h"
 #include "interface_splash_screen.h"
@@ -35,9 +34,6 @@ public slots:
     void exit_scene();
     void scene_ready();
 
-
-//signals:
-//    void cu();
 
 public:
 
@@ -72,7 +68,6 @@ public:
 
     generation_menu* gen_menu;
     loading_menu* ldg_menu;
-    scene_menu* sc_menu;
 
 
     splash_screen* splash;

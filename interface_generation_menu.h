@@ -30,8 +30,10 @@ public:
 
     QVBoxLayout* v_box;
     QHBoxLayout* h_box;
+
     QPushButton* build_uneroded_button;
     QPushButton* build_eroded_button;
+    QPushButton* build_and_erode_button;
 
     noise_parameters_menu* noise_parameters;
     hydro_parameters_menu* hydro_parameters;

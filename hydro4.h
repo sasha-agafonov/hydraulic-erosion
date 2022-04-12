@@ -29,6 +29,9 @@ public:
 
     void erode(int cycles);
 
+    int cyc;
+    bool rain;
+
     void load_heightmap();
     void output_heightmap();
 
@@ -45,7 +48,15 @@ public:
 
     void erosion_deposition(int x, int y);
 
+    void update_cell(int x, int y);
+
     float euler_step(float x, float y);
+
+    void test_1();
+    void test_2();
+    void test_3();
+
+    bool is_wet();
 
 
     normal_vector normal(int x, int y);

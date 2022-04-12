@@ -33,7 +33,6 @@ SOURCES += \
     interface_noise_layer.cpp \
     interface_noise_layers.cpp \
     interface_noise_parameters_menu.cpp \
-    interface_scene_menu.cpp \
     interface_splash_screen.cpp \
     interface_terrain_parameters_menu.cpp \
     loading_menu.cpp \
@@ -66,7 +65,6 @@ HEADERS += \
     interface_noise_layer.h \
     interface_noise_layers.h \
     interface_noise_parameters_menu.h \
-    interface_scene_menu.h \
     interface_splash_screen.h \
     interface_terrain_parameters_menu.h \
     loading_menu.h \
