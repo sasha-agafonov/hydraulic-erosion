@@ -17,14 +17,11 @@ SOURCES += \
     fpp_camera.cpp \
     grid_layout.cpp \
     hydro.cpp \
-    hydro2.cpp \
-    hydro3.cpp \
-    hydro4.cpp \
     hydro_flux.cpp \
     hydro_map.cpp \
-    hydro_particle.cpp \
     hydro_velocity.cpp \
     interface_controller.cpp \
+    interface_double_slider.cpp \
     interface_eroded_heightmap_preview.cpp \
     interface_generation_menu.cpp \
     interface_header.cpp \
@@ -40,7 +37,6 @@ SOURCES += \
     noise.cpp \
     noise_controller.cpp \
     noise_layer.cpp \
-    super.cpp \
     terrain.cpp \
     world.cpp \
     world_menu.cpp
@@ -49,14 +45,11 @@ HEADERS += \
     fpp_camera.h \
     grid_layout.h \
     hydro.h \
-    hydro2.h \
-    hydro3.h \
-    hydro4.h \
     hydro_flux.h \
     hydro_map.h \
-    hydro_particle.h \
     hydro_velocity.h \
     interface_controller.h \
+    interface_double_slider.h \
     interface_eroded_heightmap_preview.h \
     interface_generation_menu.h \
     interface_header.h \
@@ -72,10 +65,9 @@ HEADERS += \
     noise.h \
     noise_controller.h \
     noise_layer.h \
-    super.h \
     terrain.h \
     world.h \
-    connections.h \
+#    connections.h \
     world_menu.h
 
 FORMS += \

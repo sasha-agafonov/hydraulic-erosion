@@ -38,7 +38,7 @@ public:
     void keyReleaseEvent(QKeyEvent* event);
     void mouseMoveEvent(QMouseEvent* event);
 
-
+    terrain* bad_terrain;
     int fps, fps_counter;
 
     int sc_width, sc_height;
@@ -106,7 +106,7 @@ private:
 
     bool show_fps;
 
-    terrain* bad_terrain;
+
 
     void icosahedron();
 

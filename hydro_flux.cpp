@@ -9,8 +9,6 @@ hydro_flux :: hydro_flux() {
 
 }
 
-float hydro_flux :: sum() { return up + down + left + right; }
-
 
 void hydro_flux :: scale(float scale) {
 
@@ -21,6 +19,7 @@ void hydro_flux :: scale(float scale) {
 
 }
 
+
 void hydro_flux :: set_zeroes() {
 
     up = 0;
@@ -29,3 +28,6 @@ void hydro_flux :: set_zeroes() {
     right = 0;
 
 }
+
+
+float hydro_flux :: sum() { return up + down + left + right; }

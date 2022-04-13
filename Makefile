@@ -55,14 +55,11 @@ OBJECTS_DIR   = ./
 SOURCES       = fpp_camera.cpp \
 		grid_layout.cpp \
 		hydro.cpp \
-		hydro2.cpp \
-		hydro3.cpp \
-		hydro4.cpp \
 		hydro_flux.cpp \
 		hydro_map.cpp \
-		hydro_particle.cpp \
 		hydro_velocity.cpp \
 		interface_controller.cpp \
+		interface_double_slider.cpp \
 		interface_eroded_heightmap_preview.cpp \
 		interface_generation_menu.cpp \
 		interface_header.cpp \
@@ -78,11 +75,11 @@ SOURCES       = fpp_camera.cpp \
 		noise.cpp \
 		noise_controller.cpp \
 		noise_layer.cpp \
-		super.cpp \
 		terrain.cpp \
 		world.cpp \
-		world_menu.cpp moc_hydro3.cpp \
-		moc_interface_controller.cpp \
+		world_menu.cpp moc_interface_controller.cpp \
+		moc_interface_double_slider.cpp \
+		moc_interface_eroded_heightmap_preview.cpp \
 		moc_interface_generation_menu.cpp \
 		moc_interface_heightmap_preview.cpp \
 		moc_interface_hydro_parameters_menu.cpp \
@@ -92,19 +89,15 @@ SOURCES       = fpp_camera.cpp \
 		moc_interface_splash_screen.cpp \
 		moc_interface_terrain_parameters_menu.cpp \
 		moc_loading_menu.cpp \
-		moc_super.cpp \
 		moc_world.cpp
 OBJECTS       = fpp_camera.o \
 		grid_layout.o \
 		hydro.o \
-		hydro2.o \
-		hydro3.o \
-		hydro4.o \
 		hydro_flux.o \
 		hydro_map.o \
-		hydro_particle.o \
 		hydro_velocity.o \
 		interface_controller.o \
+		interface_double_slider.o \
 		interface_eroded_heightmap_preview.o \
 		interface_generation_menu.o \
 		interface_header.o \
@@ -120,12 +113,12 @@ OBJECTS       = fpp_camera.o \
 		noise.o \
 		noise_controller.o \
 		noise_layer.o \
-		super.o \
 		terrain.o \
 		world.o \
 		world_menu.o \
-		moc_hydro3.o \
 		moc_interface_controller.o \
+		moc_interface_double_slider.o \
+		moc_interface_eroded_heightmap_preview.o \
 		moc_interface_generation_menu.o \
 		moc_interface_heightmap_preview.o \
 		moc_interface_hydro_parameters_menu.o \
@@ -135,7 +128,6 @@ OBJECTS       = fpp_camera.o \
 		moc_interface_splash_screen.o \
 		moc_interface_terrain_parameters_menu.o \
 		moc_loading_menu.o \
-		moc_super.o \
 		moc_world.o
 DIST          = /usr/lib/qt/mkspecs/features/spec_pre.prf \
 		/usr/lib/qt/mkspecs/common/unix.conf \
@@ -368,14 +360,11 @@ DIST          = /usr/lib/qt/mkspecs/features/spec_pre.prf \
 		terrain.pro fpp_camera.h \
 		grid_layout.h \
 		hydro.h \
-		hydro2.h \
-		hydro3.h \
-		hydro4.h \
 		hydro_flux.h \
 		hydro_map.h \
-		hydro_particle.h \
 		hydro_velocity.h \
 		interface_controller.h \
+		interface_double_slider.h \
 		interface_eroded_heightmap_preview.h \
 		interface_generation_menu.h \
 		interface_header.h \
@@ -391,21 +380,16 @@ DIST          = /usr/lib/qt/mkspecs/features/spec_pre.prf \
 		noise.h \
 		noise_controller.h \
 		noise_layer.h \
-		super.h \
 		terrain.h \
 		world.h \
-		connections.h \
 		world_menu.h fpp_camera.cpp \
 		grid_layout.cpp \
 		hydro.cpp \
-		hydro2.cpp \
-		hydro3.cpp \
-		hydro4.cpp \
 		hydro_flux.cpp \
 		hydro_map.cpp \
-		hydro_particle.cpp \
 		hydro_velocity.cpp \
 		interface_controller.cpp \
+		interface_double_slider.cpp \
 		interface_eroded_heightmap_preview.cpp \
 		interface_generation_menu.cpp \
 		interface_header.cpp \
@@ -421,7 +405,6 @@ DIST          = /usr/lib/qt/mkspecs/features/spec_pre.prf \
 		noise.cpp \
 		noise_controller.cpp \
 		noise_layer.cpp \
-		super.cpp \
 		terrain.cpp \
 		world.cpp \
 		world_menu.cpp
@@ -910,8 +893,8 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents /usr/lib/qt/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents fpp_camera.h grid_layout.h hydro.h hydro2.h hydro3.h hydro4.h hydro_flux.h hydro_map.h hydro_particle.h hydro_velocity.h interface_controller.h interface_eroded_heightmap_preview.h interface_generation_menu.h interface_header.h interface_heightmap_preview.h interface_hydro_parameters_menu.h interface_noise_layer.h interface_noise_layers.h interface_noise_parameters_menu.h interface_splash_screen.h interface_terrain_parameters_menu.h loading_menu.h main.h noise.h noise_controller.h noise_layer.h super.h terrain.h world.h connections.h world_menu.h $(DISTDIR)/
-	$(COPY_FILE) --parents fpp_camera.cpp grid_layout.cpp hydro.cpp hydro2.cpp hydro3.cpp hydro4.cpp hydro_flux.cpp hydro_map.cpp hydro_particle.cpp hydro_velocity.cpp interface_controller.cpp interface_eroded_heightmap_preview.cpp interface_generation_menu.cpp interface_header.cpp interface_heightmap_preview.cpp interface_hydro_parameters_menu.cpp interface_noise_layer.cpp interface_noise_layers.cpp interface_noise_parameters_menu.cpp interface_splash_screen.cpp interface_terrain_parameters_menu.cpp loading_menu.cpp main.cpp noise.cpp noise_controller.cpp noise_layer.cpp super.cpp terrain.cpp world.cpp world_menu.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents fpp_camera.h grid_layout.h hydro.h hydro_flux.h hydro_map.h hydro_velocity.h interface_controller.h interface_double_slider.h interface_eroded_heightmap_preview.h interface_generation_menu.h interface_header.h interface_heightmap_preview.h interface_hydro_parameters_menu.h interface_noise_layer.h interface_noise_layers.h interface_noise_parameters_menu.h interface_splash_screen.h interface_terrain_parameters_menu.h loading_menu.h main.h noise.h noise_controller.h noise_layer.h terrain.h world.h world_menu.h $(DISTDIR)/
+	$(COPY_FILE) --parents fpp_camera.cpp grid_layout.cpp hydro.cpp hydro_flux.cpp hydro_map.cpp hydro_velocity.cpp interface_controller.cpp interface_double_slider.cpp interface_eroded_heightmap_preview.cpp interface_generation_menu.cpp interface_header.cpp interface_heightmap_preview.cpp interface_hydro_parameters_menu.cpp interface_noise_layer.cpp interface_noise_layers.cpp interface_noise_parameters_menu.cpp interface_splash_screen.cpp interface_terrain_parameters_menu.cpp loading_menu.cpp main.cpp noise.cpp noise_controller.cpp noise_layer.cpp terrain.cpp world.cpp world_menu.cpp $(DISTDIR)/
 	$(COPY_FILE) --parents main.ui $(DISTDIR)/
 
 
@@ -944,20 +927,14 @@ compiler_moc_predefs_clean:
 moc_predefs.h: /usr/lib/qt/mkspecs/features/data/dummy.cpp
 	g++ -pipe -g -O2 -std=gnu++11 -flto -fno-fat-lto-objects -Wall -Wextra -dM -E -o moc_predefs.h /usr/lib/qt/mkspecs/features/data/dummy.cpp
 
-compiler_moc_header_make_all: moc_hydro3.cpp moc_interface_controller.cpp moc_interface_generation_menu.cpp moc_interface_heightmap_preview.cpp moc_interface_hydro_parameters_menu.cpp moc_interface_noise_layer.cpp moc_interface_noise_layers.cpp moc_interface_noise_parameters_menu.cpp moc_interface_splash_screen.cpp moc_interface_terrain_parameters_menu.cpp moc_loading_menu.cpp moc_super.cpp moc_world.cpp
+compiler_moc_header_make_all: moc_interface_controller.cpp moc_interface_double_slider.cpp moc_interface_eroded_heightmap_preview.cpp moc_interface_generation_menu.cpp moc_interface_heightmap_preview.cpp moc_interface_hydro_parameters_menu.cpp moc_interface_noise_layer.cpp moc_interface_noise_layers.cpp moc_interface_noise_parameters_menu.cpp moc_interface_splash_screen.cpp moc_interface_terrain_parameters_menu.cpp moc_loading_menu.cpp moc_world.cpp
 compiler_moc_header_clean:
-	-$(DEL_FILE) moc_hydro3.cpp moc_interface_controller.cpp moc_interface_generation_menu.cpp moc_interface_heightmap_preview.cpp moc_interface_hydro_parameters_menu.cpp moc_interface_noise_layer.cpp moc_interface_noise_layers.cpp moc_interface_noise_parameters_menu.cpp moc_interface_splash_screen.cpp moc_interface_terrain_parameters_menu.cpp moc_loading_menu.cpp moc_super.cpp moc_world.cpp
-moc_hydro3.cpp: hydro3.h \
-		moc_predefs.h \
-		/usr/bin/moc
-	/usr/bin/moc $(DEFINES) --include /home/sasha/terrain/moc_predefs.h -I/usr/lib/qt/mkspecs/linux-g++ -I/home/sasha/terrain -I/usr/include/qt -I/usr/include/qt/QtOpenGL -I/usr/include/qt/QtWidgets -I/usr/include/qt/QtGui -I/usr/include/qt/QtCore -I/usr/include/c++/11.1.0 -I/usr/include/c++/11.1.0/x86_64-pc-linux-gnu -I/usr/include/c++/11.1.0/backward -I/usr/lib/gcc/x86_64-pc-linux-gnu/11.1.0/include -I/usr/local/include -I/usr/lib/gcc/x86_64-pc-linux-gnu/11.1.0/include-fixed -I/usr/include hydro3.h -o moc_hydro3.cpp
-
+	-$(DEL_FILE) moc_interface_controller.cpp moc_interface_double_slider.cpp moc_interface_eroded_heightmap_preview.cpp moc_interface_generation_menu.cpp moc_interface_heightmap_preview.cpp moc_interface_hydro_parameters_menu.cpp moc_interface_noise_layer.cpp moc_interface_noise_layers.cpp moc_interface_noise_parameters_menu.cpp moc_interface_splash_screen.cpp moc_interface_terrain_parameters_menu.cpp moc_loading_menu.cpp moc_world.cpp
 moc_interface_controller.cpp: interface_controller.h \
 		world.h \
 		noise.h \
 		terrain.h \
 		hydro.h \
-		hydro4.h \
 		hydro_map.h \
 		hydro_flux.h \
 		hydro_velocity.h \
@@ -973,12 +950,21 @@ moc_interface_controller.cpp: interface_controller.h \
 		interface_noise_layers.h \
 		interface_hydro_parameters_menu.h \
 		interface_eroded_heightmap_preview.h \
-		hydro2.h \
-		hydro3.h \
+		interface_double_slider.h \
 		interface_terrain_parameters_menu.h \
 		moc_predefs.h \
 		/usr/bin/moc
 	/usr/bin/moc $(DEFINES) --include /home/sasha/terrain/moc_predefs.h -I/usr/lib/qt/mkspecs/linux-g++ -I/home/sasha/terrain -I/usr/include/qt -I/usr/include/qt/QtOpenGL -I/usr/include/qt/QtWidgets -I/usr/include/qt/QtGui -I/usr/include/qt/QtCore -I/usr/include/c++/11.1.0 -I/usr/include/c++/11.1.0/x86_64-pc-linux-gnu -I/usr/include/c++/11.1.0/backward -I/usr/lib/gcc/x86_64-pc-linux-gnu/11.1.0/include -I/usr/local/include -I/usr/lib/gcc/x86_64-pc-linux-gnu/11.1.0/include-fixed -I/usr/include interface_controller.h -o moc_interface_controller.cpp
+
+moc_interface_double_slider.cpp: interface_double_slider.h \
+		moc_predefs.h \
+		/usr/bin/moc
+	/usr/bin/moc $(DEFINES) --include /home/sasha/terrain/moc_predefs.h -I/usr/lib/qt/mkspecs/linux-g++ -I/home/sasha/terrain -I/usr/include/qt -I/usr/include/qt/QtOpenGL -I/usr/include/qt/QtWidgets -I/usr/include/qt/QtGui -I/usr/include/qt/QtCore -I/usr/include/c++/11.1.0 -I/usr/include/c++/11.1.0/x86_64-pc-linux-gnu -I/usr/include/c++/11.1.0/backward -I/usr/lib/gcc/x86_64-pc-linux-gnu/11.1.0/include -I/usr/local/include -I/usr/lib/gcc/x86_64-pc-linux-gnu/11.1.0/include-fixed -I/usr/include interface_double_slider.h -o moc_interface_double_slider.cpp
+
+moc_interface_eroded_heightmap_preview.cpp: interface_eroded_heightmap_preview.h \
+		moc_predefs.h \
+		/usr/bin/moc
+	/usr/bin/moc $(DEFINES) --include /home/sasha/terrain/moc_predefs.h -I/usr/lib/qt/mkspecs/linux-g++ -I/home/sasha/terrain -I/usr/include/qt -I/usr/include/qt/QtOpenGL -I/usr/include/qt/QtWidgets -I/usr/include/qt/QtGui -I/usr/include/qt/QtCore -I/usr/include/c++/11.1.0 -I/usr/include/c++/11.1.0/x86_64-pc-linux-gnu -I/usr/include/c++/11.1.0/backward -I/usr/lib/gcc/x86_64-pc-linux-gnu/11.1.0/include -I/usr/local/include -I/usr/lib/gcc/x86_64-pc-linux-gnu/11.1.0/include-fixed -I/usr/include interface_eroded_heightmap_preview.h -o moc_interface_eroded_heightmap_preview.cpp
 
 moc_interface_generation_menu.cpp: interface_generation_menu.h \
 		interface_noise_parameters_menu.h \
@@ -988,10 +974,8 @@ moc_interface_generation_menu.cpp: interface_generation_menu.h \
 		interface_noise_layers.h \
 		interface_hydro_parameters_menu.h \
 		interface_eroded_heightmap_preview.h \
+		interface_double_slider.h \
 		hydro.h \
-		hydro2.h \
-		hydro3.h \
-		hydro4.h \
 		hydro_map.h \
 		hydro_flux.h \
 		hydro_velocity.h \
@@ -1008,10 +992,8 @@ moc_interface_heightmap_preview.cpp: interface_heightmap_preview.h \
 
 moc_interface_hydro_parameters_menu.cpp: interface_hydro_parameters_menu.h \
 		interface_eroded_heightmap_preview.h \
+		interface_double_slider.h \
 		hydro.h \
-		hydro2.h \
-		hydro3.h \
-		hydro4.h \
 		hydro_map.h \
 		hydro_flux.h \
 		hydro_velocity.h \
@@ -1056,16 +1038,10 @@ moc_loading_menu.cpp: loading_menu.h \
 		/usr/bin/moc
 	/usr/bin/moc $(DEFINES) --include /home/sasha/terrain/moc_predefs.h -I/usr/lib/qt/mkspecs/linux-g++ -I/home/sasha/terrain -I/usr/include/qt -I/usr/include/qt/QtOpenGL -I/usr/include/qt/QtWidgets -I/usr/include/qt/QtGui -I/usr/include/qt/QtCore -I/usr/include/c++/11.1.0 -I/usr/include/c++/11.1.0/x86_64-pc-linux-gnu -I/usr/include/c++/11.1.0/backward -I/usr/lib/gcc/x86_64-pc-linux-gnu/11.1.0/include -I/usr/local/include -I/usr/lib/gcc/x86_64-pc-linux-gnu/11.1.0/include-fixed -I/usr/include loading_menu.h -o moc_loading_menu.cpp
 
-moc_super.cpp: super.h \
-		moc_predefs.h \
-		/usr/bin/moc
-	/usr/bin/moc $(DEFINES) --include /home/sasha/terrain/moc_predefs.h -I/usr/lib/qt/mkspecs/linux-g++ -I/home/sasha/terrain -I/usr/include/qt -I/usr/include/qt/QtOpenGL -I/usr/include/qt/QtWidgets -I/usr/include/qt/QtGui -I/usr/include/qt/QtCore -I/usr/include/c++/11.1.0 -I/usr/include/c++/11.1.0/x86_64-pc-linux-gnu -I/usr/include/c++/11.1.0/backward -I/usr/lib/gcc/x86_64-pc-linux-gnu/11.1.0/include -I/usr/local/include -I/usr/lib/gcc/x86_64-pc-linux-gnu/11.1.0/include-fixed -I/usr/include super.h -o moc_super.cpp
-
 moc_world.cpp: world.h \
 		noise.h \
 		terrain.h \
 		hydro.h \
-		hydro4.h \
 		hydro_map.h \
 		hydro_flux.h \
 		hydro_velocity.h \
@@ -1102,20 +1078,11 @@ fpp_camera.o: fpp_camera.cpp fpp_camera.h
 grid_layout.o: grid_layout.cpp grid_layout.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o grid_layout.o grid_layout.cpp
 
-hydro.o: hydro.cpp hydro.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o hydro.o hydro.cpp
-
-hydro2.o: hydro2.cpp hydro2.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o hydro2.o hydro2.cpp
-
-hydro3.o: hydro3.cpp hydro3.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o hydro3.o hydro3.cpp
-
-hydro4.o: hydro4.cpp hydro4.h \
+hydro.o: hydro.cpp hydro.h \
 		hydro_map.h \
 		hydro_flux.h \
 		hydro_velocity.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o hydro4.o hydro4.cpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o hydro.o hydro.cpp
 
 hydro_flux.o: hydro_flux.cpp hydro_flux.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o hydro_flux.o hydro_flux.cpp
@@ -1125,9 +1092,6 @@ hydro_map.o: hydro_map.cpp hydro_map.h \
 		hydro_velocity.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o hydro_map.o hydro_map.cpp
 
-hydro_particle.o: hydro_particle.cpp hydro_particle.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o hydro_particle.o hydro_particle.cpp
-
 hydro_velocity.o: hydro_velocity.cpp hydro_velocity.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o hydro_velocity.o hydro_velocity.cpp
 
@@ -1136,7 +1100,6 @@ interface_controller.o: interface_controller.cpp interface_controller.h \
 		noise.h \
 		terrain.h \
 		hydro.h \
-		hydro4.h \
 		hydro_map.h \
 		hydro_flux.h \
 		hydro_velocity.h \
@@ -1152,10 +1115,12 @@ interface_controller.o: interface_controller.cpp interface_controller.h \
 		interface_noise_layers.h \
 		interface_hydro_parameters_menu.h \
 		interface_eroded_heightmap_preview.h \
-		hydro2.h \
-		hydro3.h \
+		interface_double_slider.h \
 		interface_terrain_parameters_menu.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o interface_controller.o interface_controller.cpp
+
+interface_double_slider.o: interface_double_slider.cpp interface_double_slider.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o interface_double_slider.o interface_double_slider.cpp
 
 interface_eroded_heightmap_preview.o: interface_eroded_heightmap_preview.cpp interface_eroded_heightmap_preview.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o interface_eroded_heightmap_preview.o interface_eroded_heightmap_preview.cpp
@@ -1168,10 +1133,8 @@ interface_generation_menu.o: interface_generation_menu.cpp interface_generation_
 		interface_noise_layers.h \
 		interface_hydro_parameters_menu.h \
 		interface_eroded_heightmap_preview.h \
+		interface_double_slider.h \
 		hydro.h \
-		hydro2.h \
-		hydro3.h \
-		hydro4.h \
 		hydro_map.h \
 		hydro_flux.h \
 		hydro_velocity.h \
@@ -1187,10 +1150,8 @@ interface_heightmap_preview.o: interface_heightmap_preview.cpp interface_heightm
 
 interface_hydro_parameters_menu.o: interface_hydro_parameters_menu.cpp interface_hydro_parameters_menu.h \
 		interface_eroded_heightmap_preview.h \
+		interface_double_slider.h \
 		hydro.h \
-		hydro2.h \
-		hydro3.h \
-		hydro4.h \
 		hydro_map.h \
 		hydro_flux.h \
 		hydro_velocity.h
@@ -1226,7 +1187,6 @@ main.o: main.cpp interface_controller.h \
 		noise.h \
 		terrain.h \
 		hydro.h \
-		hydro4.h \
 		hydro_map.h \
 		hydro_flux.h \
 		hydro_velocity.h \
@@ -1242,8 +1202,7 @@ main.o: main.cpp interface_controller.h \
 		interface_noise_layers.h \
 		interface_hydro_parameters_menu.h \
 		interface_eroded_heightmap_preview.h \
-		hydro2.h \
-		hydro3.h \
+		interface_double_slider.h \
 		interface_terrain_parameters_menu.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o main.cpp
 
@@ -1256,12 +1215,8 @@ noise_controller.o: noise_controller.cpp noise_controller.h
 noise_layer.o: noise_layer.cpp noise_layer.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o noise_layer.o noise_layer.cpp
 
-super.o: super.cpp 
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o super.o super.cpp
-
 terrain.o: terrain.cpp terrain.h \
 		hydro.h \
-		hydro4.h \
 		hydro_map.h \
 		hydro_flux.h \
 		hydro_velocity.h
@@ -1271,7 +1226,6 @@ world.o: world.cpp world.h \
 		noise.h \
 		terrain.h \
 		hydro.h \
-		hydro4.h \
 		hydro_map.h \
 		hydro_flux.h \
 		hydro_velocity.h \
@@ -1282,11 +1236,14 @@ world.o: world.cpp world.h \
 world_menu.o: world_menu.cpp world_menu.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o world_menu.o world_menu.cpp
 
-moc_hydro3.o: moc_hydro3.cpp 
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_hydro3.o moc_hydro3.cpp
-
 moc_interface_controller.o: moc_interface_controller.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_interface_controller.o moc_interface_controller.cpp
+
+moc_interface_double_slider.o: moc_interface_double_slider.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_interface_double_slider.o moc_interface_double_slider.cpp
+
+moc_interface_eroded_heightmap_preview.o: moc_interface_eroded_heightmap_preview.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_interface_eroded_heightmap_preview.o moc_interface_eroded_heightmap_preview.cpp
 
 moc_interface_generation_menu.o: moc_interface_generation_menu.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_interface_generation_menu.o moc_interface_generation_menu.cpp
@@ -1314,9 +1271,6 @@ moc_interface_terrain_parameters_menu.o: moc_interface_terrain_parameters_menu.c
 
 moc_loading_menu.o: moc_loading_menu.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_loading_menu.o moc_loading_menu.cpp
-
-moc_super.o: moc_super.cpp 
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_super.o moc_super.cpp
 
 moc_world.o: moc_world.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_world.o moc_world.cpp

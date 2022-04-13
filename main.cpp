@@ -11,7 +11,7 @@ int main(int argc, char *argv[]) {
     style_sheet.open(QFile::ReadOnly);
     app.setStyleSheet(style_sheet.readAll());
 
-    main_menu -> resize(512, 712);
+    main_menu -> resize(512, 1000);
     main_menu -> show();
 
     app.exec();

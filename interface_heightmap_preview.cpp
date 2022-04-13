@@ -28,10 +28,13 @@ heightmap_preview :: heightmap_preview(QWidget *parent) : QWidget(parent) {
 
     connect(reload_button, SIGNAL(clicked()), parent, SLOT(reload_heightmap()));
     connect(reload_button, SIGNAL(clicked()), this, SLOT(reload_heightmap()));
+    connect(this, SIGNAL(heightmap_valid_signal()), parent, SLOT(heightmap_valid()));
 
     box -> addWidget(preview_label);
     box -> addWidget(label);
     box -> addWidget(reload_button);
+
+    ready = true;
 
 }
 
@@ -39,5 +42,7 @@ void heightmap_preview :: reload_heightmap() {
 
     QPixmap pixmap("../terrain/heightmap_preview.ppm");
     label -> setPixmap(pixmap.scaled(318, 318, Qt :: KeepAspectRatio));
+    ready = true;
+    emit heightmap_valid_signal();
 
 }

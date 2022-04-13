@@ -10,6 +10,8 @@
 
 class eroded_heightmap_preview : public QWidget {
 
+    Q_OBJECT
+
 public:
 
     eroded_heightmap_preview(QWidget *parent);
@@ -19,9 +21,15 @@ public:
     QVBoxLayout* box;
     QPushButton* reload_button;
 
+    bool ready;
+
     void reload_heightmap();
     void refresh_heightmap();
     void display_loader();
+
+signals:
+
+    void eroded_heightmap_valid_signal();
 
 };
 

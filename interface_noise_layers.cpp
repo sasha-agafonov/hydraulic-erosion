@@ -48,6 +48,11 @@ interface_noise_layers :: interface_noise_layers(QWidget* parent, int wx, int wy
     layers_vector[4] -> frequency_spinbox -> setValue(60);
     layers_vector[4] -> amplitude_spinbox -> setValue(4);
 
+    layers_vector[5] -> activate_layer();
+    update_new_layer_button();
+    layers_vector[5] -> frequency_spinbox -> setValue(50);
+    layers_vector[5] -> amplitude_spinbox -> setValue(12);
+
     connect(this, SIGNAL(invalidate_heightmap_signal()), parent, SLOT(invalidate_heightmap()));
 
     build_layers(wx, wy, random);

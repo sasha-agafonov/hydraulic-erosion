@@ -48,11 +48,12 @@ public slots:
     void reload_heightmap();
     void terrain_changed();
     void invalidate_eroded_heightmap();
+    void eroded_heightmap_valid();
+    void heightmap_valid();
 
 signals:
 
     void invalidate_heightmap_signal();
-
 
 };
 

@@ -21,9 +21,15 @@ public:
     QVBoxLayout* box;
     QPushButton* reload_button;
 
+    bool ready;
+
 public slots:
 
     void reload_heightmap();
+
+signals:
+
+    void heightmap_valid_signal();
 
 };
 

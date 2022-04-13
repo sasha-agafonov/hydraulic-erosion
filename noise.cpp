@@ -83,6 +83,7 @@ void noise :: map_samples2(int height, int width) {
      }
 }
 
+
 void noise :: create_map() {
     for (int i = 0; i < sample_grid2.size(); i++) {
         for (int k = 0; k < sample_grid2.size(); k++) {
@@ -91,17 +92,20 @@ void noise :: create_map() {
     }
 }
 
+
 float noise :: linear_interpolation(float point_1, float point_2, float weight) {
     if (weight < 0) return point_1;
     if (weight > 1) return point_2;
     return (point_2 - point_1) * weight + point_1;
 }
 
+
 float noise :: smoothstep_interpolation(float point_1, float point_2, float weight) {
     if (weight < 0) return point_1;
     if (weight > 1) return point_2;
     return (point_2 - point_1) * ((weight * (weight * 6 - 15) + 10) * weight * weight * weight) + point_1;
 }
+
 
 
 float noise :: dot_product(float ivec_x, float ivec_y, int gvec_x, int gvec_y) {

@@ -6,7 +6,7 @@ eroded_heightmap_preview :: eroded_heightmap_preview(QWidget *parent) : QWidget(
 
     this -> setSizePolicy(QSizePolicy :: Fixed, QSizePolicy :: Fixed);
 
-    QPixmap pixmap("../terrain/heightmap_preview.ppm");
+    QPixmap pixmap("../terrain/heightmap_eroded_preview.ppm");
 
     box = new QVBoxLayout(this);
     box -> setAlignment(Qt :: AlignTop);
@@ -18,14 +18,6 @@ eroded_heightmap_preview :: eroded_heightmap_preview(QWidget *parent) : QWidget(
     preview_label -> setFixedHeight(30);
     preview_label -> setStyleSheet("QLabel { color: rgba(190, 190, 222, 1); background-color: rgba(30, 33, 39, 1);  height: 30px; margin: 0;}");
 
-
-
-//    QMovie *movie = new QMovie("../terrain/ringer_sm2.gif");
-//    QLabel *label = new QLabel(this);
-//    label -> setStyleSheet("QLabel { background-color: rgba(1,1,1,0); } ");
-//    label -> setMovie(movie);
-
-
     label = new QLabel();
     label -> setPixmap(pixmap.scaled(318, 318, Qt :: KeepAspectRatio));
     label -> setSizePolicy(QSizePolicy :: Fixed, QSizePolicy :: Fixed);
@@ -36,13 +28,17 @@ eroded_heightmap_preview :: eroded_heightmap_preview(QWidget *parent) : QWidget(
                                    "QPushButton:pressed { background: rgba(110, 110, 135, 1); } ");
 
     connect(reload_button, SIGNAL(clicked()), parent, SLOT(erode_heightmap()));
+    connect(this, SIGNAL(eroded_heightmap_valid_signal()), parent, SLOT(eroded_heightmap_valid()));
 
     reload_button -> setEnabled(true);
 
     box -> addWidget(preview_label);
     box -> addWidget(label);
     box -> addWidget(reload_button);
+
+    ready = false;
 }
+
 
 void eroded_heightmap_preview :: reload_heightmap() {
 
@@ -51,13 +47,17 @@ void eroded_heightmap_preview :: reload_heightmap() {
     this -> reload_button -> setStyleSheet("QPushButton { height: 30px; background: rgba(110, 110, 135, 1); border: 0; margin: 0; border-radius: 6px; font-size: 11px; color: rgba(40, 44, 52, 1); } "
                                    "QPushButton:pressed { background: rgba(110, 110, 135, 1); } ");
 
-    QPixmap pixmap("../terrain/heightmap_eroded2_preview.pgm");
+    QPixmap pixmap("../terrain/heightmap_eroded_preview.ppm");
 
     label -> setPixmap(pixmap.scaled(318, 318, Qt :: KeepAspectRatio));
+    emit eroded_heightmap_valid_signal();
 }
 
-void eroded_heightmap_preview :: refresh_heightmap() {
 
-    QPixmap pixmap("../terrain/heightmap_eroded2_preview.pgm");
-    label -> setPixmap(pixmap.scaled(318, 318, Qt :: KeepAspectRatio));
-}
+//void eroded_heightmap_preview :: refresh_heightmap() {
+
+//    QPixmap pixmap("../terrain/heightmap_eroded.pgm");
+//    label -> setPixmap(pixmap.scaled(318, 318, Qt :: KeepAspectRatio));
+//    ready = true;
+//    emit eroded_heightmap_valid_signal();
+//}

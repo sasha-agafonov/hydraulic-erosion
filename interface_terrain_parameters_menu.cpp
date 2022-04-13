@@ -30,7 +30,7 @@ terrain_parameters_menu :: terrain_parameters_menu(QWidget* parent) : QWidget(pa
     width_y_spinbox -> setValue(500);
     width_y_spinbox -> setAlignment(Qt::AlignCenter | Qt::AlignVCenter);
 
-    gradient_seed_label = new QLabel("Randomized Gradients", this);
+    gradient_seed_label = new QLabel("Random Seed", this);
     gradient_seed_label -> setFixedHeight(30);
     gradient_seed_label -> setAlignment(Qt::AlignCenter);
     gradient_seed_label -> setStyleSheet("QLabel { color: rgba(190, 190, 222, 1); background-color: rgba(30, 33, 39, 1); height: 30px; margin: 0; padding-left: 8px; padding-right: 8px; }");

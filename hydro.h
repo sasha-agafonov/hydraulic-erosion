@@ -3,23 +3,17 @@
 
 #include <vector>
 
-typedef struct tile {
+#include "hydro_map.h"
+#include "hydro_flux.h"
 
-    float terrain_height;
-    float water_height;
-    float sediment_amount;
-    int flux;
 
-} tile;
-
-typedef struct surrace_normal {
+typedef struct normal_vector {
 
     float x;
     float y;
     float z;
-    int height;
 
-} surface_normal;
+} normal_vector;
 
 
 class hydro {
@@ -29,46 +23,48 @@ public:
     hydro();
 
     std :: vector <std :: vector <float> > heightmap;
-    std :: vector <std :: vector <float> > bounded_heightmap;
-    std :: vector <std :: vector <float> > watermap;
+    std :: vector <std :: vector <float> > temp_heightmap;
 
-    void initialize_heightmap(int wx, int wy);
+    hydro_map* current_map;
+    hydro_map* updated_map;
 
+    float water;
+    float capacity;
+    float erosion_rate;
+    float deposition_rate;
+    float evaporation_rate;
+    float post_evaporation_rate;
+
+    hydro_flux compute_flux(int x, int y, float current_height);
+
+    void set_parameters(float water, float capacity, float erosion_rate, float deposition_rate, float evaporation_rate, float post_evaporation_rate);
+
+    float get_total_height(int x, int y);
+    float euler_step(float x, float y);
+    float transport_capacity(int x, int y);
+
+    void scale_flux(int x, int y, float current_height);
+    void update_water_level(int x, int y);
+    void erosion_deposition(int x, int y);
+    void update_cell(int x, int y);
     void erode(int cycles);
-    void spawn_rain();
-    void initialize_water_map();
-    void spawn_drop();
 
+    void dynamic_load();
+    void dynamic_erode();
+    void dynamic_evaporate();
+    void dynamic_delete();
+
+    bool is_wet();
+    bool is_in_bounds(int x, int y);
+    void big_drop(int x, int y);
+
+    normal_vector normal(int x, int y);
+
+    float incline_sin(normal_vector normal);
+    float vector_length(float x, float y, float z);
 
     void load_heightmap();
-    void load_surface_normals();
-    void load_tiles();
-    void test_water();
-    void accumulate();
-    void flow();
-
-    void normalize_w_levels();
-
-    void erode_step();
-
-    void erode();
-
-    void rain();
-    void rain_drop(int pos_x, int pos_y);
-
-    void vec_norm(int x, int y);
-    void normalize_heightmap();
-    void write_heightmap();
-
-    std :: vector <std ::vector <surface_normal> > surface_normals;
-
-    std :: vector <std :: vector <tile> > tiles;
-
-
-    std :: vector <std :: vector <float> > water_map;
-    std :: vector <std :: vector <float> > sediment_map;
-
-
+    void output_heightmap();
 
 };
 

@@ -14,10 +14,8 @@
 #include <QTimer>
 
 #include "interface_eroded_heightmap_preview.h"
+#include "interface_double_slider.h"
 #include "hydro.h"
-#include "hydro2.h"
-#include "hydro3.h"
-#include "hydro4.h"
 
 class hydro_parameters_menu : public QWidget {
 
@@ -34,11 +32,12 @@ public:
     QCheckBox* random_checkbox;
 
     QSlider* cycles_slider;
-    QSlider* water_amount_slider;
-    QSlider* carrying_capacity_slider;
-    QSlider* evaporation_rate_slider;
-    QSlider* erosion_rate_slider;
-    QSlider* deposition_rate_slider;
+    interface_double_slider* water_amount_slider;
+    interface_double_slider* carrying_capacity_slider;
+    interface_double_slider* evaporation_rate_slider;
+    interface_double_slider* erosion_rate_slider;
+    interface_double_slider* deposition_rate_slider;
+    interface_double_slider* post_evaporation_rate_slider;
 
     QSpinBox* cycles_spinbox;
     QDoubleSpinBox* water_spinbox;
@@ -46,6 +45,7 @@ public:
     QDoubleSpinBox* erosion_spinbox;
     QDoubleSpinBox* deposition_spinbox;
     QDoubleSpinBox* evaporation_spinbox;
+    QDoubleSpinBox* post_evaporation_spinbox;
 
     QLabel* random_label;
     QLabel* hydro_parameters_label;
@@ -54,14 +54,12 @@ public:
     QLabel* carrying_capacity_label;
     QLabel* evaporation_rate_label;
     QLabel* erosion_rate_label;
+    QLabel* post_evaporation_rate_label;
     QLabel* deposition_rate_label;
 
     QTimer* timer;
 
     hydro* hydraulic_erosion;
-    hydro2* hydraulic_erosion2;
-    hydro3* hydraulic_erosion3;
-    hydro4* hydraulic_erosion4;
 
     eroded_heightmap_preview* eroded_heightmap;
 
@@ -72,7 +70,12 @@ public slots:
 
     void erosion_parameters_changed();
     void erode_heightmap();
-    void reload_heightmap();
+//    void reload_heightmap();
+    void eroded_heightmap_valid();
+
+signals:
+
+    void eroded_heightmap_valid_signal();
 
 };
 

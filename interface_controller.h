@@ -34,6 +34,9 @@ public slots:
     void exit_scene();
     void scene_ready();
 
+    void load_eroded();
+    void load_uneroded();
+    void load_and_erode();
 
 public:
 
@@ -61,8 +64,6 @@ public:
     QStackedLayout* stack;
 
     QBoxLayout *scene_box, *button_box;
-
-    grid_layout* grid;
 
 
 

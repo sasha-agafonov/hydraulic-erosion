@@ -30,9 +30,8 @@ interface_controller :: interface_controller(QWidget* parent) : QWidget(parent) 
 
     box -> setContentsMargins(0, 0, 0, 0);
 
-    // ~ 200 fps cap
     timer = new QTimer;
-    timer -> start(5);
+    timer -> start(16);
     timer2 = new QTimer;
     timer2 -> start(1000);
 
@@ -62,6 +61,57 @@ void interface_controller :: load_scene() {
     splash -> finish(scene);
     scene -> show();
 }
+
+
+void interface_controller :: load_eroded() {
+    gen_menu -> hide();
+    scene -> bad_terrain -> eroded = true;
+    scene -> bad_terrain -> dynamic = false;
+    scene -> bad_terrain -> load_terrain();
+    splash -> show();
+    scene -> initializeGL();
+    splash -> finish(scene);
+    scene -> show();
+}
+
+
+void interface_controller :: load_uneroded() {
+    gen_menu -> hide();
+    splash -> show();
+    scene -> bad_terrain -> eroded = false;
+    scene -> bad_terrain -> dynamic = false;
+    scene -> initializeGL();
+    scene -> bad_terrain -> load_terrain();
+    splash -> finish(scene);
+    scene -> show();
+}
+
+
+void interface_controller :: load_and_erode() {
+    gen_menu -> hide();
+    splash -> show();
+//    this -> gen_menu -> hydraulic_ersion4 -> load_
+    scene -> bad_terrain -> eroded = false;
+    scene -> bad_terrain -> dynamic = true;
+    scene -> bad_terrain -> loaded = false;
+    scene -> bad_terrain -> load_terrain();
+    scene -> bad_terrain -> cycles = gen_menu -> hydro_parameters -> cycles_spinbox -> value();
+    scene -> bad_terrain -> hydraulic_erosion -> set_parameters(gen_menu -> hydro_parameters -> water_spinbox -> value(),
+                                                                gen_menu -> hydro_parameters -> carry_spinbox -> value(),
+                                                                gen_menu -> hydro_parameters -> erosion_spinbox -> value(),
+                                                                gen_menu -> hydro_parameters -> deposition_spinbox -> value(),
+                                                                gen_menu -> hydro_parameters -> evaporation_spinbox -> value(),
+                                                                gen_menu -> hydro_parameters -> post_evaporation_spinbox -> value());
+    scene -> initializeGL();
+    splash -> finish(scene);
+    scene -> show();
+}
+
+
+
+
+
+
 
 
 void interface_controller :: scene_ready() {
@@ -96,11 +146,12 @@ void interface_controller :: toggle_scene_menu() {
 
 
 interface_controller :: ~interface_controller() {
+
     delete box;
-    delete grid;
     delete scene;
     delete timer;
     delete button_box;
+
 }
 
 

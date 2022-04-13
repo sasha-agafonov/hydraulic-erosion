@@ -20,12 +20,15 @@ interface_noise_layer :: interface_noise_layer(QWidget* parent, int layer_number
 
     empty_label = new QLabel("Empty Slot", this);
     empty_label -> setAlignment(Qt::AlignCenter);
+
     frequency_label = new QLabel("Frequency", this);
     frequency_label -> setStyleSheet("QLabel { color: rgba(190, 190, 222, 1); background-color: rgba(1, 1, 1, 0); padding-right: 6px;}");
     frequency_label -> setAlignment(Qt::AlignRight | Qt::AlignVCenter);
+
     amplitude_label = new QLabel("Amplitude", this);
     amplitude_label -> setStyleSheet("QLabel { color: rgba(190, 190, 222, 1); background-color: rgba(1, 1, 1, 0); padding-right: 6px;}");
     amplitude_label -> setAlignment(Qt::AlignRight | Qt::AlignVCenter);
+
     transparency_label = new QLabel("Alpha", this);
     transparency_label -> setStyleSheet("QLabel { color: rgba(190, 190, 222, 1); background-color: rgba(1, 1, 1, 0); padding-right: 6px;}");
     transparency_label -> setAlignment(Qt::AlignRight | Qt::AlignVCenter);

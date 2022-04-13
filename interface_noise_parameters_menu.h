@@ -40,11 +40,13 @@ public slots:
 
     void reload_heightmap();
     void invalidate_heightmap();
+    void heightmap_valid();
 
 signals:
 
     void reload_heightmap_signal();
     void invalidate_eroded_heightmap_signal();
+    void heightmap_valid_signal();
 
 };
 

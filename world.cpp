@@ -177,20 +177,6 @@ void world :: initializeGL() {
     glEnable(GL_CULL_FACE);
     glCullFace(GL_BACK);
 
-    glEnable(GL_FOG);
-
-    glFogi(GL_FOG_MODE, GL_LINEAR);
-    glFogf(GL_FOG_START, 200.f);
-    glFogf(GL_FOG_END, 2000.f);
-
-    float foggy[3] = {1.f, 1.f, 1.f};
-
-    glEnable(GL_DEPTH_TEST);
-    glDepthMask(GL_TRUE);
-    glFogfv(GL_FOG_COLOR, foggy);
-    glHint(GL_FOG_HINT, GL_FASTEST);
-    glFogf(GL_FOG_DENSITY, 1.f);
-
     glEnable(GL_LIGHTING);
     glEnable(GL_LIGHT0);
 
@@ -209,9 +195,6 @@ void world :: initializeGL() {
     glEnableClientState(GL_VERTEX_ARRAY);
     glEnableClientState(GL_NORMAL_ARRAY);
     glEnableClientState(GL_COLOR_ARRAY);
-
-    bad_terrain -> load_terrain();
-
 
 }
 
