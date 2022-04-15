@@ -204,7 +204,7 @@ normal_vector hydro :: normal(int x, int y) {
 }
 
 
-float hydro :: incline_sin(normal_vector normal) { return std :: max(0.1f, sin(acos(normal.z / vector_length(normal.x, normal.y, normal.z) * vector_length(0, 0, 1)))); }
+float hydro :: incline_sin(normal_vector normal) { return std :: max(0.1f, (float)sin(acos(normal.z / vector_length(normal.x, normal.y, normal.z) * vector_length(0, 0, 1)))); }
 
 
 float hydro :: vector_length(float x, float y, float z) { return (sqrt(pow(x, 2) + pow(y, 2) + pow(z, 2))); }

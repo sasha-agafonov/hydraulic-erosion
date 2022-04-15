@@ -5,6 +5,9 @@
 #include <QBoxLayout>
 #include <QObject>
 #include <QTimer>
+#include <QMenuBar>
+#include <QAction>
+#include <QMenu>
 
 #include "world.h"
 #include "interface_generation_menu.h"
@@ -33,6 +36,10 @@ public:
     void main_menu();
     void world_view();
     void test();
+
+    QMenuBar* menu_bar;
+    QMenu* file_menu;
+    QAction* action_quit;
 
     QTimer *timer, *timer2;
     QVBoxLayout *box;

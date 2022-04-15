@@ -13,6 +13,8 @@ int main(int argc, char *argv[]) {
     app.setStyleSheet(style_sheet.readAll());
 
     main_menu -> setMinimumWidth(1080);
+    main_menu -> setMinimumHeight(900);
+    main_menu -> showMaximized();
     main_menu -> show();
 
     app.exec();

@@ -63,13 +63,12 @@ void world :: mouseMoveEvent(QMouseEvent* event) {
 
     QPoint mouse_position_change = (event -> globalPos() - mapToGlobal(rect().center()));
 
-    if (mouse_position_change.x() != 0 && mouse_position_change.y() != 0) {
+    if (mouse_position_change.x() != 0 || mouse_position_change.y() != 0) {
 
         cursor_x -= ((double) mouse_position_change.x() * 0.005);
         cursor_y += ((double) mouse_position_change.y() * 0.005);
 
         camera -> set_angles(cursor_x, cursor_y);
-
         cursor().setPos(mapToGlobal(rect().center()));
     }
 }
