@@ -16,12 +16,6 @@ interface_controller :: interface_controller(QWidget* parent) : QWidget(parent) 
 
     menu_bar = new QMenuBar(this);
 
-    file_menu = menu_bar -> addMenu("Terrain");
-
-    action_quit = new QAction("&Quit", this);
-
-    file_menu->addAction(action_quit);
-
     QGLFormat format;
     format.setSampleBuffers(true);
     format.setSamples(4);
