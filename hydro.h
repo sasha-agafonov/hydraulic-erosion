@@ -34,10 +34,11 @@ public:
     float deposition_rate;
     float evaporation_rate;
     float post_evaporation_rate;
+    bool drops;
 
     hydro_flux compute_flux(int x, int y, float current_height);
 
-    void set_parameters(float water, float capacity, float erosion_rate, float deposition_rate, float evaporation_rate, float post_evaporation_rate);
+    void set_parameters(float water, float capacity, float erosion_rate, float deposition_rate, float evaporation_rate, float post_evaporation_rate, bool drops);
 
     float get_total_height(int x, int y);
     float euler_step(float x, float y);
@@ -56,7 +57,7 @@ public:
 
     bool is_wet();
     bool is_in_bounds(int x, int y);
-    void big_drop(int x, int y);
+    void drop(int x, int y);
 
     normal_vector normal(int x, int y);
 
@@ -64,7 +65,9 @@ public:
     float vector_length(float x, float y, float z);
 
     void load_heightmap();
+    void check_heightmap();
     void output_heightmap();
+
 
 };
 

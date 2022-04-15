@@ -7,11 +7,12 @@ int main(int argc, char *argv[]) {
 
     interface_controller* main_menu = new interface_controller(NULL);
 
+    // set a stylesheet
     QFile style_sheet("../terrain/style.qss");
     style_sheet.open(QFile::ReadOnly);
     app.setStyleSheet(style_sheet.readAll());
 
-    main_menu -> resize(512, 1000);
+    main_menu -> setMinimumWidth(1080);
     main_menu -> show();
 
     app.exec();

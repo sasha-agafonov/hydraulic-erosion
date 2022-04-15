@@ -11,7 +11,6 @@
 #include <string>
 
 #include "world.h"
-#include "noise.h"
 
 #define PGM_8_BIT 255
 #define PGM_16_BIT 65535
@@ -25,31 +24,15 @@ world :: world( QWidget* parent) : QGLWidget(parent) {
 
     this -> setFocusPolicy(Qt::StrongFocus);
 
-    //this -> grabKeyboard();
-
-//    grabMouse();
-
-    direction_x = 0;
-    direction_y = 0;
-    direction_z = 0;
-
     forward = false;
     back = false;
     left = false;
     right = false;
     up = false;
     down = false;
-    menu = false;
 
     cursor_x = -135;
     cursor_y = 110;
-
-    mouse_prev_pos_x = 0;
-    mouse_prev_pos_y = 0;
-
-    camera_position_x = 0;
-    camera_position_y = 0;
-    camera_position_z = 0;
 
     sc_width = 0;
     sc_height = 0;
@@ -62,16 +45,16 @@ world :: world( QWidget* parent) : QGLWidget(parent) {
     connect(this, SIGNAL(exit_signal()), parentWidget(), SLOT(exit_scene()));
 
     camera = new fpp_camera(cursor_x, cursor_y);
-
     bad_terrain = new terrain();
 
 }
 
 
-
 void world :: resetFPS() {
+
     fps = fps_counter;
     fps_counter = 0;
+
 }
 
 
@@ -97,9 +80,9 @@ void world :: keyPressEvent(QKeyEvent* event) {
 
     if (event -> isAutoRepeat()) return;
     switch (event -> key()) {
-        case Qt :: Key_W:
-            forward = true;
-            break;
+    case Qt :: Key_W:
+        forward = true;
+        break;
         case Qt :: Key_S:
             back = true;
             break;
@@ -115,14 +98,19 @@ void world :: keyPressEvent(QKeyEvent* event) {
         case Qt :: Key_Shift:
             down = true;
             break;
-
-    case Qt :: Key_F:
-        if (show_fps) show_fps = false;
-        else show_fps = true;
-        break;
+        case Qt :: Key_F:
+            if (show_fps) show_fps = false;
+            else show_fps = true;
+            break;
         case Qt :: Key_Escape:
+            releaseKeyboard();
+            releaseMouse();
             emit exit_signal();
             break;
+        default:
+            event->ignore();
+            break;
+
     }
 }
 
@@ -131,41 +119,33 @@ void world :: keyReleaseEvent(QKeyEvent* event) {
 
     if (event -> isAutoRepeat()) return;
     switch (event -> key()) {
-        case Qt :: Key_W:
-            forward = false;
-            break;
-        case Qt :: Key_S:
-            back = false;
-            break;
-        case Qt :: Key_A:
-            left = false;
-            break;
-        case Qt :: Key_D:
-            right = false;
-            break;
-        case Qt :: Key_Space:
-            up = false;
-            break;
-        case Qt :: Key_Shift:
-            down = false;
-            break;
+    case Qt :: Key_W:
+        forward = false;
+        break;
+    case Qt :: Key_S:
+        back = false;
+        break;
+    case Qt :: Key_A:
+        left = false;
+        break;
+    case Qt :: Key_D:
+        right = false;
+        break;
+    case Qt :: Key_Space:
+        up = false;
+        break;
+    case Qt :: Key_Shift:
+        down = false;
+        break;
+    default:
+        event->ignore();
+        break;
     }
 }
 
 
-void world :: update_scene() {
-    tick++;
-    this -> repaint();
-}
+void world :: update_scene() { this -> repaint(); }
 
-
-void world :: reload() {
-
-    if (terrain_mx.size() > 0) for (int i = 0; i < terrain_mx.size(); i++) terrain_mx[i].clear();
-    terrain_mx.clear();
-//    terrain_mx = terra -> load_terrain();
-
-}
 
 void world :: initializeGL() {
 
@@ -183,7 +163,6 @@ void world :: initializeGL() {
     GLfloat light_pos[] = {0.f, 0.f, 1.f, 0.f};
 
     glLightfv(GL_LIGHT0, GL_POSITION, light_pos);
-    reload();
 
     glMaterialfv(GL_FRONT, GL_DIFFUSE,   base.diffuse);
     glMaterialfv(GL_FRONT, GL_SPECULAR,  base.specular);
@@ -238,12 +217,22 @@ void world :: paintGL() {
 
     bad_terrain -> draw_terrain_arrays();
 
-    // eats fps
-    if (show_fps) {
+    // -fps
+    if (bad_terrain -> dynamic && show_fps) {
+
+        QPainter painter(this);
+        painter.setPen(Qt :: black);
+        if (bad_terrain -> current_cycle < bad_terrain -> cycles) painter.drawText(sc_width - 110, 20, "Iteration: " + QString :: fromStdString(std :: to_string(bad_terrain -> current_cycle + 1)) + " / " + QString :: fromStdString(std :: to_string(bad_terrain -> cycles)));
+        else painter.drawText(sc_width - 60, 20, "Drying... ");
+        painter.end();
+
+    } else if (show_fps) {
+
           QPainter painter(this);
           painter.setPen(Qt :: black);
           painter.drawText(sc_width - 60, 20, "FPS: " + QString :: fromStdString(std :: to_string(fps)));
-          painter.end(); }
+          painter.end();
+    }
 
     glLoadIdentity();
 

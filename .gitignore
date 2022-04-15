@@ -1,0 +1,10 @@
+moc*.cpp
+moc*.h
+*.o
+*.ppm
+*.pgm
+*.stash
+auth
+
+
+

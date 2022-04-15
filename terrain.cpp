@@ -20,15 +20,17 @@
 terrain :: terrain() : terrain_size(0) {
 
     triangles_count = 0;
-//    water = new hydro();
     hydraulic_erosion = new hydro();
 
     hydraulic_erosion -> dynamic_load();
     terrain_numerical_mx = hydraulic_erosion -> heightmap;
-    terrain_numerical_mx_raw = hydraulic_erosion -> heightmap;
+    terrain_numerical_mx_raw = terrain_numerical_mx;
 
     cycles = 0;
     current_cycle = 0;
+
+    min = 0;
+    max = 100;
 
     dynamic = true;
     eroded = false;
@@ -45,8 +47,10 @@ void terrain :: load_heightmap() {
 
     ifstream terrain_data;
 
-
-    if (eroded) terrain_data.open("../terrain/heightmap_eroded.pgm");
+    if (eroded) {
+        terrain_data.open("../terrain/heightmap_eroded.pgm");
+        eroded = false;
+    }
     else terrain_data.open("../terrain/heightmap.pgm");
 
     // or don't
@@ -187,6 +191,11 @@ void terrain :: load_triangles() {
 
             terrain_triangle_mx_original.push_back(triangle_row_original);
         }
+
+        if (static_cast <int> (terrain_numerical_mx_raw.size()) != static_cast <int> (terrain_numerical_mx.size())
+            || static_cast <int> (terrain_numerical_mx_raw[0].size()) != static_cast <int> (terrain_numerical_mx[0].size()))
+                terrain_triangle_mx_original = terrain_triangle_mx;
+
     }
 }
 
@@ -418,13 +427,11 @@ void terrain :: load_normals() {
 }
 
 
-// terrain :: color_interpolate() {
-
-//}
 // compute vertex colors
 void terrain :: load_colors() {
 
     terrain_colors.clear();
+
     minimax();
 
     float color_1 = 0;
@@ -433,9 +440,9 @@ void terrain :: load_colors() {
 
     float water;
 
-    for (int i = 2; i < terrain_triangle_mx.size() - 2; i++) {
+    for (int i = 2; i < static_cast <int> (terrain_triangle_mx.size()) - 2; i++) {
 
-        for (int x = 2; x < terrain_triangle_mx[0].size() - 2; x++) {
+        for (int x = 2; x < static_cast <int> (terrain_triangle_mx[0].size()) - 2; x++) {
 
             color_1 = (0.725 - 0.227) * terrain_triangle_mx[i][x].vertex_1.position_z / (max - min) + 0.227;
             color_2 = (0.662 - 0.552) * terrain_triangle_mx[i][x].vertex_1.position_z / (max - min) + 0.552;
@@ -444,8 +451,6 @@ void terrain :: load_colors() {
             if (dynamic) {
 
                 water = fabs(terrain_triangle_mx[i][x].vertex_1.position_z - terrain_triangle_mx_original[i][x].vertex_1.position_z) / 2;
-
-               // std :: cout << terrain_triangle_mx_original[i][x].vertex_1.position_z << "\n";
 
                 color_1 = (0.149f - color_1) * std :: min(1.f, water) + color_1;
                 color_2 = (0.533f - color_2) * std :: min(1.f, water) + color_2;
@@ -504,19 +509,11 @@ void terrain :: load_colors() {
             terrain_colors.push_back(color_1);
             terrain_colors.push_back(color_2);
             terrain_colors.push_back(color_3);
+
         }
-
     }
-
 }
 
-
-float terrain :: interpolate_angle(float ang) {
-    if (ang >= 100) return 1.f;
-    else if (ang <= 50) return 0;
-    else return ((ang - 50) / 50.f);
-
-}
 
 // load triangle vertices into an array
 void terrain :: load_arrays() {
@@ -527,9 +524,9 @@ void terrain :: load_arrays() {
 
     int counter = 0;
 
-    for (int i = 2; i < terrain_triangle_mx.size() - 2; i++) {
+    for (int i = 2; i < static_cast <int> (terrain_triangle_mx.size()) - 2; i++) {
 
-        for (int k = 2; k < terrain_triangle_mx[i].size() - 2; k++) {
+        for (int k = 2; k < static_cast <int> (terrain_triangle_mx[i].size()) - 2; k++) {
 
             // vx positions
             terrain_positions[counter   *   9] = terrain_triangle_mx[i][k].vertex_1.position_x;
@@ -563,10 +560,11 @@ void terrain :: load_arrays() {
 
 }
 
+
 float terrain :: normal_angle(float x, float y, float z) { return ( std :: acos( z / (vec_len(x, y, z)) * vec_len(0, 0, 1))); }
 
-float terrain :: vec_len(float x, float y, float z) { return (sqrt(pow(x, 2) + pow(y, 2) + pow(z, 2))); }
 
+float terrain :: vec_len(float x, float y, float z) { return (sqrt(pow(x, 2) + pow(y, 2) + pow(z, 2))); }
 
 
 // controller
@@ -594,13 +592,12 @@ void terrain :: draw_terrain() {
     glMaterialf( GL_FRONT, GL_SHININESS, m200.shininess);
     glMaterialfv(GL_FRONT, GL_AMBIENT,   m200.ambient);
 
-    for (int row = 0; row < terrain_triangle_mx.size(); row++) {
-        for (int col = 0; col < terrain_triangle_mx[0].size(); col++) {
+    for (int row = 0; row < static_cast <int> (terrain_triangle_mx.size()); row++) {
+        for (int col = 0; col < static_cast <int> (terrain_triangle_mx[0].size()); col++) {
             glBegin(GL_TRIANGLES);
 
             glNormal3f( terrain_triangle_mx[row][col].vertex_1.normal_x,   terrain_triangle_mx[row][col].vertex_1.normal_y,   terrain_triangle_mx[row][col].vertex_1.normal_z);
             glVertex3f( terrain_triangle_mx[row][col].vertex_1.position_x, terrain_triangle_mx[row][col].vertex_1.position_y, terrain_triangle_mx[row][col].vertex_1.position_z);
-
 
             glNormal3f( terrain_triangle_mx[row][col].vertex_2.normal_x,   terrain_triangle_mx[row][col].vertex_2.normal_y,   terrain_triangle_mx[row][col].vertex_2.normal_z);
             glVertex3f( terrain_triangle_mx[row][col].vertex_2.position_x, terrain_triangle_mx[row][col].vertex_2.position_y, terrain_triangle_mx[row][col].vertex_2.position_z);
@@ -615,14 +612,13 @@ void terrain :: draw_terrain() {
     glPopMatrix();
 }
 
+
 void terrain :: load_hydro() {
 
     if (!loaded && dynamic) {
 
         hydraulic_erosion -> dynamic_load();
         loaded = true;
-        terrain_numerical_mx = hydraulic_erosion -> heightmap;
-        terrain_numerical_mx_raw = hydraulic_erosion -> heightmap;
 
     }
 
@@ -632,25 +628,22 @@ void terrain :: load_hydro() {
         free(terrain_normals);
 
         terrain_numerical_mx = hydraulic_erosion -> heightmap;
-        terrain_numerical_mx_raw = hydraulic_erosion -> heightmap;
+        terrain_numerical_mx_raw = terrain_numerical_mx;
 
         if (current_cycle < cycles) {
 
             current_cycle ++;
             hydraulic_erosion -> dynamic_erode();
 
-            terrain_numerical_mx = hydraulic_erosion -> heightmap;
-            terrain_numerical_mx_raw = hydraulic_erosion -> heightmap;
-
-            for (int i = 0; i < hydraulic_erosion -> heightmap.size(); i++) {
-                for (int k = 0; k < hydraulic_erosion -> heightmap.size(); k++) {
+            for (int i = 0; i < static_cast <int> (terrain_numerical_mx.size()); i++) {
+                for (int k = 0; k < static_cast <int> (terrain_numerical_mx[0].size()); k++) {
                     terrain_numerical_mx[i][k] += hydraulic_erosion -> updated_map -> watermap[i][k]; } }
         } else {
 
             hydraulic_erosion -> dynamic_evaporate();
 
-            for (int i = 0; i < hydraulic_erosion -> heightmap.size(); i++) {
-                for (int k = 0; k < hydraulic_erosion -> heightmap.size(); k++) {
+            for (int i = 0; i < static_cast <int> (terrain_numerical_mx.size()); i++) {
+                for (int k = 0; k < static_cast <int> (terrain_numerical_mx[0].size()); k++) {
                     terrain_numerical_mx[i][k] += hydraulic_erosion -> updated_map -> watermap[i][k]; } }
 
             if (!hydraulic_erosion -> is_wet()) {
@@ -670,6 +663,7 @@ void terrain :: load_hydro() {
 
     }
 }
+
 
 // draw from an array of vertices, slightly better
 void terrain :: draw_terrain_arrays() {
@@ -709,23 +703,11 @@ void terrain :: minimax() {
 }
 
 
-
-//void terrain :: minimax() {
-//    min = terrain_numerical_mx[0][0];
-//    max = terrain_numerical_mx[0][0];
-//    for (int i = 0; i < terrain_numerical_mx.size(); i++) {
-//        for (int k = 0; k < terrain_numerical_mx.size(); k++) {
-//            if (terrain_numerical_mx[i][k] < min) min = terrain_numerical_mx[i][k];
-//            if (terrain_numerical_mx[i][k] > max) max = terrain_numerical_mx[i][k];
-//        }
-//    }
-//}
-
 // scale the height
 void terrain :: normalize_terrain(int factor) {
 
-    for (int i = 0; i < terrain_triangle_mx.size(); i++) {
-        for (int k = 0; k < terrain_triangle_mx[i].size(); k++) {
+    for (int i = 0; i < static_cast <int> (terrain_triangle_mx.size()); i++) {
+        for (int k = 0; k < static_cast <int> (terrain_triangle_mx[i].size()); k++) {
             terrain_triangle_mx[i][k].vertex_1.position_z /= factor;
             terrain_triangle_mx[i][k].vertex_2.position_z /= factor;
             terrain_triangle_mx[i][k].vertex_3.position_z /= factor;
@@ -733,11 +715,12 @@ void terrain :: normalize_terrain(int factor) {
     }
 }
 
+
 // extrude
 void terrain :: stretch_terrain(int stretch_x, int stretch_y) {
 
-    for (int i = 0; i < terrain_triangle_mx.size(); i++) {
-        for (int k = 0; k < terrain_triangle_mx[i].size(); k++) {
+    for (int i = 0; i < static_cast <int> (terrain_triangle_mx.size()); i++) {
+        for (int k = 0; k < static_cast <int> (terrain_triangle_mx[i].size()); k++) {
 
             terrain_triangle_mx[i][k].vertex_1.position_x *= stretch_x;
             terrain_triangle_mx[i][k].vertex_2.position_x *= stretch_x;
@@ -750,11 +733,10 @@ void terrain :: stretch_terrain(int stretch_x, int stretch_y) {
     }
 }
 
+
 // counts the number of triangles in the terrain
 int terrain :: num_triangles() {
     int num = 0;
-    for (int i = 2; i < terrain_triangle_mx.size() - 2; i++) num += (terrain_triangle_mx[i].size() - 4);
+    for (int i = 2; i < static_cast <int> (terrain_triangle_mx.size()) - 2; i++) num += (terrain_triangle_mx[i].size() - 4);
     return num;
 }
-
-

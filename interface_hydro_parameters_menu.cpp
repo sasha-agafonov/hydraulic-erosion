@@ -1,5 +1,8 @@
 #include "interface_hydro_parameters_menu.h"
 
+#include <QApplication>
+#include <QString>
+
 #include <iostream>
 
 
@@ -17,8 +20,9 @@ hydro_parameters_menu :: hydro_parameters_menu(QWidget *parent) : QWidget(parent
     hydro_parameters_label -> setStyleSheet("QLabel { color: rgba(190, 190, 222, 1); background-color: rgba(30, 33, 39, 1); height: 30px; margin: 0; }");
 
     random_checkbox = new QCheckBox(this);
+    random_checkbox -> setChecked(true);
 
-    random_label = new QLabel("Randomized Appearance", this);
+    random_label = new QLabel("Water Drops", this);
     random_label -> setFixedHeight(30);
     random_label -> setFixedWidth(160);
     random_label -> setStyleSheet("QLabel { color: rgba(190, 190, 222, 1); background-color: rgba(30, 33, 39, 1); height: 30px; margin: 0; padding-left: 8px; padding-right: 8px; }");
@@ -26,13 +30,13 @@ hydro_parameters_menu :: hydro_parameters_menu(QWidget *parent) : QWidget(parent
 
     cycles_slider = new QSlider(Qt :: Horizontal, this);
     cycles_slider -> setFixedHeight(30);
-    cycles_slider -> setValue(100);
+    cycles_slider -> setValue(150);
     cycles_slider -> setRange(10, 1000);
 
     cycles_spinbox = new QSpinBox(this);
     cycles_spinbox -> setFixedWidth(54);
     cycles_spinbox -> setRange(10, 1000);
-    cycles_spinbox -> setValue(100);
+    cycles_spinbox -> setValue(150);
     cycles_spinbox -> setAlignment(Qt::AlignCenter | Qt::AlignVCenter);
 
     cycles_label = new QLabel("Number of Cycles", this);
@@ -43,13 +47,13 @@ hydro_parameters_menu :: hydro_parameters_menu(QWidget *parent) : QWidget(parent
     water_amount_slider = new interface_double_slider(Qt :: Horizontal, this);
     water_amount_slider -> setFixedHeight(30);
     water_amount_slider -> setMaximum(100);
-    water_amount_slider -> setValue(100);
+    water_amount_slider -> setValue(30);
     water_amount_slider -> setMinimum(1);
 
     water_spinbox = new QDoubleSpinBox(this);
     water_spinbox -> setMinimum(0.01);
     water_spinbox -> setMaximum(1.00);
-    water_spinbox -> setValue(1.);
+    water_spinbox -> setValue(0.3);
     water_spinbox -> setSingleStep(0.01);
     water_spinbox -> setFixedWidth(54);
     water_spinbox -> setAlignment(Qt::AlignCenter | Qt::AlignVCenter);
@@ -100,7 +104,7 @@ hydro_parameters_menu :: hydro_parameters_menu(QWidget *parent) : QWidget(parent
     post_evaporation_rate_slider = new interface_double_slider(Qt :: Horizontal, this);
     post_evaporation_rate_slider -> setFixedHeight(30);
     post_evaporation_rate_slider -> setRange(1, 100);
-    post_evaporation_rate_slider -> setValue(30);
+    post_evaporation_rate_slider -> setValue(50);
     post_evaporation_rate_slider -> setMinimumHeight(30);
 
     post_evaporation_rate_label = new QLabel("Post Evaporation Rate", this);
@@ -111,7 +115,7 @@ hydro_parameters_menu :: hydro_parameters_menu(QWidget *parent) : QWidget(parent
     post_evaporation_spinbox = new QDoubleSpinBox(this);
     post_evaporation_spinbox -> setMinimum(0.01);
     post_evaporation_spinbox -> setMaximum(1.00);
-    post_evaporation_spinbox -> setValue(0.3);
+    post_evaporation_spinbox -> setValue(0.5);
     post_evaporation_spinbox -> setSingleStep(0.01);
     post_evaporation_spinbox -> setFixedWidth(54);
     post_evaporation_spinbox -> setAlignment(Qt::AlignCenter | Qt::AlignVCenter);
@@ -119,13 +123,13 @@ hydro_parameters_menu :: hydro_parameters_menu(QWidget *parent) : QWidget(parent
     erosion_rate_slider = new interface_double_slider(Qt :: Horizontal, this);
     erosion_rate_slider -> setFixedHeight(30);
     erosion_rate_slider -> setMaximum(10);
-    erosion_rate_slider -> setValue(2);
+    erosion_rate_slider -> setValue(3);
     erosion_rate_slider -> setMinimum(1);
 
     erosion_spinbox = new QDoubleSpinBox(this);
     erosion_spinbox -> setMinimum(0.01);
     erosion_spinbox -> setMaximum(0.10);
-    erosion_spinbox -> setValue(0.02);
+    erosion_spinbox -> setValue(0.03);
     erosion_spinbox -> setSingleStep(0.01);
     erosion_spinbox -> setFixedWidth(54);
     erosion_spinbox -> setAlignment(Qt::AlignCenter | Qt::AlignVCenter);
@@ -137,14 +141,14 @@ hydro_parameters_menu :: hydro_parameters_menu(QWidget *parent) : QWidget(parent
 
     deposition_rate_slider = new interface_double_slider(Qt :: Horizontal, this);
     deposition_rate_slider -> setFixedHeight(30);
-    deposition_rate_slider -> setValue(1);
+    deposition_rate_slider -> setValue(2);
     deposition_rate_slider -> setMaximum(10);
     deposition_rate_slider -> setMinimum(1);
 
     deposition_spinbox = new QDoubleSpinBox(this);
     deposition_spinbox -> setMinimum(0.01);
-    deposition_spinbox -> setMaximum(1.00);
-    deposition_spinbox -> setValue(0.01);
+    deposition_spinbox -> setMaximum(0.10);
+    deposition_spinbox -> setValue(0.02);
     deposition_spinbox -> setSingleStep(0.01);
     deposition_spinbox -> setFixedWidth(54);
     deposition_spinbox -> setAlignment(Qt::AlignCenter | Qt::AlignVCenter);
@@ -158,29 +162,37 @@ hydro_parameters_menu :: hydro_parameters_menu(QWidget *parent) : QWidget(parent
     connect(random_checkbox, SIGNAL(stateChanged(int)), this, SLOT(erosion_parameters_changed()));
 
     connect(cycles_slider, SIGNAL(valueChanged(int)), this, SLOT(erosion_parameters_changed()));
+    connect(cycles_spinbox, SIGNAL(valueChanged(int)), this, SLOT(erosion_parameters_changed()));
     connect(cycles_slider, SIGNAL(valueChanged(int)), cycles_spinbox, SLOT(setValue(int)));
+    connect(cycles_spinbox, SIGNAL(valueChanged(int)), cycles_slider, SLOT(setValue(int)));
 
     connect(water_amount_slider, SIGNAL(valueChanged(int)), this, SLOT(erosion_parameters_changed()));
+    connect(water_spinbox, SIGNAL(valueChanged(double)), this, SLOT(erosion_parameters_changed()));
     connect(water_amount_slider, SIGNAL(value_changed_double_signal(double)), water_spinbox, SLOT(setValue(double)));
     connect(water_spinbox, SIGNAL(valueChanged(double)), water_amount_slider, SLOT(set_double_value(double)));
 
     connect(carrying_capacity_slider, SIGNAL(valueChanged(int)), this, SLOT(erosion_parameters_changed()));
+    connect(carry_spinbox, SIGNAL(valueChanged(double)), this, SLOT(erosion_parameters_changed()));
     connect(carrying_capacity_slider, SIGNAL(value_changed_double_signal(double)), carry_spinbox, SLOT(setValue(double)));
     connect(carry_spinbox, SIGNAL(valueChanged(double)), carrying_capacity_slider, SLOT(set_double_value(double)));
 
     connect(evaporation_rate_slider, SIGNAL(valueChanged(int)), this, SLOT(erosion_parameters_changed()));
+    connect(evaporation_spinbox, SIGNAL(valueChanged(double)), this, SLOT(erosion_parameters_changed()));
     connect(evaporation_rate_slider, SIGNAL(value_changed_double_signal(double)), evaporation_spinbox, SLOT(setValue(double)));
     connect(evaporation_spinbox, SIGNAL(valueChanged(double)), evaporation_rate_slider, SLOT(set_double_value(double)));
 
     connect(post_evaporation_rate_slider, SIGNAL(valueChanged(int)), this, SLOT(erosion_parameters_changed()));
+    connect(post_evaporation_spinbox, SIGNAL(valueChanged(double)), this, SLOT(erosion_parameters_changed()));
     connect(post_evaporation_rate_slider, SIGNAL(value_changed_double_signal(double)), post_evaporation_spinbox, SLOT(setValue(double)));
     connect(post_evaporation_spinbox, SIGNAL(valueChanged(double)), post_evaporation_rate_slider, SLOT(set_double_value(double)));
 
     connect(erosion_rate_slider, SIGNAL(valueChanged(int)), this, SLOT(erosion_parameters_changed()));
+    connect(erosion_spinbox, SIGNAL(value_changed_double_signal(double)), erosion_spinbox, SLOT(setValue(double)));
     connect(erosion_rate_slider, SIGNAL(value_changed_double_signal(double)), erosion_spinbox, SLOT(setValue(double)));
     connect(erosion_spinbox, SIGNAL(valueChanged(double)), erosion_rate_slider, SLOT(set_double_value(double)));
 
     connect(deposition_rate_slider, SIGNAL(valueChanged(int)), this, SLOT(erosion_parameters_changed()));
+    connect(deposition_spinbox, SIGNAL(valueChanged(double)), this, SLOT(erosion_parameters_changed()));
     connect(deposition_rate_slider, SIGNAL(value_changed_double_signal(double)), deposition_spinbox, SLOT(setValue(double)));
     connect(deposition_spinbox, SIGNAL(valueChanged(double)), deposition_rate_slider, SLOT(set_double_value(double)));
 
@@ -251,34 +263,28 @@ void hydro_parameters_menu :: original_heightmap_changed() {
 
 void hydro_parameters_menu :: erosion_parameters_changed() {
 
-    eroded_heightmap -> ready = false;
+    if (eroded_heightmap -> reload_button -> isEnabled() || eroded_heightmap -> reload_button -> text().toStdString() == "Currently up-to-date") {
 
-    if (!eroded_heightmap -> reload_button -> isEnabled()) eroded_heightmap -> reload_button -> setEnabled(true);
-
-    eroded_heightmap -> reload_button -> setText("Erosion parameters changed, press to erode again");
-    eroded_heightmap -> reload_button -> setStyleSheet("QPushButton { height: 30px; background: rgba(190, 190, 222, 1); border: 0; margin: 0; border-radius: 6px; font-size: 11px; color: rgba(40, 44, 52, 1); } "
-                                                       "QPushButton:pressed { background: rgba(110, 110, 135, 1); } ");
+        eroded_heightmap -> reload_button -> setEnabled(true);
+        eroded_heightmap -> reload_button -> setText("Erosion parameters changed, press to erode again");
+        eroded_heightmap -> reload_button -> setStyleSheet("QPushButton { height: 30px; background: rgba(190, 190, 222, 1); border: 0; margin: 0; border-radius: 6px; font-size: 11px; color: rgba(40, 44, 52, 1); } "
+                                                           "QPushButton:pressed { background: rgba(110, 110, 135, 1); } ");
+    }
 }
-
-
-//void hydro_parameters_menu :: prepare_to_erode_heightmap() {
-
-//    eroded_heightmap -> reload_button -> setText("ERODING");
-//    qApp->processEvents();
-//    erode_heightmap();
-//}
 
 
 void hydro_parameters_menu :: erode_heightmap() {
 
-//    eroded_heightmap -> setEnabled(false);
-//    eroded_heightmap -> reload_button -> setText("Eroding in progress, please wait");
-//    eroded_heightmap -> reload_button -> setStyleSheet("QPushButton { height: 30px; background: rgba(225, 185, 185, 1); border: 0; margin: 0; border-radius: 6px; font-size: 11px; color: rgba(40, 44, 52, 1); } "
-//                                                       "QPushButton:pressed { background: rgba(110, 110, 135, 1); } ");
-//    qApp -> processEvents();
+    eroded_heightmap -> reload_button -> setEnabled(false);
+    eroded_heightmap -> reload_button -> setText("Erosion in progress, please wait");
+    eroded_heightmap -> reload_button -> setStyleSheet("QPushButton { height: 30px; background: rgba(225, 185, 185, 1); border: 0; margin: 0; border-radius: 6px; font-size: 11px; color: rgba(40, 44, 52, 1); } "
+                                                       "QPushButton:pressed { background: rgba(110, 110, 135, 1); } ");
 
+    qApp -> processEvents();
 
-    hydraulic_erosion -> set_parameters(water_spinbox -> value(), carry_spinbox -> value(), erosion_spinbox -> value(), deposition_spinbox -> value(), evaporation_spinbox -> value(), post_evaporation_spinbox -> value());
+    eroded_heightmap -> setEnabled(true);
+
+    hydraulic_erosion -> set_parameters(water_spinbox -> value(), carry_spinbox -> value(), erosion_spinbox -> value(), deposition_spinbox -> value(), evaporation_spinbox -> value(), post_evaporation_spinbox -> value(), random_checkbox -> isChecked());
 
     hydraulic_erosion -> erode(cycles_slider -> value());
 
@@ -288,7 +294,5 @@ void hydro_parameters_menu :: erode_heightmap() {
 
 }
 
-
-//void hydro_parameters_menu :: reload_heightmap() { eroded_heightmap -> refresh_heightmap(); }
 
 void hydro_parameters_menu :: eroded_heightmap_valid() { emit eroded_heightmap_valid_signal(); }

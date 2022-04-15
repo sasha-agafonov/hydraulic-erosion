@@ -30,11 +30,20 @@ void noise_layer :: initialize_gradients(int width, int height, bool random_seed
     gradient gradient_vector;
 
     for (int i = 0; i < height; i++) {
+
         std :: vector <gradient> gradient_row;
 
         for (int k = 0; k < width; k++) {
+
             gradient_vector.component_x = rand() % 200 - 100.f;
             gradient_vector.component_y = rand() % 200 - 100.f;
+
+            while(gradient_vector.component_x == 0 && gradient_vector.component_y == 0) {
+
+                gradient_vector.component_x = rand() % 200 - 100.f;
+                gradient_vector.component_y = rand() % 200 - 100.f;
+            }
+
             gradient_row.push_back(gradient_vector);
         }
         gradient_grid.push_back(gradient_row);
@@ -47,11 +56,12 @@ void noise_layer :: initialize_gradients(int width, int height, bool random_seed
 void noise_layer :: normalize_gradients() {
 
     float vector_length;
+
     for (size_t i = 0; i < gradient_grid.size(); i++) {
         for (size_t k = 0; k < gradient_grid[i].size(); k++) {
             vector_length = sqrt(pow(gradient_grid[i][k].component_x, 2) + pow(gradient_grid[i][k].component_y, 2));
-            gradient_grid[i][k].component_x /= vector_length;
-            gradient_grid[i][k].component_y /= vector_length;
+                gradient_grid[i][k].component_x /= vector_length;
+                gradient_grid[i][k].component_y /= vector_length;
         }
     }
 }
@@ -104,60 +114,29 @@ void noise_layer :: normalize_heightmap(int amp) {
     float min = 0;
     float max = 0;
 
-//    for (int i = 0; i < heightmap.size(); i++) {
-//        for (int k = 0; k < heightmap[i].size(); k++) {
-//            std :: cout << heightmap[i][k] << "val\n";
-//        }
-//    }
-
-//    for (int i = 0; i < heightmap.size(); i++) {
-//        for (int k = 0; k < heightmap[i].size(); k++) {
-//            if (heightmap[i][k] > max) max = heightmap[i][k];
-//            if (heightmap[i][k] < min) min = heightmap[i][k];
-//        }
-//    }
-
-//    std :: cout << "min and max" << min << "  " << max << "\n";
-
-    for (int i = 0; i < heightmap.size(); i++) {
-        for (int k = 0; k < heightmap[i].size(); k++) {
+    for (int i = 0; i < static_cast <int> (heightmap.size()); i++) {
+        for (int k = 0; k < static_cast <int> (heightmap[i].size()); k++) {
             heightmap[i][k] *= 10000;
             heightmap[i][k] *= ((float) amp / 100.f);
             if (heightmap[i][k] > max) max = heightmap[i][k];
             if (heightmap[i][k] < min) min = heightmap[i][k];
-//            heightmap[i][k] += -min;
-//            heightmap[i][k] *= 10000;
-           // heightmap[i][k] = floor(heightmap[i][k]);
 
-
-//            heightmap[i][k] *=
-//            if (heightmap[i][k] > max) max = heightmap[i][k];
-//            if (heightmap[i][k] < min) min = heightmap[i][k];
         }
     }
-
-//    for (int i = 0; i < heightmap.size(); i++) {
-//        for (int k = 0; k < heightmap[i].size(); k++) {
-//            if (heightmap[i][k] > max) max = heightmap[i][k];
-//            if (heightmap[i][k] < min) min = heightmap[i][k];
-//        }
-//    }
 
     if (min < 0) {
-        for (int i = 0; i < heightmap.size(); i++) {
-            for (int k = 0; k < heightmap[i].size(); k++) heightmap[i][k] += -min;
+        for (int i = 0; i < static_cast <int> (heightmap.size()); i++) {
+            for (int k = 0; k < static_cast <int> (heightmap[i].size()); k++) heightmap[i][k] += -min;
         }
     }
-
-
-
-
-//    std :: cout << "mac" << ((max - min) * 50) << "\n";
 }
+
 
 void noise_layer :: create_layer(int tn_size_x, int tn_size_y, int gg_size_x, int gg_size_y, int amp, bool random) {
 
     initialize_heightmap(tn_size_x, tn_size_y);
+    if (gg_size_x > (tn_size_x + 1)) gg_size_x = tn_size_x + 1;
+    if (gg_size_y > (tn_size_y + 1)) gg_size_y = tn_size_y + 1;
     initialize_gradients(gg_size_x, gg_size_y, random);
     apply_gradients();
     normalize_heightmap(amp);

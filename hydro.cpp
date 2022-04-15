@@ -20,19 +20,6 @@
 #define END }}
 #define MINIMUM_EVAPORATION_THRESHOLD 0.05f
 
-//#define water 1.f
-//#define capacity 0.05f
-//#define erosion_rate 0.02f
-//#define deposition_rate 0.01f
-//#define evaporation_rate 0.3f
-
-
-//#define water 1.f
-//#define capacity 0.05f
-//#define PI_EXTERN 3.141592653589793238462643383279502884197169399375105820974944592307816406286
-//#define erosion_rate 0.02f
-//#define deposition_rate 0.01f
-//#define evaporation_rate 0.3f
 
 hydro :: hydro() {
 
@@ -42,6 +29,7 @@ hydro :: hydro() {
     deposition_rate = 0;
     evaporation_rate = 0;
     post_evaporation_rate = 0;
+    drops = false;
 
 }
 
@@ -227,10 +215,21 @@ float hydro :: transport_capacity(int x, int y) { return capacity * incline_sin(
 
 float hydro :: euler_step(float x, float y) {
 
-    float top    = current_map -> sedimap[floor(x)][floor(y)] * (y - floor(y)) + current_map -> sedimap[floor(x)][ceil(y)] * (ceil(y) - y);
-    float bottom = current_map -> sedimap[ ceil(x)][floor(y)] * (y - floor(y)) + current_map -> sedimap[ceil(x) ][ceil(y)] * (ceil(y) - y);
+    if (floor(x) < 0) x = 0;
+    if (floor(y) < 0) y = 0;
+    if (ceil(x) >= static_cast <int> (heightmap.size())) x = static_cast <int> (heightmap.size()) - 1;
+    if (ceil(y) >= static_cast <int> (heightmap[0].size())) y = static_cast <int> (heightmap[0].size()) - 1;
 
-    return top * (x - floor(x)) + bottom * (ceil(x) - x);
+    if (x == floor(x) && x == ceil(x) && y == floor(y) && y == ceil(y)) return current_map -> sedimap[x][y];
+    if (x == floor(x) && x == ceil(x)) return current_map -> sedimap[x][floor(y)] * (y - floor(y)) + current_map -> sedimap[x][ceil(y)] * (1 - (y - floor(y)));
+    if (y == floor(y) && y == ceil(y)) return current_map -> sedimap[floor(x)][y] * (x - floor(x)) + current_map -> sedimap[ceil(x)][y] * (1 - (x - floor(x)));
+
+    float y_diff = y - floor(y);
+    float top    = current_map -> sedimap[floor(x)][floor(y)] * (y_diff) + current_map -> sedimap[floor(x)][ceil(y)] * (1 - y_diff);
+    float bottom = current_map -> sedimap[ ceil(x)][floor(y)] * (y_diff) + current_map -> sedimap[ceil(x) ][ceil(y)] * (1 - y_diff);
+
+    float x_diff = x - floor(x);
+    return top * (x_diff) + bottom * (1 - x_diff);
 
 }
 
@@ -267,7 +266,7 @@ void hydro :: update_cell(int x, int y) {
 
 }
 
-void hydro :: set_parameters(float water, float capacity, float erosion_rate, float deposition_rate, float evaporation_rate, float post_evaporation_rate) {
+void hydro :: set_parameters(float water, float capacity, float erosion_rate, float deposition_rate, float evaporation_rate, float post_evaporation_rate, bool drops) {
 
     this -> water = water;
     this -> capacity = capacity;
@@ -275,6 +274,7 @@ void hydro :: set_parameters(float water, float capacity, float erosion_rate, fl
     this -> deposition_rate = deposition_rate;
     this -> evaporation_rate = evaporation_rate;
     this -> post_evaporation_rate = post_evaporation_rate;
+    this -> drops = drops;
 
 }
 
@@ -290,7 +290,10 @@ void hydro :: erode(int cycles) {
 
     for (int cycle = 0; cycle < cycles; cycle++) {
 
-        FOR_EACH_CELL current_map -> watermap[i][k] += 0.5 * water * TIME_STEP + (0.5 * water * TIME_STEP * (rand() % 3)); END
+        // distribute water
+        if (drops) { FOR_EACH_CELL drop(i, k); END }
+
+        else { FOR_EACH_CELL current_map -> watermap[i][k] += water * TIME_STEP; END }
 
         // compute new flux
         FOR_EACH_CELL scale_flux(i, k, heightmap[i][k] + current_map -> watermap[i][k]); END
@@ -308,7 +311,9 @@ void hydro :: erode(int cycles) {
         FOR_EACH_CELL heightmap[i][k] += temp_heightmap[i][k]; END
 
         // sediment transport
-        FOR_EACH_CELL updated_map -> sedimap[i][k] = euler_step(i - updated_map -> velocity_field[i][k] -> x * TIME_STEP, k - updated_map -> velocity_field[i][k] -> y * TIME_STEP); END
+        FOR_EACH_CELL updated_map -> sedimap[i][k] = euler_step(i - updated_map -> velocity_field[i][k] -> x * TIME_STEP, k - updated_map -> velocity_field[i][k] -> y * TIME_STEP);
+            if (  isnan(euler_step(i - updated_map -> velocity_field[i][k] -> x * TIME_STEP, k - updated_map -> velocity_field[i][k] -> y * TIME_STEP))) std :: cout << " euler nan" << "\n";
+        END
 
         // evaporation
         FOR_EACH_CELL
@@ -383,8 +388,8 @@ void hydro :: output_heightmap() {
 
     FOR_EACH_CELL
 
-        if (k == static_cast <int> (heightmap[0].size()) - 1) happy_file << ceil(heightmap[i][k] * 400) << '\n';
-        else happy_file << ceil(heightmap[i][k] * 400)  << ' ';
+        if (k == static_cast <int> (heightmap[0].size()) - 1) happy_file << floor(heightmap[i][k] * 400) << '\n';
+        else happy_file << floor(heightmap[i][k] * 400)  << ' ';
 
     END
 
@@ -398,16 +403,11 @@ void hydro :: output_heightmap() {
 
     FOR_EACH_CELL
 
-            happy_file << static_cast <int> (ceil(heightmap[i][k] * 400 * 0.85)) << ' ';
-            happy_file << static_cast <int> (ceil(heightmap[i][k] * 400 * 0.85)) << ' ';
+        happy_file << static_cast <int> (floor(heightmap[i][k] * 400 * 0.85)) << ' ';
+        happy_file << static_cast <int> (floor(heightmap[i][k] * 400 * 0.85)) << ' ';
 
-//            if (k == static_cast <int> (heightmap[0].size()) - 1) happy_file << heightmap[i][k] << '\n';
-//            else happy_file << static_cast <int> (heightmap[i][k]) << ' ';
-
-
-
-        if (k == static_cast <int> (heightmap[0].size()) - 1) happy_file << ceil(heightmap[i][k] * 400) << '\n';
-        else happy_file << ceil(heightmap[i][k] * 400) << ' ';
+        if (k == static_cast <int> (heightmap[0].size()) - 1) happy_file << floor(heightmap[i][k] * 400) << '\n';
+        else happy_file << floor(heightmap[i][k] * 400) << ' ';
 
     END
 
@@ -428,28 +428,42 @@ void hydro :: dynamic_load() {
 }
 
 
+void hydro :: drop(int x, int y) {
 
-void hydro :: big_drop(int x, int y) {
-    int factor = 24;
-    if (rand() % factor == 0) {
-        float amount = factor * water * TIME_STEP;
-        for (int i = -1; i < 2; i++) {
-            for (int k = -1; k < 2; k++) {
-                if (is_in_bounds(x + i, y + k) && !(i == 0 && k == 0)) {
-                    current_map -> watermap[x + i][y + k] += (amount / (factor / 9));
-                    amount -= (amount / (factor / 9));
+    int factor = 32;
+    int live_cells = 0;
+
+    if (rand() % 32 == 0) {
+
+        for (int i = -2; i < 3; i++) {
+            for (int k = -2; k < 3; k++) {
+                if (!((i == -2 || i == 2 || k == -2 || k == 2) && (k != 0 || i != 0))) {
+                    if (is_in_bounds(x + i, y + k)) live_cells++;
                 }
             }
         }
 
-        current_map -> watermap[x][y] += amount;
+        // it can't be, but who knows...
+        if (live_cells == 0) return;
+
+        for (int i = -2; i < 3; i++) {
+            for (int k = -2; k < 3; k++) {
+                if (!((i == -2 || i == 2 || k == -2 || k == 2) && (k != 0 || i != 0))) {
+                    if (is_in_bounds(x + i, y + k)) current_map -> watermap[x + i][y + k] += (factor * water * TIME_STEP / live_cells);
+
+                }
+            }
+        }
     }
 }
 
 
 void hydro :: dynamic_erode() {
 
-    FOR_EACH_CELL current_map -> watermap[i][k] += 0.5 * water * TIME_STEP + (0.5 * water * TIME_STEP * (rand() % 3)); END
+    // distribute water
+    if (drops) { FOR_EACH_CELL drop(i, k); END }
+
+    else { FOR_EACH_CELL current_map -> watermap[i][k] += water * TIME_STEP; END }
 
     // compute new flux
     FOR_EACH_CELL scale_flux(i, k, heightmap[i][k] + current_map -> watermap[i][k]); END
@@ -481,6 +495,7 @@ void hydro :: dynamic_erode() {
     FOR_EACH_CELL update_cell(i, k); END
 
 }
+
 
 void hydro :: dynamic_evaporate() {
 

@@ -70,7 +70,6 @@ public slots:
 
     void erosion_parameters_changed();
     void erode_heightmap();
-//    void reload_heightmap();
     void eroded_heightmap_valid();
 
 signals:

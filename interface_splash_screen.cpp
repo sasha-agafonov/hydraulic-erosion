@@ -9,7 +9,7 @@ splash_screen :: splash_screen(QWidget* parent) {
     v_box = new QVBoxLayout(this);
     v_box -> setAlignment(Qt:: AlignHCenter | Qt:: AlignVCenter);
 
-    QMovie *movie = new QMovie("../terrain/ringer_sm2.gif");
+    QMovie *movie = new QMovie("../terrain/ringer.gif");
     QLabel *label = new QLabel(this);
     label -> setStyleSheet("QLabel { background-color: rgba(1,1,1,0); } ");
     label -> setMovie(movie);

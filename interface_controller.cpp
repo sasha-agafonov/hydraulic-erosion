@@ -12,8 +12,6 @@
 
 interface_controller :: interface_controller(QWidget* parent) : QWidget(parent) {
 
-    in_menu = true;
-
     splash = new splash_screen(this);
 
     QGLFormat format;
@@ -24,10 +22,8 @@ interface_controller :: interface_controller(QWidget* parent) : QWidget(parent) 
     scene -> setFormat(format);
 
     gen_menu = new generation_menu(this);
-    ldg_menu = new loading_menu(this);
 
     box = new QVBoxLayout(this);
-
     box -> setContentsMargins(0, 0, 0, 0);
 
     timer = new QTimer;
@@ -40,11 +36,9 @@ interface_controller :: interface_controller(QWidget* parent) : QWidget(parent) 
 
     box -> addWidget(scene);
     box -> addWidget(gen_menu);
-    box -> addWidget(ldg_menu);
     box -> addWidget(splash);
 
     scene -> hide();
-    ldg_menu -> hide();
     gen_menu -> show();
     splash -> hide();
 
@@ -60,70 +54,88 @@ void interface_controller :: load_scene() {
     scene -> initializeGL();
     splash -> finish(scene);
     scene -> show();
+
 }
 
 
 void interface_controller :: load_eroded() {
+
     gen_menu -> hide();
     scene -> bad_terrain -> eroded = true;
     scene -> bad_terrain -> dynamic = false;
     scene -> bad_terrain -> load_terrain();
+
+    scene -> camera -> position_x = -scene -> bad_terrain -> max;
+    scene -> camera -> position_y = -scene -> bad_terrain -> max;
+    scene -> camera -> position_z = scene -> bad_terrain -> max * 3;
+
+    scene -> cursor_x = -135;
+    scene -> cursor_y = 110;
+    scene -> camera -> set_angles(-135, 110);
+
     splash -> show();
-    scene -> initializeGL();
     splash -> finish(scene);
     scene -> show();
+    scene -> grabMouse();
+    scene -> grabKeyboard();
+
 }
 
 
 void interface_controller :: load_uneroded() {
+
     gen_menu -> hide();
     splash -> show();
     scene -> bad_terrain -> eroded = false;
     scene -> bad_terrain -> dynamic = false;
-    scene -> initializeGL();
     scene -> bad_terrain -> load_terrain();
+
+    scene -> camera -> position_x = -scene -> bad_terrain -> max;
+    scene -> camera -> position_y = -scene -> bad_terrain -> max;
+    scene -> camera -> position_z = scene -> bad_terrain -> max * 3;
+
+    scene -> cursor_x = -135;
+    scene -> cursor_y = 110;
+    scene -> camera -> set_angles(-135, 110);
+
     splash -> finish(scene);
     scene -> show();
+    scene -> grabMouse();
+    scene -> grabKeyboard();
 }
 
 
+
 void interface_controller :: load_and_erode() {
+
     gen_menu -> hide();
     splash -> show();
-//    this -> gen_menu -> hydraulic_ersion4 -> load_
     scene -> bad_terrain -> eroded = false;
     scene -> bad_terrain -> dynamic = true;
     scene -> bad_terrain -> loaded = false;
     scene -> bad_terrain -> load_terrain();
+
+    scene -> camera -> position_x = -scene -> bad_terrain -> max;
+    scene -> camera -> position_y = -scene -> bad_terrain -> max;
+    scene -> camera -> position_z = scene -> bad_terrain -> max * 3;
+
+    scene -> cursor_x = -135;
+    scene -> cursor_y = 110;
+    scene -> camera -> set_angles(-135, 110);
+
+    scene -> bad_terrain -> current_cycle = 0;
     scene -> bad_terrain -> cycles = gen_menu -> hydro_parameters -> cycles_spinbox -> value();
     scene -> bad_terrain -> hydraulic_erosion -> set_parameters(gen_menu -> hydro_parameters -> water_spinbox -> value(),
                                                                 gen_menu -> hydro_parameters -> carry_spinbox -> value(),
                                                                 gen_menu -> hydro_parameters -> erosion_spinbox -> value(),
                                                                 gen_menu -> hydro_parameters -> deposition_spinbox -> value(),
                                                                 gen_menu -> hydro_parameters -> evaporation_spinbox -> value(),
-                                                                gen_menu -> hydro_parameters -> post_evaporation_spinbox -> value());
-    scene -> initializeGL();
+                                                                gen_menu -> hydro_parameters -> post_evaporation_spinbox -> value(),
+                                                                gen_menu -> hydro_parameters -> random_checkbox -> isChecked());
     splash -> finish(scene);
     scene -> show();
-}
-
-
-
-
-
-
-
-
-void interface_controller :: scene_ready() {
-    ldg_menu -> show();
-}
-
-
-void interface_controller:: reload_scene() {
-
-
-    gen_menu -> hide();
-    scene -> show();
+    scene -> grabMouse();
+    scene -> grabKeyboard();
 
 }
 
@@ -136,22 +148,10 @@ void interface_controller :: exit_scene() {
 }
 
 
-void interface_controller :: toggle_scene_menu() {
-     scene -> hide();
-
-     gen_menu -> hide();
-     ldg_menu -> hide();
-}
-
-
-
 interface_controller :: ~interface_controller() {
 
     delete box;
     delete scene;
     delete timer;
-    delete button_box;
 
 }
-
-

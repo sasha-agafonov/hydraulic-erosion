@@ -24,8 +24,6 @@ public:
 
     std :: vector <interface_noise_layer*> layers_vector;
 
-    noise_layer* alpha_map;
-
 public slots:
 
     void update_new_layer_button();

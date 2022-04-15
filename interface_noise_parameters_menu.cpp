@@ -30,19 +30,19 @@ void noise_parameters_menu :: invalidate_heightmap() {
     heightmap_widget -> ready = false;
 
     if (!heightmap_widget -> reload_button -> isEnabled()) heightmap_widget -> reload_button -> setEnabled(true);
-    heightmap_widget -> reload_button -> setText("Parameters changed, press to reload heightmap");
+    heightmap_widget -> reload_button -> setText("Parameters changed, press to update the heightmap");
     heightmap_widget -> reload_button -> setStyleSheet("QPushButton { height: 30px; background-color: rgba(190, 190, 222, 1);border: 0; margin: 0; border-radius: 6px; font-size: 11px; color: rgba(40, 44, 52, 1); } "
                                    "QPushButton:pressed { background: rgba(110, 110, 135, 1); } ");
 }
 
 void noise_parameters_menu :: reload_heightmap() {
 
-//    heightmap_widget -> setEnabled(false);
-//    heightmap_widget -> reload_button -> setText("Generating...");
-//    heightmap_widget -> reload_button -> setStyleSheet("QPushButton { height: 30px; background: rgba(225, 185, 185, 1); border: 0; margin: 0; border-radius: 6px; font-size: 11px; color: rgba(40, 44, 52, 1); } "
-//                                                       "QPushButton:pressed { background: rgba(110, 110, 135, 1); } ");
-//    qApp -> processEvents();
-
+    heightmap_widget -> reload_button -> setEnabled(false);
+    heightmap_widget -> reload_button -> setText("Generating, please wait");
+    heightmap_widget -> reload_button -> setStyleSheet("QPushButton { height: 30px; background: rgba(225, 185, 185, 1); border: 0; margin: 0; border-radius: 6px; font-size: 11px; color: rgba(40, 44, 52, 1); } "
+                                                       "QPushButton:pressed { background: rgba(110, 110, 135, 1); } ");
+    qApp -> processEvents();
+    heightmap_widget -> reload_button -> setEnabled(true);
     emit reload_heightmap_signal(); }
 
 void noise_parameters_menu :: heightmap_valid() { emit heightmap_valid_signal(); }

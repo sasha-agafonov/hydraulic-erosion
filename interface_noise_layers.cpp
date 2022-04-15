@@ -26,8 +26,6 @@ interface_noise_layers :: interface_noise_layers(QWidget* parent, int wx, int wy
         box -> addWidget(layers_vector[i]);
     }
 
-    alpha_map = new noise_layer;
-
     layers_vector[0] -> activate_layer();
     update_new_layer_button();
 
@@ -55,8 +53,6 @@ interface_noise_layers :: interface_noise_layers(QWidget* parent, int wx, int wy
 
     connect(this, SIGNAL(invalidate_heightmap_signal()), parent, SLOT(invalidate_heightmap()));
 
-    build_layers(wx, wy, random);
-
 }
 
 
@@ -73,7 +69,7 @@ void interface_noise_layers :: build_layers(int width, int height, bool random) 
             layers_vector[i] -> amplitude_spinbox -> value(), random);
 
             for (int k = 0; k < height; k++) {
-                for (int x = 0; x < width; x++) heightmap[k][x] += (layers_vector[i] -> noise -> heightmap[k][x] * layers_vector[i] -> transparency_spinbox -> value());
+                for (int x = 0; x < width; x++) heightmap[k][x] += (layers_vector[i] -> noise -> heightmap[k][x]);
             }
         }
     }
@@ -89,11 +85,6 @@ void interface_noise_layers :: build_layers(int width, int height, bool random) 
     }
 
     float compression_factor = (float) PGM_16_BIT / (max - min);
-
-    std :: cout << "max: " << max << "\n";
-    std :: cout << "min: " << min << "\n";
-    std :: cout << "cof: " << compression_factor << "\n";
-
 
     for (int i = 0; i < height; i++) {
         for (int k = 0; k < width; k++ ) {

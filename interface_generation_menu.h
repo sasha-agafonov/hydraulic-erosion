@@ -15,7 +15,6 @@
 #include "interface_hydro_parameters_menu.h"
 #include "interface_terrain_parameters_menu.h"
 
-#include "noise.h"
 #include "noise_layer.h"
 #include "hydro.h"
 
@@ -39,8 +38,6 @@ public:
     hydro_parameters_menu* hydro_parameters;
     terrain_parameters_menu* terrain_parameters;
 
-    noise* noisy;
-    hydro* water;
     noise_layer* layer;
 
 public slots:

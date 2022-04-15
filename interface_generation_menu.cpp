@@ -19,20 +19,23 @@ generation_menu :: generation_menu(QWidget *parent) : QWidget(parent) {
     hydro_parameters -> setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum);
 
 
-    build_eroded_button = new QPushButton("BUILD ERODED TERRAIN", this);
+    build_eroded_button = new QPushButton("CANNOT BUILD: Eroded heightmap needs to be up-to-date", this);
     build_eroded_button -> setFixedHeight(30);
-    build_eroded_button -> setStyleSheet("QPushButton { height: 30px; background: rgba(190, 190, 222, 1); border: 0; margin: 0; border-radius: 6px; font-size: 11px; color: rgba(40, 44, 52, 1); } "
-                                  "QPushButton:pressed { background: rgba(110, 110, 135, 1); } ");
+    build_eroded_button -> setEnabled(false);
+    build_eroded_button -> setStyleSheet("QPushButton { height: 30px; background: rgba(110, 110, 135, 1); border: 0; margin: 0; border-radius: 6px; font-size: 11px; color: rgba(40, 44, 52, 1); } "
+                                                       "QPushButton:pressed { background: rgba(110, 110, 135, 1); } ");
 
-    build_uneroded_button = new QPushButton("BUILD UNERODED TERRAIN", this);
+    build_uneroded_button = new QPushButton("CANNOT BUILD: Noise heightmap needs to be up-to-date", this);
     build_uneroded_button -> setFixedHeight(30);
-    build_uneroded_button -> setStyleSheet("QPushButton { height: 30px; background: rgba(190, 190, 222, 1); border: 0; margin: 0; border-radius: 6px; font-size: 11px; color: rgba(40, 44, 52, 1); } "
-                                          "QPushButton:pressed { background: rgba(110, 110, 135, 1); } ");
+    build_uneroded_button -> setEnabled(false);
+    build_uneroded_button -> setStyleSheet("QPushButton { height: 30px; background: rgba(110, 110, 135, 1); border: 0; margin: 0; border-radius: 6px; font-size: 11px; color: rgba(40, 44, 52, 1); } "
+                                           "QPushButton:pressed { background: rgba(110, 110, 135, 1); } ");
 
-    build_and_erode_button = new QPushButton("BUILD AND ERODE TERRAIN", this);
+    build_and_erode_button = new QPushButton("CANNOT BUILD: Noise heightmap needs to be up-to-date", this);
     build_and_erode_button -> setFixedHeight(30);
-    build_and_erode_button -> setStyleSheet("QPushButton { height: 30px; background: rgba(190, 190, 222, 1); border: 0; margin: 0; border-radius: 6px; font-size: 11px; color: rgba(40, 44, 52, 1); } "
-                                          "QPushButton:pressed { background: rgba(110, 110, 135, 1); } ");
+    build_and_erode_button -> setEnabled(false);
+    build_and_erode_button -> setStyleSheet("QPushButton { height: 30px; background: rgba(110, 110, 135, 1); border: 0; margin: 0; border-radius: 6px; font-size: 11px; color: rgba(40, 44, 52, 1); } "
+                                            "QPushButton:pressed { background: rgba(110, 110, 135, 1); } ");
 
 
     connect(build_eroded_button, SIGNAL(clicked()), parent, SLOT(load_eroded()));
@@ -51,9 +54,6 @@ generation_menu :: generation_menu(QWidget *parent) : QWidget(parent) {
 
     v_box -> addLayout(h_box);
 
-    noisy = new noise();
-    water = new hydro();
-
 }
 
 
@@ -63,7 +63,12 @@ void generation_menu :: reload_heightmap() {
                                                             terrain_parameters -> width_y_spinbox -> value(),
                                                             terrain_parameters -> gradient_seed_checkbox -> isChecked());
 
-    if (terrain_parameters -> gradient_seed_checkbox -> isChecked()) noise_parameters -> heightmap_widget -> reload_button -> setText("Reload with a different seed");
+    if (terrain_parameters -> gradient_seed_checkbox -> isChecked()) {
+
+        noise_parameters -> heightmap_widget -> reload_button -> setText("Reload with a different seed");
+        noise_parameters -> heightmap_widget -> reload_button -> setStyleSheet("QPushButton { height: 30px; background: rgba(190, 190, 222, 1); border: 0; margin: 0; border-radius: 6px; font-size: 11px; color: rgba(40, 44, 52, 1); } "
+                                                                               "QPushButton:pressed { background: rgba(110, 110, 135, 1); } ");
+    }
 
     else {
 

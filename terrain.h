@@ -4,7 +4,6 @@
 #include <GL/glu.h>
 #include <vector>
 
-//#include "hydro.h"
 #include "hydro.h"
 
 typedef struct materialStruct {
@@ -80,9 +79,6 @@ public:
     void load_terrain();
     void load_hydro();
 
-    float interpolate_angle(float ang);
-
-
     hydro* hydraulic_erosion;
     int cycles;
     int current_cycle;
@@ -91,24 +87,18 @@ public:
     bool eroded;
     bool loaded;
 
-    GLuint vbo;
-    void set_vbo();
-
     float vec_len(float x, float y, float z);
     float normal_angle(float x, float y, float z);
 
     float min;
     float max;
 
+    int num_triangles();
     void draw_terrain();
     void draw_terrain_arrays();
     void normalize_terrain(int factor);
     void stretch_terrain(int stretch_x, int stretch_y);
-    void draw_terrain_material_arrays();
-    void load_material_arrays();
     void minimax();
-
-    int num_triangles();
 
     int terrain_size;
     int triangles_count;
@@ -116,20 +106,13 @@ public:
     float* terrain_positions;
     float* terrain_normals;
 
-    std :: vector <float> terrain_positions_snow;
-    std :: vector <float> terrain_normals_snow;
-    std :: vector <float> terrain_positions_grass;
-    std :: vector <float> terrain_normals_grass;
-    std :: vector <float> terrain_positions_rock;
-    std :: vector <float> terrain_normals_rock;
     std :: vector <float> terrain_colors;
 
     std :: vector < std :: vector <float> > terrain_numerical_mx;
     std :: vector < std :: vector <float> > terrain_numerical_mx_raw;
+
     std :: vector < std :: vector <triangle> > terrain_triangle_mx;
     std :: vector < std :: vector <triangle> > terrain_triangle_mx_original;
-
-
     std :: vector < std :: vector <triangle> > terrain_smooth_triangle_mx;
 
 };

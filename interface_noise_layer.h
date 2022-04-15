@@ -6,10 +6,10 @@
 #include <QLabel>
 #include <QHBoxLayout>
 #include <QPushButton>
-#include <QDoubleSpinBox>
 #include <QSpinBox>
 #include <QComboBox>
 #include <QObject>
+#include <QSpacerItem>
 
 #include "noise_layer.h"
 
@@ -30,15 +30,16 @@ public:
     QSpinBox* frequency_spinbox;
     QSpinBox* amplitude_spinbox;
 
-    QDoubleSpinBox* transparency_spinbox;
-
     QComboBox* noise_type_combo;
 
     QLabel* layer_label;
     QLabel* empty_label;
     QLabel* amplitude_label;
     QLabel* frequency_label;
-    QLabel* transparency_label;
+
+    QSpacerItem* space_1;
+    QSpacerItem* space_2;
+    QSpacerItem* space_3;
 
     noise_layer* noise;
 

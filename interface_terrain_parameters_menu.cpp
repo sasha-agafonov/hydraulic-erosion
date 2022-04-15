@@ -17,7 +17,7 @@ terrain_parameters_menu :: terrain_parameters_menu(QWidget* parent) : QWidget(pa
     width_x_spinbox = new QSpinBox(this);
     width_x_spinbox -> setFixedHeight(28);
     width_x_spinbox -> setFixedWidth(60);
-    width_x_spinbox -> setMinimum(1);
+    width_x_spinbox -> setMinimum(100);
     width_x_spinbox -> setMaximum(1000);
     width_x_spinbox -> setValue(500);
     width_x_spinbox -> setAlignment(Qt::AlignCenter | Qt::AlignVCenter);
@@ -25,7 +25,7 @@ terrain_parameters_menu :: terrain_parameters_menu(QWidget* parent) : QWidget(pa
     width_y_spinbox = new QSpinBox(this);
     width_y_spinbox -> setFixedHeight(28);
     width_y_spinbox -> setFixedWidth(60);
-    width_y_spinbox -> setMinimum(1);
+    width_y_spinbox -> setMinimum(100);
     width_y_spinbox -> setMaximum(1000);
     width_y_spinbox -> setValue(500);
     width_y_spinbox -> setAlignment(Qt::AlignCenter | Qt::AlignVCenter);
@@ -37,7 +37,7 @@ terrain_parameters_menu :: terrain_parameters_menu(QWidget* parent) : QWidget(pa
 
     gradient_seed_checkbox = new QCheckBox(this);
 
-    // ensures terrain is a square
+    // ensures terrain is square
     connect(width_x_spinbox, SIGNAL(valueChanged(int)), this, SLOT(equalize_size_y()));
     connect(width_y_spinbox, SIGNAL(valueChanged(int)), this, SLOT(equalize_size_x()));
 
