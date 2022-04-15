@@ -5,7 +5,7 @@ terrain_parameters_menu :: terrain_parameters_menu(QWidget* parent) : QWidget(pa
     box = new QHBoxLayout(this);
     box -> setAlignment(Qt :: AlignLeft | Qt :: AlignTop);
 
-    grid = new QGridLayout(this);
+    grid = new QGridLayout();
     grid -> setSpacing(15);
 
     terrain_size_label = new QLabel("Terrain Size", this);

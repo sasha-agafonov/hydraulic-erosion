@@ -9,10 +9,10 @@
 hydro_parameters_menu :: hydro_parameters_menu(QWidget *parent) : QWidget(parent) {
 
     h_box = new QHBoxLayout(this);
-    v_box = new QVBoxLayout(this);
+    v_box = new QVBoxLayout();
     v_box -> setSpacing(15);
     v_box -> setAlignment(Qt :: AlignTop);
-    grid = new QGridLayout(this);
+    grid = new QGridLayout();
 
     hydro_parameters_label = new QLabel("Hydraulic Erosion Parameters", this);
     hydro_parameters_label -> setAlignment(Qt::AlignCenter);
@@ -187,7 +187,7 @@ hydro_parameters_menu :: hydro_parameters_menu(QWidget *parent) : QWidget(parent
     connect(post_evaporation_spinbox, SIGNAL(valueChanged(double)), post_evaporation_rate_slider, SLOT(set_double_value(double)));
 
     connect(erosion_rate_slider, SIGNAL(valueChanged(int)), this, SLOT(erosion_parameters_changed()));
-    connect(erosion_spinbox, SIGNAL(value_changed_double_signal(double)), erosion_spinbox, SLOT(setValue(double)));
+    connect(erosion_spinbox, SIGNAL(valueChanged(double)), erosion_spinbox, SLOT(setValue(double)));
     connect(erosion_rate_slider, SIGNAL(value_changed_double_signal(double)), erosion_spinbox, SLOT(setValue(double)));
     connect(erosion_spinbox, SIGNAL(valueChanged(double)), erosion_rate_slider, SLOT(set_double_value(double)));
 

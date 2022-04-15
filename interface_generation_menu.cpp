@@ -3,7 +3,7 @@
 generation_menu :: generation_menu(QWidget *parent) : QWidget(parent) {
 
     v_box = new QVBoxLayout(this);
-    h_box = new QHBoxLayout(this);
+    h_box = new QHBoxLayout();
 
     terrain_parameters = new terrain_parameters_menu(this);
 

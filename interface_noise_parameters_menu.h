@@ -26,9 +26,6 @@ public:
     noise_parameters_menu(QWidget *parent, int wx, int wy, bool random);
 
     QHBoxLayout* h_box;
-    QVBoxLayout* v_box;
-    QVBoxLayout* v_box_2;
-    QGridLayout* grid;
 
     QLabel* noise_layers_label;
     QLabel* heightmap_preview_label;

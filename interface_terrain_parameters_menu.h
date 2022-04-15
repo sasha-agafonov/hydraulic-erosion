@@ -27,12 +27,10 @@ public:
     QSpinBox* width_y_spinbox;
 
     QCheckBox* gradient_seed_checkbox;
-//    QCheckBox* materials_checkbox;
 
     QLabel* terrain_parameters_label;
     QLabel* terrain_size_label;
     QLabel* gradient_seed_label;
-//    QLabel* materials_label;
 
 public slots:
 

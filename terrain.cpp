@@ -22,10 +22,6 @@ terrain :: terrain() : terrain_size(0) {
     triangles_count = 0;
     hydraulic_erosion = new hydro();
 
-    hydraulic_erosion -> dynamic_load();
-    terrain_numerical_mx = hydraulic_erosion -> heightmap;
-    terrain_numerical_mx_raw = terrain_numerical_mx;
-
     cycles = 0;
     current_cycle = 0;
 
