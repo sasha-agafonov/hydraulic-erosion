@@ -18,7 +18,7 @@
 #define FOR_EACH_CELL for (int i = 0; i < static_cast <int> (heightmap.size()); i++) { for (int k = 0; k < static_cast <int> (heightmap[0].size()); k++) {
 #define FOR_EACH_CELL_2 for (int i = static_cast <int> (heightmap.size()) - 1; i >= 0; i--) { for (int k = 0; k < static_cast <int> (heightmap[0].size()); k++) {
 #define END }}
-#define MINIMUM_EVAPORATION_THRESHOLD 0.05f
+#define MINIMUM_EVAPORATION_THRESHOLD 0.01f
 
 
 hydro :: hydro() {
@@ -65,6 +65,7 @@ void hydro :: load_heightmap() {
 
     heightmap.clear();
     temp_heightmap.clear();
+    temp_sedimap.clear();
 
     for (int i = 0; i < terrain_size; i++) {
 
@@ -80,6 +81,7 @@ void hydro :: load_heightmap() {
 
         heightmap.push_back(pixel_row);
         temp_heightmap.push_back(temp_row);
+        temp_sedimap.push_back(temp_row);
     }
 
 }
@@ -140,66 +142,106 @@ void hydro :: update_water_level(int x, int y) {
 
 normal_vector hydro :: normal(int x, int y) {
 
-        normal_vector normal;
+    normal_vector normal;
 
-        normal.x = 0;
-        normal.y = 0;
-        normal.z = 0;
+    int triangles = 0;
 
-        std :: vector <int> not_normal;
+    normal.x = 0;
+    normal.y = 0;
+    normal.z = 0;
 
-        if (!(x - 1 < 0 || x - 1 >= static_cast <int> (heightmap.size()))) {
-            not_normal.push_back(x - 1);
-            not_normal.push_back(y);
-        }
+    float vector_vx;
+    float vector_vy;
+    float vector_vz;
 
-        if (!(y - 1 < 0 || y - 1 >= static_cast <int> (heightmap[0].size()))) {
-            not_normal.push_back(x);
-            not_normal.push_back(y - 1);
-        }
+    float vector_ux;
+    float vector_uy;
+    float vector_uz;
 
-        if ((x + 1 > 0 && x + 1 < static_cast <int> (heightmap.size()))) {
-            not_normal.push_back(x + 1);
-            not_normal.push_back(y);
-        }
+    if (x - 1 >= 0 && y - 1 >= 0) {
 
-        if ((y + 1 > 0 && y + 1 < static_cast <int> (heightmap[0].size()))) {
-            not_normal.push_back(x);
-            not_normal.push_back(y + 1);
-        }
+        vector_vx = 0;
+        vector_vy = 1;
+        vector_vz = heightmap[x - 1][y] - heightmap[x][y];
 
-        int triangles = 0;
+        vector_ux = -1;
+        vector_uy = 0;
+        vector_uz = heightmap[x][y - 1] - heightmap[x][y];
 
-        for (int i = 0; i < static_cast <int> (not_normal.size()); i += 2) {
+        normal.x += ((vector_vy * vector_uz) - (vector_vz * vector_uy));
+        normal.y += ((vector_vz * vector_ux) - (vector_vx * vector_uz));
+        normal.z += ((vector_vx * vector_uy) - (vector_vy * vector_ux));
 
-            if (static_cast <int> (not_normal.size()) < 8 && i == static_cast <int> (not_normal.size()) - 2) break;
+        triangles++;
 
-            float vector_vx = not_normal[i] - x;
-            float vector_vy = not_normal[i + 1] - y;
-            float vector_vz = heightmap [not_normal[i]][not_normal[i + 1]] - heightmap[x][y];
+    }
 
-            float vector_ux = not_normal[(i + 2) % static_cast <int> (not_normal.size())] - x;
-            float vector_uy = not_normal[(i + 3) % static_cast <int> (not_normal.size())] - y;
-            float vector_uz = heightmap [not_normal[(i + 2) % static_cast <int> (not_normal.size())]][not_normal[(i + 3) % static_cast <int> (not_normal.size())]] - heightmap[x][y];
+    if (y - 1 >= 0 && x + 1 < static_cast <int> (heightmap.size())) {
 
-            normal.x += ((vector_vy * vector_uz) - (vector_vz * vector_uy));
-            normal.y += ((vector_vz * vector_ux) - (vector_vx * vector_uz));
-            normal.z += ((vector_vx * vector_uy) - (vector_vy * vector_ux));
+        vector_vx = -1;
+        vector_vy = 0;
+        vector_vz = heightmap[x][y - 1] - heightmap[x][y];
 
-            triangles++;
+        vector_ux = 0;
+        vector_uy = -1;
+        vector_uz = heightmap[x + 1][y] - heightmap[x][y];
 
-        }
+        normal.x += ((vector_vy * vector_uz) - (vector_vz * vector_uy));
+        normal.y += ((vector_vz * vector_ux) - (vector_vx * vector_uz));
+        normal.z += ((vector_vx * vector_uy) - (vector_vy * vector_ux));
 
-        if (triangles > 0) {
-            normal.x /= triangles;
-            normal.y /= triangles;
-            normal.z /= triangles;
-        }
+        triangles++;
+
+    }
+
+    if (x + 1 < static_cast <int> (heightmap.size()) && y + 1 < static_cast <int> (heightmap[0].size())) {
+
+        vector_vx = 0;
+        vector_vy = -1;
+        vector_vz = heightmap[x + 1][y] - heightmap[x][y];
+
+        vector_ux = 1;
+        vector_uy = 0;
+        vector_uz = heightmap[x][y + 1] - heightmap[x][y];
+
+        normal.x += ((vector_vy * vector_uz) - (vector_vz * vector_uy));
+        normal.y += ((vector_vz * vector_ux) - (vector_vx * vector_uz));
+        normal.z += ((vector_vx * vector_uy) - (vector_vy * vector_ux));
+
+        triangles++;
+
+    }
 
 
-        if (normal.x == 0 && normal.y == 0 && normal.x == 0) normal.z = 1;
+    if (y + 1 < static_cast <int> (heightmap[0].size()) && x - 1 >= 0) {
 
-        return normal;
+        vector_vx = 1;
+        vector_vy = 0;
+        vector_vz = heightmap[x][y + 1] - heightmap[x][y];
+
+        vector_ux = 0;
+        vector_uy = 1;
+        vector_uz = heightmap[x - 1][y] - heightmap[x][y];
+
+        normal.x += ((vector_vy * vector_uz) - (vector_vz * vector_uy));
+        normal.y += ((vector_vz * vector_ux) - (vector_vx * vector_uz));
+        normal.z += ((vector_vx * vector_uy) - (vector_vy * vector_ux));
+
+        triangles++;
+
+    }
+
+    if (triangles > 0) {
+
+        normal.x /= triangles;
+        normal.y /= triangles;
+        normal.z /= triangles;
+
+    }
+
+    if (normal.x == 0 && normal.y == 0 && normal.z == 0) normal.z = 1;
+
+    return normal;
 
 }
 
@@ -215,10 +257,11 @@ float hydro :: transport_capacity(int x, int y) { return capacity * incline_sin(
 
 float hydro :: euler_step(float x, float y) {
 
-    if (floor(x) < 0) x = 0;
-    if (floor(y) < 0) y = 0;
-    if (ceil(x) >= static_cast <int> (heightmap.size())) x = static_cast <int> (heightmap.size()) - 1;
-    if (ceil(y) >= static_cast <int> (heightmap[0].size())) y = static_cast <int> (heightmap[0].size()) - 1;
+    // not on the map == no sediment
+    if (floor(x) < 0) return 0;
+    if (floor(y) < 0) return 0;
+    if (ceil(x) >= static_cast <int> (heightmap.size())) return 0;
+    if (ceil(y) >= static_cast <int> (heightmap[0].size())) return 0;
 
     if (x == floor(x) && x == ceil(x) && y == floor(y) && y == ceil(y)) return current_map -> sedimap[x][y];
     if (x == floor(x) && x == ceil(x)) return current_map -> sedimap[x][floor(y)] * (y - floor(y)) + current_map -> sedimap[x][ceil(y)] * (1 - (y - floor(y)));
@@ -311,9 +354,10 @@ void hydro :: erode(int cycles) {
         FOR_EACH_CELL heightmap[i][k] += temp_heightmap[i][k]; END
 
         // sediment transport
-        FOR_EACH_CELL updated_map -> sedimap[i][k] = euler_step(i - updated_map -> velocity_field[i][k] -> x * TIME_STEP, k - updated_map -> velocity_field[i][k] -> y * TIME_STEP);
-            if (  isnan(euler_step(i - updated_map -> velocity_field[i][k] -> x * TIME_STEP, k - updated_map -> velocity_field[i][k] -> y * TIME_STEP))) std :: cout << " euler nan" << "\n";
-        END
+        FOR_EACH_CELL temp_sedimap[i][k] = euler_step(i - updated_map -> velocity_field[i][k] -> x * TIME_STEP, k - updated_map -> velocity_field[i][k] -> y * TIME_STEP); END
+
+        // update sediment
+        FOR_EACH_CELL updated_map -> sedimap[i][k] = temp_sedimap[i][k]; END
 
         // evaporation
         FOR_EACH_CELL
@@ -346,13 +390,15 @@ void hydro :: erode(int cycles) {
         FOR_EACH_CELL heightmap[i][k] += temp_heightmap[i][k]; END
 
         // sediment transport
-        FOR_EACH_CELL updated_map -> sedimap[i][k] = euler_step(i - updated_map -> velocity_field[i][k] -> x * TIME_STEP, k - updated_map -> velocity_field[i][k] -> y * TIME_STEP); END
+        FOR_EACH_CELL temp_sedimap[i][k] = euler_step(i - updated_map -> velocity_field[i][k] -> x * TIME_STEP, k - updated_map -> velocity_field[i][k] -> y * TIME_STEP); END
+
+        // update sediment again
+        FOR_EACH_CELL updated_map -> sedimap[i][k] = temp_sedimap[i][k]; END
 
         // evaporation
         FOR_EACH_CELL
 
             updated_map -> watermap[i][k] *= (1 - post_evaporation_rate * TIME_STEP);
-            updated_map -> watermap[i][k] -= MINIMUM_EVAPORATION_THRESHOLD;
             if (updated_map -> watermap[i][k] <= 0.001) updated_map -> watermap[i][k] = 0;
 
         END
@@ -481,7 +527,10 @@ void hydro :: dynamic_erode() {
     FOR_EACH_CELL heightmap[i][k] += temp_heightmap[i][k]; END
 
     // sediment transport
-    FOR_EACH_CELL updated_map -> sedimap[i][k] = euler_step(i - updated_map -> velocity_field[i][k] -> x * TIME_STEP, k - updated_map -> velocity_field[i][k] -> y * TIME_STEP); END
+    FOR_EACH_CELL temp_sedimap[i][k] = euler_step(i - updated_map -> velocity_field[i][k] -> x * TIME_STEP, k - updated_map -> velocity_field[i][k] -> y * TIME_STEP); END
+
+    // update sediment again
+    FOR_EACH_CELL updated_map -> sedimap[i][k] = temp_sedimap[i][k]; END
 
     // evaporation
     FOR_EACH_CELL
@@ -515,13 +564,16 @@ void hydro :: dynamic_evaporate() {
     FOR_EACH_CELL heightmap[i][k] += temp_heightmap[i][k]; END
 
     // sediment transport
-    FOR_EACH_CELL updated_map -> sedimap[i][k] = euler_step(i - updated_map -> velocity_field[i][k] -> x * TIME_STEP, k - updated_map -> velocity_field[i][k] -> y * TIME_STEP); END
+    FOR_EACH_CELL temp_sedimap[i][k] = euler_step(i - updated_map -> velocity_field[i][k] -> x * TIME_STEP, k - updated_map -> velocity_field[i][k] -> y * TIME_STEP); END
+
+    // update sediment again
+    FOR_EACH_CELL updated_map -> sedimap[i][k] = temp_sedimap[i][k]; END
 
     // evaporation
     FOR_EACH_CELL
 
         updated_map -> watermap[i][k] *= (1 - post_evaporation_rate * TIME_STEP);
-        updated_map -> watermap[i][k] -= MINIMUM_EVAPORATION_THRESHOLD;
+        //updated_map -> watermap[i][k] -= MINIMUM_EVAPORATION_THRESHOLD;
         if (updated_map -> watermap[i][k] <= 0.001) updated_map -> watermap[i][k] = 0;
 
     END

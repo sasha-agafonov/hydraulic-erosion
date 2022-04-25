@@ -20,7 +20,6 @@ hydro_parameters_menu :: hydro_parameters_menu(QWidget *parent) : QWidget(parent
     hydro_parameters_label -> setStyleSheet("QLabel { color: rgba(190, 190, 222, 1); background-color: rgba(30, 33, 39, 1); height: 30px; margin: 0; }");
 
     random_checkbox = new QCheckBox(this);
-    random_checkbox -> setChecked(true);
 
     random_label = new QLabel("Water Drops", this);
     random_label -> setFixedHeight(30);
@@ -30,13 +29,13 @@ hydro_parameters_menu :: hydro_parameters_menu(QWidget *parent) : QWidget(parent
 
     cycles_slider = new QSlider(Qt :: Horizontal, this);
     cycles_slider -> setFixedHeight(30);
-    cycles_slider -> setValue(150);
     cycles_slider -> setRange(10, 1000);
+    cycles_slider -> setValue(300);
 
     cycles_spinbox = new QSpinBox(this);
     cycles_spinbox -> setFixedWidth(54);
     cycles_spinbox -> setRange(10, 1000);
-    cycles_spinbox -> setValue(150);
+    cycles_spinbox -> setValue(300);
     cycles_spinbox -> setAlignment(Qt::AlignCenter | Qt::AlignVCenter);
 
     cycles_label = new QLabel("Number of Cycles", this);
@@ -47,13 +46,13 @@ hydro_parameters_menu :: hydro_parameters_menu(QWidget *parent) : QWidget(parent
     water_amount_slider = new interface_double_slider(Qt :: Horizontal, this);
     water_amount_slider -> setFixedHeight(30);
     water_amount_slider -> setMaximum(100);
-    water_amount_slider -> setValue(30);
+    water_amount_slider -> setValue(20);
     water_amount_slider -> setMinimum(1);
 
     water_spinbox = new QDoubleSpinBox(this);
     water_spinbox -> setMinimum(0.01);
     water_spinbox -> setMaximum(1.00);
-    water_spinbox -> setValue(0.3);
+    water_spinbox -> setValue(0.2);
     water_spinbox -> setSingleStep(0.01);
     water_spinbox -> setFixedWidth(54);
     water_spinbox -> setAlignment(Qt::AlignCenter | Qt::AlignVCenter);
@@ -66,13 +65,13 @@ hydro_parameters_menu :: hydro_parameters_menu(QWidget *parent) : QWidget(parent
     carrying_capacity_slider = new interface_double_slider(Qt :: Horizontal, this);
     carrying_capacity_slider -> setFixedHeight(30);
     carrying_capacity_slider -> setMaximum(10);
-    carrying_capacity_slider -> setValue(5);
+    carrying_capacity_slider -> setValue(6);
     carrying_capacity_slider -> setMinimum(1);
 
     carry_spinbox = new QDoubleSpinBox(this);
     carry_spinbox -> setMinimum(0.01);
     carry_spinbox -> setMaximum(0.1);
-    carry_spinbox -> setValue(0.05);
+    carry_spinbox -> setValue(0.06);
     carry_spinbox -> setSingleStep(0.01);
     carry_spinbox -> setFixedWidth(54);
     carry_spinbox -> setAlignment(Qt::AlignCenter | Qt::AlignVCenter);
@@ -123,13 +122,13 @@ hydro_parameters_menu :: hydro_parameters_menu(QWidget *parent) : QWidget(parent
     erosion_rate_slider = new interface_double_slider(Qt :: Horizontal, this);
     erosion_rate_slider -> setFixedHeight(30);
     erosion_rate_slider -> setMaximum(10);
-    erosion_rate_slider -> setValue(3);
+    erosion_rate_slider -> setValue(4);
     erosion_rate_slider -> setMinimum(1);
 
     erosion_spinbox = new QDoubleSpinBox(this);
     erosion_spinbox -> setMinimum(0.01);
     erosion_spinbox -> setMaximum(0.10);
-    erosion_spinbox -> setValue(0.03);
+    erosion_spinbox -> setValue(0.04);
     erosion_spinbox -> setSingleStep(0.01);
     erosion_spinbox -> setFixedWidth(54);
     erosion_spinbox -> setAlignment(Qt::AlignCenter | Qt::AlignVCenter);
@@ -141,14 +140,14 @@ hydro_parameters_menu :: hydro_parameters_menu(QWidget *parent) : QWidget(parent
 
     deposition_rate_slider = new interface_double_slider(Qt :: Horizontal, this);
     deposition_rate_slider -> setFixedHeight(30);
-    deposition_rate_slider -> setValue(2);
+    deposition_rate_slider -> setValue(1);
     deposition_rate_slider -> setMaximum(10);
     deposition_rate_slider -> setMinimum(1);
 
     deposition_spinbox = new QDoubleSpinBox(this);
     deposition_spinbox -> setMinimum(0.01);
     deposition_spinbox -> setMaximum(0.10);
-    deposition_spinbox -> setValue(0.02);
+    deposition_spinbox -> setValue(0.01);
     deposition_spinbox -> setSingleStep(0.01);
     deposition_spinbox -> setFixedWidth(54);
     deposition_spinbox -> setAlignment(Qt::AlignCenter | Qt::AlignVCenter);

@@ -42,13 +42,13 @@ interface_noise_layer :: interface_noise_layer(QWidget* parent, int layer_number
 
     frequency_spinbox = new QSpinBox(this);
     frequency_spinbox -> setMinimum(1);
-    frequency_spinbox -> setMaximum(200);
+    frequency_spinbox -> setMaximum(500);
     frequency_spinbox -> setFixedWidth(50);
     frequency_spinbox -> setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
 
     amplitude_spinbox = new QSpinBox(this);
     amplitude_spinbox -> setMinimum(1);
-    amplitude_spinbox -> setMaximum(200);
+    amplitude_spinbox -> setMaximum(500);
     amplitude_spinbox -> setFixedWidth(50);
     amplitude_spinbox -> setValue(100);
     amplitude_spinbox -> setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);

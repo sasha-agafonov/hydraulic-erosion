@@ -24,6 +24,7 @@ public:
 
     std :: vector <std :: vector <float> > heightmap;
     std :: vector <std :: vector <float> > temp_heightmap;
+    std :: vector <std :: vector <float> > temp_sedimap;
 
     hydro_map* current_map;
     hydro_map* updated_map;

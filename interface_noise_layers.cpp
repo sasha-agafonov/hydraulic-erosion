@@ -28,28 +28,38 @@ interface_noise_layers :: interface_noise_layers(QWidget* parent, int wx, int wy
 
     layers_vector[0] -> activate_layer();
     update_new_layer_button();
+    layers_vector[0] -> frequency_spinbox -> setValue(1);
+    layers_vector[0] -> amplitude_spinbox -> setValue(500);
 
     layers_vector[1] -> activate_layer();
     update_new_layer_button();
-    layers_vector[1] -> frequency_spinbox -> setValue(3);
+    layers_vector[1] -> frequency_spinbox -> setValue(2);
+    layers_vector[1] -> amplitude_spinbox -> setValue(500);
 
     layers_vector[2] -> activate_layer();
     update_new_layer_button();
     layers_vector[2] -> frequency_spinbox -> setValue(5);
+    layers_vector[2] -> amplitude_spinbox -> setValue(300);
 
     layers_vector[3] -> activate_layer();
     update_new_layer_button();
     layers_vector[3] -> frequency_spinbox -> setValue(10);
+    layers_vector[3] -> amplitude_spinbox -> setValue(50);
 
     layers_vector[4] -> activate_layer();
     update_new_layer_button();
-    layers_vector[4] -> frequency_spinbox -> setValue(60);
-    layers_vector[4] -> amplitude_spinbox -> setValue(4);
+    layers_vector[4] -> frequency_spinbox -> setValue(40);
+    layers_vector[4] -> amplitude_spinbox -> setValue(10);
 
     layers_vector[5] -> activate_layer();
     update_new_layer_button();
-    layers_vector[5] -> frequency_spinbox -> setValue(50);
-    layers_vector[5] -> amplitude_spinbox -> setValue(12);
+    layers_vector[5] -> frequency_spinbox -> setValue(100);
+    layers_vector[5] -> amplitude_spinbox -> setValue(3);
+
+    layers_vector[6] -> activate_layer();
+    update_new_layer_button();
+    layers_vector[6] -> frequency_spinbox -> setValue(200);
+    layers_vector[6] -> amplitude_spinbox -> setValue(2);
 
     connect(this, SIGNAL(invalidate_heightmap_signal()), parent, SLOT(invalidate_heightmap()));
 
