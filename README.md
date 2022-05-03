@@ -3,13 +3,13 @@ Procedural Terrain Generation with Hydraulic Erosion
 
 ![alt text](https://i.imgur.com/MNuLoG6.png)
 
-
+_______________________________________________________________________________________________________________
 
 COMPATIBILITY:
 
-Tested to run on SoC Linux, but should work on other Linux distributions.__
+Tested to run on SoC Linux, but should work on other Linux distributions.
 
-
+_______________________________________________________________________________________________________________
 
 OBTAINING THE SOURCE CODE:
 
@@ -17,7 +17,7 @@ Either use the following command in a terminal: git clone https://github.com/Ale
 
 Or download a zipped file of the repository from https://github.com/Alexander-Agafonov/terrain. Don't forget to unpack.
 
-
+_______________________________________________________________________________________________________________
 
 RUNNING AND COMPILING:
 
@@ -39,7 +39,7 @@ Running from Qt:
 3. Search for "terrain.pro" and select the file.
 4. Press the run button in Qt.
 
-
+_______________________________________________________________________________________________________________
 
 USING THE APPLICATION:
 
@@ -52,7 +52,7 @@ The first step is to generate (and erode, if desired) a terrain heightmap using 
 
 To erode a heightmap, an initial heightmap needs to be generated first. Similar to the previous step, erosion will begin after a button below a heightmap container is pressed, using the specified parameters to the left of the container.
 
-
+_______________________________________________________________________________________________________________
 
 EXPLANATION OF PARAMETERS:
 
@@ -68,7 +68,7 @@ Frequency: higher values produce a greater amount of detail in the layer output.
 
 Amplitude: higher values lead to a greater numeric range of heights/values in the layer output.
 
-
+_______________________________________________________________________________________________________________
 
 Erosion parameters:
 
@@ -88,7 +88,7 @@ Post evaporation rate: controls the amount of water that disappears from each ce
 
 Water drops: if disabled, the same constant amount of water will appear at each cell during a single cycle of raining. Hence, visually the water movement will mostly appear static. If enabled, new water will appear randomly, spanning multiple neighboring cells at once, but in amounts proportionate to the specified water amount. Enabling water drops will make water movement much more apparent and will lead to somewhat more chaotic erosion results.
 
-
+_______________________________________________________________________________________________________________
 
 NAVIGATION CONTROLS:
 
@@ -104,5 +104,5 @@ Pressing F will toggle the FPS. If the terrain is eroding in-scene, this will to
 
 Press Esc to return to the main menu.
 
-
+_______________________________________________________________________________________________________________
 
