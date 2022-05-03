@@ -1,7 +1,7 @@
 # terrain
 Procedural Terrain Generation with Hydraulic Erosion
 
-![alt text](https://i.imgur.com/8IRHpt7.gif)
+![alt text](https://i.imgur.com/wphOflp.gif)
 
 _______________________________________________________________________________________________________________
 
