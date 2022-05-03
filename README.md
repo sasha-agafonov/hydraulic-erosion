@@ -7,7 +7,7 @@ Procedural Terrain Generation with Hydraulic Erosion
 
 COMPATIBILITY:
 
-Tested to run on SoC Linux, but should work on other Linux distributions. 
+Tested to run on SoC Linux, but should work on other Linux distributions.__
 
 
 
