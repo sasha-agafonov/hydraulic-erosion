@@ -1,5 +1,4 @@
-# terrain
-Procedural Terrain Generation with Hydraulic Erosion
+# Procedural Terrain Generation with Hydraulic Erosion
 
 ![alt text](https://i.imgur.com/wphOflp.gif)
 
