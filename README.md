@@ -3,22 +3,25 @@ Procedural Terrain Generation with Hydraulic Erosion
 
 ![alt text](https://i.imgur.com/MNuLoG6.png)
 
-Compatibility:
+
+
+COMPATIBILITY:
 
 Tested to run on SoC Linux, but should work on other Linux distributions. 
 
 
-Running and compiling:
 
-Two options are available: running from Qt and running from a terminal emulator. The latter is recommended due to significantly better performance.
-
-
-Obtaining the source code:
+OBTAINING THE SOURCE CODE:
 
 Either use the following command in a terminal: git clone https://github.com/Alexander-Agafonov/terrain
 
 Or download a zipped file of the repository from https://github.com/Alexander-Agafonov/terrain. Don't forget to unpack.
 
+
+
+RUNNING AND COMPILING:
+
+Two options are available: running from Qt and running from a terminal emulator. The latter is recommended due to significantly better performance.
 
 Running from a terminal emulator (recommended):
 
@@ -37,7 +40,8 @@ Running from Qt:
 4. Press the run button in Qt.
 
 
-Using the application:
+
+USING THE APPLICATION:
 
 The application interface is split into two parts: 
 
@@ -49,8 +53,8 @@ The first step is to generate (and erode, if desired) a terrain heightmap using 
 To erode a heightmap, an initial heightmap needs to be generated first. Similar to the previous step, erosion will begin after a button below a heightmap container is pressed, using the specified parameters to the left of the container.
 
 
-Explanation of parameters:
 
+EXPLANATION OF PARAMETERS:
 
 Generation parameters:
 
@@ -63,6 +67,7 @@ Noise layers: each layer corresponds to the output of a noise function given the
 Frequency: higher values produce a greater amount of detail in the layer output.
 
 Amplitude: higher values lead to a greater numeric range of heights/values in the layer output.
+
 
 
 Erosion parameters:
@@ -84,7 +89,8 @@ Post evaporation rate: controls the amount of water that disappears from each ce
 Water drops: if disabled, the same constant amount of water will appear at each cell during a single cycle of raining. Hence, visually the water movement will mostly appear static. If enabled, new water will appear randomly, spanning multiple neighboring cells at once, but in amounts proportionate to the specified water amount. Enabling water drops will make water movement much more apparent and will lead to somewhat more chaotic erosion results.
 
 
-Navigation controls:
+
+NAVIGATION CONTROLS:
 
 The following controls are available when viewing the rendered scene:
 
