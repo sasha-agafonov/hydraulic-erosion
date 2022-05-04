@@ -13,7 +13,7 @@ ________________________________________________________________________________
 
 #### KNOWN ISSUES:
 
-It is inadvisable to run the application inside a virtual machine or on a remote computer (e.g. using VPN), as the mouse movement is not registered correctly and makes navigating the scene difficult. 
+It is inadvisable to run the application inside a virtual machine or on a remote computer (e.g. using VPN), as the mouse movement is not registered correctly, which makes navigating the scene difficult. 
 
 _______________________________________________________________________________________________________________
 
