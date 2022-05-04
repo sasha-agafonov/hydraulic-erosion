@@ -58,6 +58,15 @@ The first step is to generate (and erode, if desired) a terrain heightmap using 
 
 To erode a heightmap, an initial heightmap needs to be generated first. Similar to the previous step, erosion will begin after a button below a heightmap container is pressed, using the specified parameters to the left of the container.
 
+#### Step 1: initial menu with preset parameters
+ <img src="https://i.imgur.com/a8v2j32.png" alt="main_menu" />
+ 
+#### Step 2: a heightmap has been generated and is displayed in a container on the right
+ <img src="https://i.imgur.com/sAqM4gC.png" alt="main_menu" />
+ 
+#### Step 3: a previously generated heightmap has now been eroded from the menu and is also displayed on the right
+ <img src="https://i.imgur.com/5ha96ML.png" alt="main_menu" />
+
 _______________________________________________________________________________________________________________
 
 #### EXPLANATION OF PARAMETERS:
