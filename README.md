@@ -1,4 +1,4 @@
-# Procedural Terrain Generation with Hydraulic Erosion
+<p align="center"> # Procedural Terrain Generation with Hydraulic Erosion </p>
 
 <p align="center"> <img src="https://i.imgur.com/wphOflp.gif" alt="animation" /> </p>
 
@@ -13,7 +13,7 @@ ________________________________________________________________________________
 
 KNOWN ISSUES:
 
-It is inadvisable to run the application remotely (e.g. using VPN), as the mouse movement is not registered correctly and makes navigating the scene difficult. 
+It is inadvisable to run the application in a virtual machine or on a remote computer (e.g. using VPN), as the mouse movement is not registered correctly and makes navigating the scene difficult. 
 
 _______________________________________________________________________________________________________________
 
