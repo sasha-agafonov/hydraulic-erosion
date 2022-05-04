@@ -11,6 +11,12 @@ Tested to run on SoC Linux, but should work on other Linux distributions.
 
 _______________________________________________________________________________________________________________
 
+KNOWN ISSUES:
+
+It is inadvisable to run the application remotely (e.g. using VPN), as the mouse movement is not registered correctly and makes navigating the scene difficult. 
+
+_______________________________________________________________________________________________________________
+
 OBTAINING THE SOURCE CODE:
 
 Either use the following command in a terminal: git clone https://github.com/Alexander-Agafonov/terrain
@@ -96,7 +102,7 @@ The following controls are available when viewing the rendered scene:
 
 Use mouse to look around.
 
-Use W, S, A, D keys to move forward, back, left and write.
+Use W, S, A, D keys to move forward, back, left and right.
 
 Use Space to move up and Shift to move down.
 
