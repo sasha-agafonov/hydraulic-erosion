@@ -1,4 +1,4 @@
-<p align="center"> # Procedural Terrain Generation with Hydraulic Erosion </p>
+ # <p align="center"> Procedural Terrain Generation with Hydraulic Erosion </p>
 
 <p align="center"> <img src="https://i.imgur.com/wphOflp.gif" alt="animation" /> </p>
 
