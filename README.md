@@ -67,6 +67,10 @@ To erode a heightmap, an initial heightmap needs to be generated first. Similar 
 #### Step 3: a previously generated heightmap has now been eroded from the menu and is also displayed on the right
  <img src="https://i.imgur.com/5ha96ML.png" alt="main_menu" />
 
+
+#### Rendered output. From left to right: uneroded, eroding, eroded.
+ <img src="https://i.imgur.com/UN1cJYZ.png" alt="output" />
+
 _______________________________________________________________________________________________________________
 
 #### EXPLANATION OF PARAMETERS:
