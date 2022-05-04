@@ -5,19 +5,19 @@
 
 _______________________________________________________________________________________________________________
 
-COMPATIBILITY:
+#### COMPATIBILITY:
 
 Tested to run on SoC Linux, but should work on other Linux distributions.
 
 _______________________________________________________________________________________________________________
 
-KNOWN ISSUES:
+#### KNOWN ISSUES:
 
-It is inadvisable to run the application in a virtual machine or on a remote computer (e.g. using VPN), as the mouse movement is not registered correctly and makes navigating the scene difficult. 
+It is inadvisable to run the application inside a virtual machine or on a remote computer (e.g. using VPN), as the mouse movement is not registered correctly and makes navigating the scene difficult. 
 
 _______________________________________________________________________________________________________________
 
-OBTAINING THE SOURCE CODE:
+#### OBTAINING THE SOURCE CODE:
 
 Either use the following command in a terminal: git clone https://github.com/Alexander-Agafonov/terrain
 
@@ -25,11 +25,11 @@ Or download a zipped file of the repository from https://github.com/Alexander-Ag
 
 _______________________________________________________________________________________________________________
 
-RUNNING AND COMPILING:
+#### RUNNING AND COMPILING:
 
 Two options are available: running from Qt and running from a terminal emulator. The latter is recommended due to significantly better performance.
 
-Running from a terminal emulator (recommended):
+#### Running from terminal (recommended):
 
 1. Navigate to the directory containing the source code of the project.
 2. module add qt (skip if not on SoC Linux)
@@ -38,7 +38,7 @@ Running from a terminal emulator (recommended):
 5. ./terrain
 
 
-Running from Qt:
+#### Running from Qt:
 
 1. Open Qt and select "Open Project".
 2. Navigate to the downloaded source files.
@@ -47,7 +47,7 @@ Running from Qt:
 
 _______________________________________________________________________________________________________________
 
-USING THE APPLICATION:
+#### USING THE APPLICATION:
 
 The application interface is split into two parts: 
 
@@ -60,9 +60,9 @@ To erode a heightmap, an initial heightmap needs to be generated first. Similar 
 
 _______________________________________________________________________________________________________________
 
-EXPLANATION OF PARAMETERS:
+#### EXPLANATION OF PARAMETERS:
 
-Generation parameters:
+#### Generation parameters:
 
 Terrain size: defines the terrain size in squares, where each square is composed of two triangles. Larger sizes increase the terrain area, but triangle density remains unchanged.
 
@@ -74,9 +74,8 @@ Frequency: higher values produce a greater amount of detail in the layer output.
 
 Amplitude: higher values lead to a greater numeric range of heights/values in the layer output.
 
-_______________________________________________________________________________________________________________
 
-Erosion parameters:
+#### Erosion parameters:
 
 Number of cycles: defines the number of cycles during which new water should appear (in other words, the duration of rain). The total number of cycles is greater since all reamining water needs to be evaporated and thus the overall length of erosion depends on the following: number of cycles, water amount, evaporation rate and post-evaporation rate.
 
@@ -96,19 +95,24 @@ Water drops: if disabled, the same constant amount of water will appear at each 
 
 _______________________________________________________________________________________________________________
 
-NAVIGATION CONTROLS:
+#### NAVIGATION CONTROLS:
 
 The following controls are available when viewing the rendered scene:
 
-Use mouse to look around.
+Move the mouse to look around.
 
 Use W, S, A, D keys to move forward, back, left and right.
 
 Use Space to move up and Shift to move down.
 
-Pressing F will toggle the FPS. If the terrain is eroding in-scene, this will toggle the iteration count for the erosion process.
+Press F to toggle the FPS count. If the terrain is eroding in-scene, this will toggle the iteration count for the erosion process.
 
 Press Esc to return to the main menu.
 
+_______________________________________________________________________________________________________________
+
+#### CHOOSING SUITABLE PARAMETERS:
+
+The number of available parameters is large. The user interface provides an almost complete control over the parameter values, meaning that not every combination will produce the desired results. It is not advised to use and especially combine extreme parameter values, such as maximum water amount and minimum evaporation rate. Eroding the terrain in real-time can help to understand the effects of different parameters and hence the final result. The application also comes preset with appropriate generation and erosion parameters, which can be used as a starting point.
 _______________________________________________________________________________________________________________
 
