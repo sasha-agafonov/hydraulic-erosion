@@ -1,6 +1,6 @@
 # Procedural Terrain Generation with Hydraulic Erosion
 
-<p align="center"> ![alt text](https://i.imgur.com/wphOflp.gif) </p align="center">
+<p align="center"> <img src="https://i.imgur.com/wphOflp.gif" alt="animation" /> </p>
 
 
 _______________________________________________________________________________________________________________
