@@ -13,7 +13,7 @@ ________________________________________________________________________________
 
 #### KNOWN ISSUES:
 
-It is inadvisable to run the application inside a virtual machine or on a remote computer (e.g. using VPN), as Qt does not register the mouse movement properly, which makes navigating the scene difficult.
+It is inadvisable to run the application inside a virtual machine or on a remote computer (e.g. using VPN), as Qt does not register mouse movement properly. This can make navigating the scene difficult.
 
 _______________________________________________________________________________________________________________
 
