@@ -114,7 +114,7 @@ The following controls are available when viewing the rendered scene:
 
 Move the mouse to look around.
 
-Use `W` `S` `A` `D` keys to move forward, back, left and right.
+Use `W` `A` `S` `D` keys to move forward, back, left and right.
 
 Use `Space` to move up and Shift to move down.
 
