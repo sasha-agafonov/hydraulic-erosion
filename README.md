@@ -116,7 +116,7 @@ Move the mouse to look around.
 
 Use `W` `A` `S` `D` keys to move forward, back, left and right.
 
-Use `Space` to move up and Shift to move down.
+Use `Space` to move up and `Shift` to move down.
 
 Press `F` to toggle the FPS count. If the terrain is eroding in-scene, this will toggle the iteration count for the erosion process.
 
