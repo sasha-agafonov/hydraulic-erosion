@@ -77,34 +77,34 @@ ________________________________________________________________________________
 
 #### Generation parameters:
 
-Terrain size: defines the terrain size in squares, where each square is composed of two triangles. Larger sizes increase the terrain area, but triangle density remains unchanged.
+`Terrain size` defines the terrain size in squares, where each square is composed of two triangles. Larger sizes increase the terrain area, but triangle density remains unchanged.
 
-Random seed: if enabled, allows to generate a different-looking terrain given the same generation parameters.
+`Random seed` allows to generate a different-looking terrain given the same generation parameters.
 
-Noise layers: each layer corresponds to the output of a noise function given the specified frequency and amplitude parameters for that particular layer. The final heighmap is constructed by amalgamating all active noise layers.
+`Noise layers` each layer corresponds to the output of a noise function given the specified frequency and amplitude parameters for that particular layer. The final heighmap is constructed by amalgamating all active noise layers.
 
-Frequency: defines the amount of detail that should be generated. Higher values produce finer grained heightmaps.
+`Frequency` defines the amount of detail that should be generated. Higher values produce finer grained heightmaps.
 
-Amplitude: defines the maximum and minimum heights that can appear on a heightmap. The higher the amplitude, the greater the possible numeric range of the output.
+`Amplitude` defines the maximum and minimum heights that can appear on a heightmap. The higher the amplitude, the greater the possible numeric range of the output.
 
 
 #### Erosion parameters:
 
-Number of cycles: defines the number of cycles during which new water should appear (in other words, the duration of rain). The total number of cycles is greater since all reamining water needs to be evaporated and thus the overall length of erosion depends on the following: number of cycles, water amount, evaporation rate and post-evaporation rate.
+`Number of cycles` defines the number of cycles during which new water should appear (in other words, the duration of rain). The total number of cycles is greater since all reamining water needs to be evaporated and thus the overall length of erosion depends on the following: number of cycles, water amount, evaporation rate and post-evaporation rate.
 
-Water amount: defines the amount of water that arrives at each terrain vertex during a single cycle of raining.
+`Water amount` defines the amount of water that arrives at each terrain vertex during a single cycle of raining.
 
-Carrying capacity: defines the maximum amount of material that can be contained in a unit of water.
+`Carrying capacity` defines the maximum amount of material that can be contained in a unit of water.
 
-Erosion rate: defines the maximum amount of material that can be eroded by a unit of water during a single cycle.
+`Erosion rate` defines the maximum amount of material that can be eroded by a unit of water during a single cycle.
 
-Deposition rate: defines the maximum amount of material that can be deposited by a unit of water during a single cycle.
+`Deposition rate` defines the maximum amount of material that can be deposited by a unit of water during a single cycle.
 
-Evaporation rate: defines the maximum amount of water that can evaporate from each terrain vertex during a single cycle of raining.
+`Evaporation rate` defines the maximum amount of water that can evaporate from each terrain vertex during a single cycle of raining.
 
-Post-evaporation rate: defines the amount of water that can evaporate from each terrain vertex during a single cycle of drying.
+`Post-evaporation rate` defines the amount of water that can evaporate from each terrain vertex during a single cycle of drying.
 
-Water drops: if disabled, the same constant amount of water will appear at each terrain vertex during a single cycle of raining. This will result in a very subtle water movement. If enabled, new water will appear randomly, spanning multiple neighboring vertices at once, but in amounts proportionate to the specified water amount. Enabling water drops will make water movement much more apparent and will lead to somewhat more chaotic erosion results.
+`Water drops` if disabled, the same constant amount of water will appear at each terrain vertex during a single cycle of raining. This will result in a very subtle water movement. If enabled, new water will appear randomly, spanning multiple neighboring vertices at once, but in amounts proportionate to the specified water amount. Enabling water drops will make water movement much more apparent and will lead to somewhat more chaotic erosion results.
 
 _______________________________________________________________________________________________________________
 
@@ -114,13 +114,13 @@ The following controls are available when viewing the rendered scene:
 
 Move the mouse to look around.
 
-Use W, S, A, D keys to move forward, back, left and right.
+Use `W` `S` `A` `D` keys to move forward, back, left and right.
 
-Use Space to move up and Shift to move down.
+Use `Space` to move up and Shift to move down.
 
-Press F to toggle the FPS count. If the terrain is eroding in-scene, this will toggle the iteration count for the erosion process.
+Press `F` to toggle the FPS count. If the terrain is eroding in-scene, this will toggle the iteration count for the erosion process.
 
-Press Esc to return to the main menu.
+Press `Esc` to return to the main menu.
 
 _______________________________________________________________________________________________________________
 
