@@ -2,7 +2,6 @@
 
 <p align="center"> <img src="https://i.imgur.com/wphOflp.gif" alt="animation" /> </p>
 
-
 _______________________________________________________________________________________________________________
 
 #### COMPATIBILITY:
@@ -19,17 +18,13 @@ ________________________________________________________________________________
 
 #### OBTAINING THE SOURCE CODE:
 
-Either use the following command in a terminal: git clone https://github.com/sasha-agafonov/terrain
+Either use the following command in a terminal: git clone https://github.com/sasha-agafonov/hydraulic-erosion
 
-Or download a zipped file of the repository from https://github.com/sasha-agafonov/terrain. Don't forget to unpack.
+Or download a zipped file of the repository from https://github.com/sasha-agafonov/hydraulic-erosion
 
 _______________________________________________________________________________________________________________
 
-#### RUNNING AND COMPILING:
-
-Two options are available: running from Qt and running from a terminal emulator. The latter is recommended due to significantly better performance.
-
-#### Running from terminal (recommended):
+#### BUILDING/RUNNING FROM TERMINAL (RECOMMENDED):
 
 1. Navigate to the directory containing the source code of the project.
 2. module add qt (skip if not on SoC Linux)
@@ -37,10 +32,11 @@ Two options are available: running from Qt and running from a terminal emulator.
 4. make
 5. ./terrain
 
+_______________________________________________________________________________________________________________
 
-#### Running from Qt:
+#### BUILDING/RUNNING FROM QT CREATOR:
 
-1. Open Qt and select "Open Project".
+1. Open Qt Creator and select "Open Project".
 2. Navigate to the downloaded source files.
 3. Search for "terrain.pro" and select the file.
 4. Press the run button in Qt.
@@ -73,9 +69,7 @@ To erode a heightmap, an initial heightmap needs to be generated first. Similar 
 
 _______________________________________________________________________________________________________________
 
-#### EXPLANATION OF PARAMETERS:
-
-#### Generation parameters:
+#### TERRAIN GENERATION PARAMETERS:
 
 `Terrain size` defines the terrain size in squares, where each square is composed of two triangles. Larger sizes increase the terrain area, but triangle density remains unchanged.
 
@@ -87,8 +81,9 @@ ________________________________________________________________________________
 
 `Amplitude` defines the maximum and minimum heights that can appear on a heightmap. The higher the amplitude, the greater the possible numeric range of the output.
 
+_______________________________________________________________________________________________________________
 
-#### Erosion parameters:
+#### HYDRAULIC EROSION PARAMETERS:
 
 `Number of cycles` defines the number of cycles during which new water should appear (in other words, the duration of rain). The total number of cycles is greater since all reamining water needs to be evaporated and thus the overall length of erosion depends on the following: number of cycles, water amount, evaporation rate and post-evaporation rate.
 
@@ -127,5 +122,5 @@ ________________________________________________________________________________
 #### CHOOSING SUITABLE PARAMETERS:
 
 The number of available parameters is large. The user interface provides an almost complete control over the parameter values, meaning that not every combination will produce the desired results. It is not advised to use and especially combine extreme parameter values, such as maximum water amount and minimum evaporation rate. Eroding the terrain in real-time can help to understand the effects of different parameters and hence the final result. The application also comes preset with appropriate generation and erosion parameters, which can be used as a starting point.
-_______________________________________________________________________________________________________________
 
+_______________________________________________________________________________________________________________
