@@ -6,7 +6,7 @@ ________________________________________________________________________________
 
 #### COMPATIBILITY:
 
-Tested to run on SoC Linux, but should work on other Linux distributions.
+This project has been developed and tested on Linux.
 
 _______________________________________________________________________________________________________________
 
